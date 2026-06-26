@@ -11,75 +11,138 @@ class FallbackCollection:
     """A mock MongoDB collection querying local JSON files in-memory."""
     def __init__(self, collection_name: str):
         self.name = collection_name
-        self.filepath = os.path.join(os.path.dirname(__file__), "data", "diseases_seed.json")
+        if collection_name == "diseases":
+            filename = "diseases_seed.json"
+        elif collection_name == "scans":
+            filename = "scans_fallback.json"
+        elif collection_name == "feedback":
+            filename = "feedback_fallback.json"
+        else:
+            filename = f"{collection_name}_fallback.json"
+            
+        self.filepath = os.path.join(os.path.dirname(__file__), "data", filename)
         self._data = []
         self._load_fallback_data()
 
     def _load_fallback_data(self):
-        if self.name == "diseases" and os.path.exists(self.filepath):
+        if os.path.exists(self.filepath):
             try:
                 with open(self.filepath, "r", encoding="utf-8") as f:
                     self._data = json.load(f)
-                logger.info(f"Loaded {len(self._data)} fallback seed items from {self.filepath}")
+                logger.info(f"Loaded {len(self._data)} fallback items for {self.name} from {self.filepath}")
             except Exception as e:
-                logger.error(f"Failed to load fallback seed data: {e}")
+                logger.error(f"Failed to load fallback data for {self.name}: {e}")
+
+    def _parse_dates(self, doc: dict) -> dict:
+        if not doc:
+            return doc
+        doc_copy = dict(doc)
+        from datetime import datetime
+        if "created_at" in doc_copy and isinstance(doc_copy["created_at"], str):
+            try:
+                dt_str = doc_copy["created_at"]
+                if dt_str.endswith("Z"):
+                    dt_str = dt_str[:-1] + "+00:00"
+                doc_copy["created_at"] = datetime.fromisoformat(dt_str)
+            except Exception:
+                pass
+        return doc_copy
+
+    async def insert_one(self, doc: dict):
+        doc_copy = dict(doc)
+        if "_id" not in doc_copy:
+            import uuid
+            doc_copy["_id"] = str(uuid.uuid4())
+            
+        from datetime import datetime
+        for k, v in list(doc_copy.items()):
+            if isinstance(v, datetime):
+                doc_copy[k] = v.isoformat()
+            elif isinstance(v, list):
+                new_list = []
+                for item in v:
+                    if isinstance(item, dict):
+                        new_dict = {}
+                        for ik, iv in item.items():
+                            if isinstance(iv, datetime):
+                                new_dict[ik] = iv.isoformat()
+                            else:
+                                new_dict[ik] = iv
+                        new_list.append(new_dict)
+                    else:
+                        new_list.append(item)
+                doc_copy[k] = new_list
+                
+        self._data.append(doc_copy)
+        self._save_fallback_data()
 
     async def find_one(self, query: dict) -> dict:
-        slug = query.get("slug")
-        if slug:
-            for item in self._data:
-                if item.get("slug") == slug:
-                    return item
+        for item in self._data:
+            match = True
+            for k, v in query.items():
+                if item.get(k) != v:
+                    match = False
+                    break
+            if match:
+                return self._parse_dates(item)
         return None
 
     async def count_documents(self, query: dict) -> int:
         return len(self._apply_query(query))
 
     def _apply_query(self, query: dict) -> list:
-        # Support simple query filters:
-        # 1. crop match: {"crop": {"$regex": ..., "$options": "i"}}
-        # 2. $or match: [{"name": ...}, {"symptoms": ...}]
-        crop_filter = query.get("crop")
-        or_filter = query.get("$or")
-        
         results = self._data
-        
-        if crop_filter:
-            if isinstance(crop_filter, dict) and "$regex" in crop_filter:
-                pattern = crop_filter["$regex"]
-                rx = re.compile(pattern, re.IGNORECASE)
-                results = [item for item in results if rx.search(item.get("crop", ""))]
-            else:
-                crop_val = str(crop_filter).lower()
-                results = [item for item in results if item.get("crop", "").lower() == crop_val]
+        filtered = []
+        for item in results:
+            match = True
+            for k, v in query.items():
+                if k == "crop":
+                    item_crop = item.get("crop", "")
+                    if isinstance(v, dict) and "$regex" in v:
+                        rx = re.compile(v["$regex"], re.IGNORECASE)
+                        if not rx.search(str(item_crop)):
+                            match = False
+                            break
+                    else:
+                        if str(item_crop).lower() != str(v).lower():
+                            match = False
+                            break
+                elif k == "$or":
+                    or_match = False
+                    for cond in v:
+                        cond_match = True
+                        for ck, cv in cond.items():
+                            val = item.get(ck)
+                            if val is None:
+                                cond_match = False
+                                break
+                            if isinstance(cv, dict) and "$regex" in cv:
+                                rx = re.compile(cv["$regex"], re.IGNORECASE)
+                                if isinstance(val, list):
+                                    if not any(rx.search(str(x)) for x in val):
+                                        cond_match = False
+                                        break
+                                elif not rx.search(str(val)):
+                                    cond_match = False
+                                    break
+                            else:
+                                if str(cv).lower() not in str(val).lower():
+                                    cond_match = False
+                                    break
+                        if cond_match:
+                            or_match = True
+                            break
+                    if not or_match:
+                        match = False
+                        break
+                else:
+                    if item.get(k) != v:
+                        match = False
+                        break
+            if match:
+                filtered.append(self._parse_dates(item))
                 
-        if or_filter:
-            filtered = []
-            for item in results:
-                match = False
-                for cond in or_filter:
-                    for k, v in cond.items():
-                        val = item.get(k)
-                        if val is None:
-                            continue
-                        # If query is regex dict
-                        if isinstance(v, dict) and "$regex" in v:
-                            rx = re.compile(v["$regex"], re.IGNORECASE)
-                            if isinstance(val, list):
-                                if any(rx.search(str(x)) for x in val):
-                                    match = True
-                            elif rx.search(str(val)):
-                                match = True
-                        else:
-                            val_str = str(val).lower()
-                            query_str = str(v).lower()
-                            if query_str in val_str:
-                                match = True
-                if match:
-                    filtered.append(item)
-            results = filtered
-            
-        return results
+        return filtered
 
     def find(self, query: dict, projection: dict = None):
         matched = self._apply_query(query)
@@ -110,12 +173,23 @@ class FallbackCollection:
 
 
 class FallbackCursor:
-    """Cursor wrapper supporting skip, limit, and to_list methods for pagination."""
+    """Cursor wrapper supporting skip, limit, sort and to_list methods for pagination."""
     def __init__(self, data: list, projection: dict = None):
         self._data = data
         self._projection = projection
         self._skip = 0
         self._limit = len(data)
+
+    def sort(self, *args, **kwargs):
+        try:
+            self._data = sorted(
+                self._data,
+                key=lambda x: x.get("created_at").isoformat() if hasattr(x.get("created_at"), "isoformat") else str(x.get("created_at")),
+                reverse=True
+            )
+        except Exception:
+            pass
+        return self
 
     def skip(self, n: int):
         self._skip = n
@@ -138,6 +212,7 @@ class FallbackCursor:
                     proj_item[k] = item.get(k)
             projected.append(proj_item)
         return projected
+
 
 
 class FallbackDatabase:

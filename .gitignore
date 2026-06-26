@@ -24,3 +24,7 @@ dist/
 # Local dataset directory
 dummy_dataset/
 
+# Local fallback databases
+app/data/*_fallback.json
+
+

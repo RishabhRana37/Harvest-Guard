@@ -12,6 +12,9 @@ from app.db import get_client, db_client
 from app.routers.health import router as health_router
 from app.routers.diagnose import router as diagnose_router
 from app.routers.diseases import router as diseases_router
+from app.routers.scans import router as scans_router
+from app.routers.feedback import router as feedback_router
+
 from app.services.inference import load_model_artifacts, initialize_disease_cache, warmup
 from app.utils.errors import (
     AppError,
@@ -38,10 +41,16 @@ async def lifespan(app: FastAPI):
         connected = await db_client.ping()
         if connected:
             logger.info("Successfully connected to MongoDB.")
+            # Ensure indexes exist
+            db = db_client.get_db()
+            await db.scans.create_index([("device_id", 1), ("created_at", -1)])
+            await db.feedback.create_index([("scan_id", 1)])
+            logger.info("Created indexes on scans and feedback collections.")
         else:
             logger.warning("Failed to connect to MongoDB during startup. Using local JSON database.")
     except Exception as e:
         logger.error(f"Error checking MongoDB connection during startup: {e}")
+
         
     # Load ML Model artifacts
     load_model_artifacts()
@@ -107,6 +116,8 @@ api_v1_router = APIRouter(prefix=settings.API_V1_STR)
 api_v1_router.include_router(health_router)
 api_v1_router.include_router(diagnose_router)
 api_v1_router.include_router(diseases_router)
+api_v1_router.include_router(scans_router)
+api_v1_router.include_router(feedback_router)
 
 app.include_router(api_v1_router)
 

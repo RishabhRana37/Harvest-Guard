@@ -1,10 +1,11 @@
 import io
 import uuid
+import logging
 import asyncio
 from datetime import datetime, timezone
 from typing import Optional
 from PIL import Image
-from fastapi import APIRouter, File, UploadFile, Form, Header
+from fastapi import APIRouter, File, UploadFile, Form, Header, BackgroundTasks
 
 from app.config import settings
 from app.schemas import DiagnosisResult, Prediction, Disease, TreatmentPlan, Treatment
@@ -12,10 +13,25 @@ from app.utils.errors import AppError
 from app.services import preprocess, inference
 from app.db import get_db
 
+logger = logging.getLogger("app.routers.diagnose")
+
+async def save_scan_history(scan_doc: dict):
+    """
+    Persist scan document to MongoDB (scans collection).
+    Catches all exceptions to ensure it is completely non-blocking/silent.
+    """
+    try:
+        db = get_db()
+        await db.scans.insert_one(scan_doc)
+        logger.info(f"Scan {scan_doc.get('scan_id')} persisted successfully in background.")
+    except Exception as e:
+        logger.error(f"Failed to persist scan in background: {e}")
+
 router = APIRouter(tags=["Diagnosis"])
 
 @router.post("/diagnose", response_model=DiagnosisResult)
 async def diagnose_leaf(
+    background_tasks: BackgroundTasks,
     image: UploadFile = File(...),
     crop_hint: Optional[str] = Form(None),
     x_device_id: str = Header(..., alias="X-Device-Id", description="Anonymous client device identity")
@@ -99,6 +115,21 @@ async def diagnose_leaf(
 
     if not is_leaf:
         # Return DiagnosisResult with is_leaf:false and other prediction/disease/heatmap fields as null
+        scan_doc = {
+            "_id": scan_id,
+            "scan_id": scan_id,
+            "created_at": created_at,
+            "device_id": x_device_id,
+            "predicted_slug": None,
+            "confidence": None,
+            "confidence_band": None,
+            "is_leaf": False,
+            "severity": None,
+            "top_k": [],
+            "thumb_url": None
+        }
+        background_tasks.add_task(save_scan_history, scan_doc)
+
         return DiagnosisResult(
             scan_id=scan_id,
             created_at=created_at,
@@ -161,6 +192,22 @@ async def diagnose_leaf(
     else:
         confidence_band = "low"
     is_confident = confidence >= inference.tau_low
+
+    # Persist scan history in background
+    scan_doc = {
+        "_id": scan_id,
+        "scan_id": scan_id,
+        "created_at": created_at,
+        "device_id": x_device_id,
+        "predicted_slug": prediction.slug,
+        "confidence": confidence,
+        "confidence_band": confidence_band,
+        "is_leaf": True,
+        "severity": severity,
+        "top_k": [{"slug": tk.slug, "prob": tk.prob} for tk in top_k],
+        "thumb_url": None
+    }
+    background_tasks.add_task(save_scan_history, scan_doc)
 
     result = DiagnosisResult(
         scan_id=scan_id,

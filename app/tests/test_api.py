@@ -235,3 +235,58 @@ def test_get_disease_by_slug_not_found(client):
     assert "Unknown disease" in data["error"]["message"]
     assert data["error"]["request_id"].startswith("req_")
 
+def test_scans_history_and_feedback(client, valid_image):
+    device_id = "test-history-device-uuid"
+    headers = {"X-Device-Id": device_id}
+    files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+    
+    # 1. Post a diagnosis
+    diag_response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+    assert diag_response.status_code == 200
+    diag_data = diag_response.json()
+    scan_id = diag_data["scan_id"]
+    
+    # 2. Get history list (should contain 1 scan)
+    list_response = client.get("/api/v1/scans", headers=headers)
+    assert list_response.status_code == 200
+    list_data = list_response.json()
+    assert list_data["total"] >= 1
+    assert list_data["items"][0]["scan_id"] == scan_id
+    
+    # 3. Get history details
+    detail_response = client.get(f"/api/v1/scans/{scan_id}", headers=headers)
+    assert detail_response.status_code == 200
+    detail_data = detail_response.json()
+    assert detail_data["scan_id"] == scan_id
+    assert detail_data["heatmap"] is None  # Re-fetched heatmap must be null
+    
+    # 4. Enforce ownership (different X-Device-Id returns 403)
+    wrong_headers = {"X-Device-Id": "other-device-uuid"}
+    forbidden_response = client.get(f"/api/v1/scans/{scan_id}", headers=wrong_headers)
+    assert forbidden_response.status_code == 403
+    forbidden_data = forbidden_response.json()
+    assert forbidden_data["error"]["code"] == "FORBIDDEN"
+    
+    # 5. Post feedback (returns 201)
+    feedback_payload = {
+        "scan_id": scan_id,
+        "agreed": False,
+        "corrected_slug": "potato-early-blight",
+        "note": "looks more like potato early blight to me"
+    }
+    feedback_response = client.post(
+        "/api/v1/feedback",
+        json=feedback_payload,
+        headers=headers
+    )
+    assert feedback_response.status_code == 201
+    feedback_data = feedback_response.json()
+    assert feedback_data["scan_id"] == scan_id
+    assert "feedback_id" in feedback_data
+    assert feedback_data["received"] is True
+
+

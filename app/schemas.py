@@ -52,3 +52,37 @@ class DiseaseListResponse(BaseModel):
     page_size: int
     total: int
 
+class ScanPredictedInfo(BaseModel):
+    slug: str
+    crop: str
+    name: str
+    prob: float
+
+class ScanListItem(BaseModel):
+    scan_id: str
+    created_at: datetime
+    predicted: Optional[ScanPredictedInfo] = None
+    confidence: Optional[float] = None
+    confidence_band: Optional[str] = None
+    severity: Optional[str] = None
+    is_leaf: bool
+    thumb_url: Optional[str] = None
+
+class ScanListResponse(BaseModel):
+    items: List[ScanListItem]
+    page: int
+    page_size: int
+    total: int
+
+class FeedbackRequest(BaseModel):
+    scan_id: str
+    agreed: bool
+    corrected_slug: Optional[str] = None
+    note: Optional[str] = None
+
+class FeedbackResponse(BaseModel):
+    feedback_id: str
+    scan_id: str
+    received: bool
+
+
