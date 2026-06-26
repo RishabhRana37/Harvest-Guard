@@ -1,0 +1,1524 @@
+[
+  {
+    "slug": "apple-apple-scab",
+    "class_index": 0,
+    "crop": "Apple",
+    "name": "Apple Scab",
+    "pathogen": "Venturia inaequalis",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Apple leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Venturia inaequalis. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "apple-black-rot",
+    "class_index": 1,
+    "crop": "Apple",
+    "name": "Black Rot",
+    "pathogen": "Botryosphaeria obtusa",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Apple leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Botryosphaeria obtusa. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "apple-cedar-apple-rust",
+    "class_index": 2,
+    "crop": "Apple",
+    "name": "Cedar Apple Rust",
+    "pathogen": "Gymnosporangium juniperi-virginianae",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Apple leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Gymnosporangium juniperi-virginianae. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "apple-healthy",
+    "class_index": 3,
+    "crop": "Apple",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "blueberry-healthy",
+    "class_index": 4,
+    "crop": "Blueberry",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "cherry-powdery-mildew",
+    "class_index": 5,
+    "crop": "Cherry",
+    "name": "Powdery Mildew",
+    "pathogen": "Podosphaera clandestina",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Cherry leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Podosphaera clandestina. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "cherry-healthy",
+    "class_index": 6,
+    "crop": "Cherry",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "corn-grey-leaf-spot",
+    "class_index": 7,
+    "crop": "Corn (Maize)",
+    "name": "Grey Leaf Spot",
+    "pathogen": "Cercospora zeae-maydis",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Corn (Maize) leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Cercospora zeae-maydis. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "corn-common-rust",
+    "class_index": 8,
+    "crop": "Corn (Maize)",
+    "name": "Common Rust",
+    "pathogen": "Puccinia sorghi",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Corn (Maize) leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Puccinia sorghi. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "corn-northern-leaf-blight",
+    "class_index": 9,
+    "crop": "Corn (Maize)",
+    "name": "Northern Leaf Blight",
+    "pathogen": "Exserohilum turcicum",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Corn (Maize) leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Exserohilum turcicum. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "corn-healthy",
+    "class_index": 10,
+    "crop": "Corn (Maize)",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "grape-black-rot",
+    "class_index": 11,
+    "crop": "Grape",
+    "name": "Black Rot",
+    "pathogen": "Guignardia bidwellii",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Grape leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Guignardia bidwellii. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "grape-esca",
+    "class_index": 12,
+    "crop": "Grape",
+    "name": "Esca (Black Measles)",
+    "pathogen": "Phaeomoniella chlamydospora",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Grape leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Phaeomoniella chlamydospora. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "grape-leaf-blight",
+    "class_index": 13,
+    "crop": "Grape",
+    "name": "Leaf Blight (Isariopsis Leaf Spot)",
+    "pathogen": "Pseudocercospora vitis",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Grape leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Pseudocercospora vitis. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "grape-healthy",
+    "class_index": 14,
+    "crop": "Grape",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "orange-citrus-greening",
+    "class_index": 15,
+    "crop": "Orange",
+    "name": "Citrus Greening (Huanglongbing)",
+    "pathogen": "Candidatus Liberibacter asiaticus",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Orange leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Candidatus Liberibacter asiaticus. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "peach-bacterial-spot",
+    "class_index": 16,
+    "crop": "Peach",
+    "name": "Bacterial Spot",
+    "pathogen": "Xanthomonas campestris pv. pruni",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Peach leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Xanthomonas campestris pv. pruni. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "peach-healthy",
+    "class_index": 17,
+    "crop": "Peach",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "pepper-bacterial-spot",
+    "class_index": 18,
+    "crop": "Pepper",
+    "name": "Bacterial Spot",
+    "pathogen": "Xanthomonas campestris pv. vesicatoria",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Pepper leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Xanthomonas campestris pv. vesicatoria. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "pepper-healthy",
+    "class_index": 19,
+    "crop": "Pepper",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "potato-early-blight",
+    "class_index": 20,
+    "crop": "Potato",
+    "name": "Early Blight",
+    "pathogen": "Alternaria solani",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Potato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Alternaria solani. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "potato-late-blight",
+    "class_index": 21,
+    "crop": "Potato",
+    "name": "Late Blight",
+    "pathogen": "Phytophthora infestans",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Potato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Phytophthora infestans. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "potato-healthy",
+    "class_index": 22,
+    "crop": "Potato",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "raspberry-healthy",
+    "class_index": 23,
+    "crop": "Raspberry",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "soybean-healthy",
+    "class_index": 24,
+    "crop": "Soybean",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "squash-powdery-mildew",
+    "class_index": 25,
+    "crop": "Squash",
+    "name": "Powdery Mildew",
+    "pathogen": "Podosphaera xanthii",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Squash leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Podosphaera xanthii. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "strawberry-leaf-scorch",
+    "class_index": 26,
+    "crop": "Strawberry",
+    "name": "Leaf Scorch",
+    "pathogen": "Diplocarpon earlianum",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Strawberry leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Diplocarpon earlianum. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "strawberry-healthy",
+    "class_index": 27,
+    "crop": "Strawberry",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-bacterial-spot",
+    "class_index": 28,
+    "crop": "Tomato",
+    "name": "Bacterial Spot",
+    "pathogen": "Xanthomonas campestris pv. vesicatoria",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Xanthomonas campestris pv. vesicatoria. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-early-blight",
+    "class_index": 29,
+    "crop": "Tomato",
+    "name": "Early Blight",
+    "pathogen": "Alternaria solani",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Alternaria solani. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-late-blight",
+    "class_index": 30,
+    "crop": "Tomato",
+    "name": "Late Blight",
+    "pathogen": "Phytophthora infestans",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Phytophthora infestans. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-leaf-mold",
+    "class_index": 31,
+    "crop": "Tomato",
+    "name": "Leaf Mold",
+    "pathogen": "Passalora fulva",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Passalora fulva. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-septoria-leaf-spot",
+    "class_index": 32,
+    "crop": "Tomato",
+    "name": "Septoria Leaf Spot",
+    "pathogen": "Septoria lycopersici",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Septoria lycopersici. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-spider-mites",
+    "class_index": 33,
+    "crop": "Tomato",
+    "name": "Spider Mites (Two-spotted spider mite)",
+    "pathogen": "Tetranychus urticae",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Tetranychus urticae. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-target-spot",
+    "class_index": 34,
+    "crop": "Tomato",
+    "name": "Target Spot",
+    "pathogen": "Corynespora cassiicola",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Corynespora cassiicola. Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-yellow-leaf-curl",
+    "class_index": 35,
+    "crop": "Tomato",
+    "name": "Yellow Leaf Curl Virus",
+    "pathogen": "Tomato yellow leaf curl virus (Begomovirus)",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Tomato yellow leaf curl virus (Begomovirus). Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-mosaic-virus",
+    "class_index": 36,
+    "crop": "Tomato",
+    "name": "Tomato Mosaic Virus",
+    "pathogen": "Tomato mosaic virus (Tobamovirus)",
+    "is_healthy": false,
+    "symptoms": [
+      "Visible spots or lesion discoloration on the Tomato leaves.",
+      "Yellow halos surrounding necrotic areas.",
+      "Premature defoliation starting from the lower canopy branches."
+    ],
+    "cause": "Infection caused by pathogen Tomato mosaic virus (Tobamovirus). Favored by warm temperatures and moist leaf surfaces.",
+    "lifecycle": "Spores or bacteria propagate in damp air/water splashes, overwintering in plant debris.",
+    "treatments": {
+      "organic": [
+        {
+          "action": "Neem oil foliar spray",
+          "dosage": "5 ml/L",
+          "frequency": "every 7 days",
+          "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+        },
+        {
+          "action": "Copper fungicide dust",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Apply at the first sign of symptoms; wear protective gloves."
+        }
+      ],
+      "chemical": [
+        {
+          "action": "Chlorothalonil application",
+          "dosage": "2 g/L",
+          "frequency": "every 10 days",
+          "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+        }
+      ],
+      "prevention": [
+        "Rotate crops with non-susceptible plant families every 3 years.",
+        "Remove and destroy all infected foliage and crop residues.",
+        "Use drip irrigation systems to keep leaves dry."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  },
+  {
+    "slug": "tomato-healthy",
+    "class_index": 37,
+    "crop": "Tomato",
+    "name": "Healthy",
+    "pathogen": "None",
+    "is_healthy": true,
+    "symptoms": [
+      "No disease detected. Leaf is green, turgid, and healthy."
+    ],
+    "cause": "Optimal plant health, nutrition, and environmental conditions.",
+    "lifecycle": "Normal vegetative and reproductive plant growth cycles.",
+    "treatments": {
+      "organic": [],
+      "chemical": [],
+      "prevention": [
+        "Continue standard irrigation and weeding schedule.",
+        "Apply mulch around base to conserve soil moisture.",
+        "Inspect foliage weekly for early signs of pests."
+      ]
+    },
+    "confused_with": [],
+    "image_url": null,
+    "i18n": {}
+  }
+]
