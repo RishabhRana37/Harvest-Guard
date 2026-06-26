@@ -305,7 +305,7 @@ def main():
     # Construct overall model pipeline
     inputs = layers.Input(shape=(224, 224, 3))
     x = data_augmentation(inputs)
-    x = layers.Lambda(lambda img: preprocess_input(img))(x)
+    x = layers.Rescaling(scale=1.0 / 127.5, offset=-1.0)(x)
     x = base_model(x, training=False)
     x = layers.GlobalAveragePooling2D()(x)
     x = layers.Dropout(0.2)(x)

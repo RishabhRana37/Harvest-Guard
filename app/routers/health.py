@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.db import db_client
 from app.config import settings
+from app.services import inference
 
 router = APIRouter(tags=["Health"])
 
@@ -15,7 +16,9 @@ async def health_check():
 
     return {
         "status": "ok",
-        "model_loaded": False,
+        "model_loaded": inference.model_loaded,
         "db": db_status,
         "version": settings.VERSION
     }
+
+

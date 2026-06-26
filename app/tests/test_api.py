@@ -25,7 +25,7 @@ def test_health_endpoint(client):
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "ok"
-    assert data["model_loaded"] is False
+    assert data["model_loaded"] in [True, False]
     assert data["db"] in ["connected", "down"]
     assert data["version"] == settings.VERSION
 
@@ -43,17 +43,38 @@ def test_diagnose_valid_request(client, valid_image):
     
     assert response.status_code == 200
     res_data = response.json()
-    assert res_data["scan_id"] == "scan_mock_123"
+    assert res_data["scan_id"].startswith("scan_")
     assert res_data["is_leaf"] is True
-    assert res_data["confidence"] == 0.87
-    assert res_data["confidence_band"] == "high"
-    assert res_data["severity"] == "mild"
-    assert res_data["urgency_days"] == 3
-    assert res_data["prediction"]["slug"] == "tomato-early-blight"
-    assert len(res_data["top_k"]) > 0
-    assert res_data["heatmap"].startswith("data:image/png;base64,")
-    assert res_data["disease"]["slug"] == "tomato-early-blight"
+    assert isinstance(res_data["confidence"], float)
+    assert res_data["confidence_band"] in ["high", "medium", "low"]
+    assert res_data["severity"] in ["healthy", "mild", "severe"]
+    assert res_data["urgency_days"] is None or isinstance(res_data["urgency_days"], int)
+    assert "prediction" in res_data
+    assert "slug" in res_data["prediction"]
+    assert len(res_data["top_k"]) == 3
+    assert res_data["heatmap"] is None
+    assert "disease" in res_data
+    assert "slug" in res_data["disease"]
     assert "X-Request-Id" in response.headers
+
+def test_diagnose_model_unavailable(client, valid_image):
+    from app.services import inference
+    original_loaded = inference.model_loaded
+    inference.model_loaded = False
+    try:
+        headers = {"X-Device-Id": "test-device-uuid"}
+        files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+        response = client.post(
+            "/api/v1/diagnose",
+            files=files,
+            headers=headers
+        )
+        assert response.status_code == 503
+        res_data = response.json()
+        assert "error" in res_data
+        assert res_data["error"]["code"] == "MODEL_UNAVAILABLE"
+    finally:
+        inference.model_loaded = original_loaded
 
 def test_diagnose_missing_device_id(client, valid_image):
     files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
@@ -70,6 +91,7 @@ def test_diagnose_missing_device_id(client, valid_image):
     assert res_data["error"]["code"] == "INVALID_IMAGE"
     assert "X-Device-Id" in res_data["error"]["message"]
     assert res_data["error"]["request_id"].startswith("req_")
+
 
 def test_diagnose_unsupported_media(client):
     headers = {"X-Device-Id": "test-device-uuid"}

@@ -12,6 +12,7 @@ from app.db import get_client, db_client
 from app.routers.health import router as health_router
 from app.routers.diagnose import router as diagnose_router
 from app.routers.diseases import router as diseases_router
+from app.services.inference import load_model_artifacts, initialize_disease_cache, warmup
 from app.utils.errors import (
     AppError,
     request_id_var,
@@ -41,7 +42,16 @@ async def lifespan(app: FastAPI):
             logger.warning("Failed to connect to MongoDB during startup. Using local JSON database.")
     except Exception as e:
         logger.error(f"Error checking MongoDB connection during startup: {e}")
+        
+    # Load ML Model artifacts
+    load_model_artifacts()
+    # Initialize memory disease cache for top_k names mapping
+    await initialize_disease_cache()
+    # Run a warmup prediction to initialize TF graphs
+    warmup()
+    
     yield
+
     # Shutdown actions
     logger.info("Shutting down CropDoc AI Backend Service...")
     # Global client cleanup
