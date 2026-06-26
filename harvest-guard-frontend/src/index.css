@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Strict Design Tokens from PRD mapped directly to Tailwind v4 theme variables */
+  --color-green-900: #143A1B;   /* dark surfaces, nav bar */
+  --color-green-700: #2C5F2D;   /* primary brand, buttons, PWA theme */
+  --color-green-500: #4F9D52;   /* active/hover states */
+  --color-moss-400:  #97BC62;   /* secondary fills, chips */
+  --color-sage-100:  #EAF2E3;   /* light surface tint, card backgrounds */
+
+  --color-ai-blue-500: #2D6CDF; /* AI accent — heatmap legend, confidence gauge */
+
+  --color-sev-healthy: #2EA44F; /* green severity */
+  --color-sev-mild:    #E8A23D; /* amber severity */
+  --color-sev-severe:  #D64545; /* red severity */
+
+  --color-surface:     #FFFFFF;
+  --color-surface-alt: #F6F8F4;
+  --color-text-strong: #16241A;
+  --color-text-muted:  #5B6B5E;
+  --color-border:      #E1E7DE;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-16: 16px;
+  --radius-12: 12px;
+}
+
+:root {
+  /* Setup raw CSS custom properties so SVG tracks and other native elements reference them safely */
+  --green-900: #143A1B;
+  --green-700: #2C5F2D;
+  --green-500: #4F9D52;
+  --moss-400:  #97BC62;
+  --sage-100:  #EAF2E3;
+  --ai-blue-500: #2D6CDF;
+  --sev-healthy: #2EA44F;
+  --sev-mild:    #E8A23D;
+  --sev-severe:  #D64545;
+  --surface:     #FFFFFF;
+  --surface-alt: #F6F8F4;
+  --text-strong: #16241A;
+  --text-muted:  #5B6B5E;
+  --border:      #E1E7DE;
+}
+
+@utility focus-visible {
+  outline: none;
+  ring-width: 2px;
+  ring-color: var(--green-500);
+  ring-offset-width: 2px;
+}
+
+body {
+  background-color: var(--surface-alt);
+  color: var(--text-strong);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+/* Custom shimmer animation for scanning */
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer-sweep {
+  animation: shimmer-sweep 1.2s infinite linear;
+}
+
+/* Radial confidence gauge adjustments */
+.gauge-circle {
+  transition: stroke-dashoffset 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sunlight-proof high-contrast enhancements */
+@media (max-width: 640px) {
+  .sunlight-high-contrast {
+    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+  }
+}
