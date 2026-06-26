@@ -29,7 +29,8 @@ export const getDeviceId = (): string => {
 export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'disabled';
 
 export const getMockMode = (): MockMode => {
-  return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || 'confident'; // default to confident mock for demo
+  const defaultMode = import.meta.env.VITE_API_BASE_URL ? 'disabled' : 'confident';
+  return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || defaultMode;
 };
 
 export const setMockMode = (mode: MockMode) => {
