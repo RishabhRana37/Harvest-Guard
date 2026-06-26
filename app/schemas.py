@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
@@ -29,51 +30,18 @@ class Disease(BaseModel):
     lifecycle: str
     treatments: TreatmentPlan
     confused_with: List[str] = Field(default_factory=list)
-    image_url: str
+    image_url: Optional[str] = None
 
 class DiagnosisResult(BaseModel):
     scan_id: str
-    created_at: str
+    created_at: datetime
     is_leaf: bool
     is_confident: bool
     confidence: Optional[float] = None
     confidence_band: Optional[str] = None  # "high" | "medium" | "low"
     severity: Optional[str] = None         # "healthy" | "mild" | "severe"
-    urgency_days: Optional[int] = None     # null when healthy or not a leaf
+    urgency_days: Optional[int] = None
     prediction: Optional[Prediction] = None
     top_k: List[Prediction] = Field(default_factory=list)
-    heatmap: Optional[str] = None          # Base64 data URI
+    heatmap: Optional[str] = None          # base64 data URI
     disease: Optional[Disease] = None
-
-class FeedbackRequest(BaseModel):
-    scan_id: str
-    agreed: bool
-    corrected_slug: Optional[str] = None
-    note: Optional[str] = None
-
-class FeedbackResponse(BaseModel):
-    feedback_id: str
-    scan_id: str
-    received: bool
-
-class DiseaseListResponse(BaseModel):
-    items: List[Disease]
-    page: int
-    page_size: int
-    total: int
-
-class ScanSummary(BaseModel):
-    scan_id: str
-    created_at: str
-    predicted: Optional[Prediction] = None
-    confidence: Optional[float] = None
-    confidence_band: Optional[str] = None
-    severity: Optional[str] = None
-    is_leaf: bool
-    thumb_url: Optional[str] = None
-
-class ScanListResponse(BaseModel):
-    items: List[ScanSummary]
-    page: int
-    page_size: int
-    total: int
