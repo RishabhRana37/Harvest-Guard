@@ -20,6 +20,15 @@ def valid_image():
     buf.seek(0)
     return buf
 
+@pytest.fixture
+def non_leaf_image():
+    """Generates a solid red (non-green) image in memory."""
+    img = Image.new("RGB", (100, 100), (255, 0, 0))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG")
+    buf.seek(0)
+    return buf
+
 def test_health_endpoint(client):
     response = client.get("/api/v1/health")
     assert response.status_code == 200
@@ -52,10 +61,33 @@ def test_diagnose_valid_request(client, valid_image):
     assert "prediction" in res_data
     assert "slug" in res_data["prediction"]
     assert len(res_data["top_k"]) == 3
-    assert res_data["heatmap"] is None
+    assert res_data["heatmap"].startswith("data:image/png;base64,")
     assert "disease" in res_data
     assert "slug" in res_data["disease"]
     assert "X-Request-Id" in response.headers
+
+def test_diagnose_non_leaf_image(client, non_leaf_image):
+    headers = {"X-Device-Id": "test-device-uuid"}
+    files = {"image": ("non_leaf.jpg", non_leaf_image, "image/jpeg")}
+    
+    response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+    
+    assert response.status_code == 200
+    res_data = response.json()
+    assert res_data["is_leaf"] is False
+    assert res_data["is_confident"] is False
+    assert res_data["confidence"] is None
+    assert res_data["confidence_band"] is None
+    assert res_data["severity"] is None
+    assert res_data["urgency_days"] is None
+    assert res_data["prediction"] is None
+    assert res_data["top_k"] == []
+    assert res_data["heatmap"] is None
+    assert res_data["disease"] is None
 
 def test_diagnose_model_unavailable(client, valid_image):
     from app.services import inference
@@ -75,6 +107,7 @@ def test_diagnose_model_unavailable(client, valid_image):
         assert res_data["error"]["code"] == "MODEL_UNAVAILABLE"
     finally:
         inference.model_loaded = original_loaded
+
 
 def test_diagnose_missing_device_id(client, valid_image):
     files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}

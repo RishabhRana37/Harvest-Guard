@@ -66,6 +66,8 @@ async def diagnose_leaf(
     loop = asyncio.get_running_loop()
     try:
         img = await loop.run_in_executor(None, preprocess.load_image, file_bytes)
+        import numpy as np
+        original_np = np.array(img)
         input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
     except Exception as e:
         raise AppError(
@@ -84,10 +86,57 @@ async def diagnose_leaf(
             message=f"Model inference failed: {e}"
         )
 
-    # 6. Extract predictions
+    probs = calibrated_probs[0]
+    max_prob = float(np.max(probs))
+    entropy = float(-np.sum(probs * np.log(probs + 1e-15)))
+
+    # 6. OOD leaf gate check in thread pool
+    from app.services.ood import check_is_leaf
+    is_leaf = await loop.run_in_executor(None, check_is_leaf, original_np, max_prob, entropy)
+
+    scan_id = f"scan_{uuid.uuid4().hex[:16]}"
+    created_at = datetime.now(timezone.utc)
+
+    if not is_leaf:
+        # Return DiagnosisResult with is_leaf:false and other prediction/disease/heatmap fields as null
+        return DiagnosisResult(
+            scan_id=scan_id,
+            created_at=created_at,
+            is_leaf=False,
+            is_confident=False,
+            confidence=None,
+            confidence_band=None,
+            severity=None,
+            urgency_days=None,
+            prediction=None,
+            top_k=[],
+            heatmap=None,
+            disease=None
+        )
+
+    # 7. Extract predictions
     prediction, top_k = inference.get_predictions(calibrated_probs)
 
-    # 7. Database enrichment
+    # 8. Grad-CAM generation in thread pool
+    from app.services.gradcam import generate_gradcam
+    predicted_idx = int(np.argmax(probs))
+    try:
+        heatmap_uri, raw_heatmap = await loop.run_in_executor(
+            None,
+            generate_gradcam,
+            inference.model,
+            input_array,
+            predicted_idx,
+            original_np
+        )
+    except Exception as e:
+        raise AppError(
+            status_code=500,
+            code="INTERNAL_ERROR",
+            message=f"Failed to generate Grad-CAM explainability map: {e}"
+        )
+
+    # 9. Database enrichment
     db = get_db()
     disease_doc = await db.diseases.find_one({"slug": prediction.slug})
     if not disease_doc:
@@ -98,21 +147,12 @@ async def diagnose_leaf(
         )
     disease = Disease(**disease_doc)
 
-    # 8. Urgency & Severity mapping logic
+    # 10. Urgency & Severity mapping logic using Grad-CAM raw heatmap
+    from app.services.severity import calculate_severity
     is_healthy = disease_doc.get("is_healthy", False)
-    if is_healthy:
-        severity = "healthy"
-        urgency_days = None
-    else:
-        severity = disease_doc.get("severity_default", "mild")
-        if severity == "mild":
-            urgency_days = 3
-        elif severity == "severe":
-            urgency_days = 1
-        else:
-            urgency_days = 3
+    severity, urgency_days = calculate_severity(raw_heatmap, is_healthy)
 
-    # 9. Calibration confidence and band mapping
+    # 11. Calibration confidence and band mapping
     confidence = prediction.prob
     if confidence >= 0.80:
         confidence_band = "high"
@@ -121,9 +161,6 @@ async def diagnose_leaf(
     else:
         confidence_band = "low"
     is_confident = confidence >= inference.tau_low
-
-    scan_id = f"scan_{uuid.uuid4().hex[:16]}"
-    created_at = datetime.now(timezone.utc)
 
     result = DiagnosisResult(
         scan_id=scan_id,
@@ -136,7 +173,7 @@ async def diagnose_leaf(
         urgency_days=urgency_days,
         prediction=prediction,
         top_k=top_k,
-        heatmap=None,
+        heatmap=heatmap_uri,
         disease=disease
     )
 
