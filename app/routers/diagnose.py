@@ -2,15 +2,18 @@ import io
 import uuid
 import logging
 import asyncio
+import time
 from datetime import datetime, timezone
 from typing import Optional
 from PIL import Image
-from fastapi import APIRouter, File, UploadFile, Form, Header, BackgroundTasks
+from fastapi import APIRouter, File, UploadFile, Form, Header, BackgroundTasks, Request
 
 from app.config import settings
 from app.schemas import DiagnosisResult, Prediction, Disease, TreatmentPlan, Treatment
 from app.utils.errors import AppError
 from app.services import preprocess, inference
+from app.utils.limiter import limiter
+from app.services.metrics import metrics_tracker
 from app.db import get_db
 
 logger = logging.getLogger("app.routers.diagnose")
@@ -30,7 +33,9 @@ async def save_scan_history(scan_doc: dict):
 router = APIRouter(tags=["Diagnosis"])
 
 @router.post("/diagnose", response_model=DiagnosisResult)
+@limiter.limit("30/minute")
 async def diagnose_leaf(
+    request: Request,
     background_tasks: BackgroundTasks,
     image: UploadFile = File(...),
     crop_hint: Optional[str] = Form(None),
@@ -41,6 +46,9 @@ async def diagnose_leaf(
     deep-learning model inference using MobileNetV2 with temperature calibration,
     enrich predictions with disease knowledge base, and return results.
     """
+    t_start = time.perf_counter()
+    preprocess_start = time.perf_counter()
+
     # 0. Check model availability
     if not inference.model_loaded:
         raise AppError(
@@ -78,10 +86,10 @@ async def diagnose_leaf(
             message="The uploaded file could not be read or decoded as a valid image."
         )
 
-    # 4. Preprocessing in thread pool
+    # 4. Preprocessing in thread pool (with image sanitization)
     loop = asyncio.get_running_loop()
     try:
-        img = await loop.run_in_executor(None, preprocess.load_image, file_bytes)
+        sanitized_bytes, img = await loop.run_in_executor(None, preprocess.sanitize_image, file_bytes)
         import numpy as np
         original_np = np.array(img)
         input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
@@ -92,7 +100,11 @@ async def diagnose_leaf(
             message=f"Failed to preprocess the leaf image: {e}"
         )
 
+    preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
+    request.state.preprocess_ms = preprocess_ms
+
     # 5. Model Inference & Temperature scaling in thread pool
+    infer_start = time.perf_counter()
     try:
         calibrated_probs = await loop.run_in_executor(None, inference.predict, input_array)
     except Exception as e:
@@ -101,6 +113,8 @@ async def diagnose_leaf(
             code="INTERNAL_ERROR",
             message=f"Model inference failed: {e}"
         )
+    infer_ms = (time.perf_counter() - infer_start) * 1000
+    request.state.infer_ms = infer_ms
 
     probs = calibrated_probs[0]
     max_prob = float(np.max(probs))
@@ -109,11 +123,20 @@ async def diagnose_leaf(
     # 6. OOD leaf gate check in thread pool
     from app.services.ood import check_is_leaf
     is_leaf = await loop.run_in_executor(None, check_is_leaf, original_np, max_prob, entropy)
+    request.state.is_leaf = is_leaf
 
     scan_id = f"scan_{uuid.uuid4().hex[:16]}"
     created_at = datetime.now(timezone.utc)
 
     if not is_leaf:
+        request.state.predicted_slug = None
+        request.state.confidence = None
+        request.state.gradcam_ms = 0.0
+
+        # Record metrics
+        metrics_tracker.record_ood_rejection()
+        metrics_tracker.record_diagnose_latency((time.perf_counter() - t_start) * 1000)
+
         # Return DiagnosisResult with is_leaf:false and other prediction/disease/heatmap fields as null
         scan_doc = {
             "_id": scan_id,
@@ -145,12 +168,15 @@ async def diagnose_leaf(
             disease=None
         )
 
+    request.state.is_leaf = True
+
     # 7. Extract predictions
     prediction, top_k = inference.get_predictions(calibrated_probs)
 
     # 8. Grad-CAM generation in thread pool
     from app.services.gradcam import generate_gradcam
     predicted_idx = int(np.argmax(probs))
+    gradcam_start = time.perf_counter()
     try:
         heatmap_uri, raw_heatmap = await loop.run_in_executor(
             None,
@@ -166,6 +192,8 @@ async def diagnose_leaf(
             code="INTERNAL_ERROR",
             message=f"Failed to generate Grad-CAM explainability map: {e}"
         )
+    gradcam_ms = (time.perf_counter() - gradcam_start) * 1000
+    request.state.gradcam_ms = gradcam_ms
 
     # 9. Database enrichment
     db = get_db()
@@ -192,6 +220,13 @@ async def diagnose_leaf(
     else:
         confidence_band = "low"
     is_confident = confidence >= inference.tau_low
+
+    # Set state values for Logging
+    request.state.predicted_slug = prediction.slug
+    request.state.confidence = confidence
+
+    # Record latency in metrics tracker
+    metrics_tracker.record_diagnose_latency((time.perf_counter() - t_start) * 1000)
 
     # Persist scan history in background
     scan_doc = {

@@ -33,7 +33,7 @@ def test_health_endpoint(client):
     response = client.get("/api/v1/health")
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "ok"
+    assert data["status"] == "ready"
     assert data["model_loaded"] in [True, False]
     assert data["db"] in ["connected", "down"]
     assert data["version"] == settings.VERSION
@@ -288,5 +288,78 @@ def test_scans_history_and_feedback(client, valid_image):
     assert feedback_data["scan_id"] == scan_id
     assert "feedback_id" in feedback_data
     assert feedback_data["received"] is True
+
+def test_rate_limiting(client, valid_image):
+    headers = {"X-Device-Id": "rate-limit-test-device-uuid"}
+    # Send 30 requests
+    for _ in range(30):
+        valid_image.seek(0)
+        files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+        response = client.post(
+            "/api/v1/diagnose",
+            files=files,
+            headers=headers
+        )
+        assert response.status_code == 200
+
+    # 31st request must trigger 429
+    valid_image.seek(0)
+    files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+    response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+    assert response.status_code == 429
+    res_data = response.json()
+    assert "error" in res_data
+    assert res_data["error"]["code"] == "RATE_LIMITED"
+    assert "Retry-After" in response.headers
+
+def test_sanitize_image_downscaling():
+    from app.services import preprocess
+    # Generate a huge image (2000 x 1000)
+    img = Image.new("RGB", (2000, 1000), (0, 255, 0))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG")
+    img_bytes = buf.getvalue()
+
+    sanitized_bytes, clean_img = preprocess.sanitize_image(img_bytes)
+    # Capped to 1280px max dimension, preserving aspect ratio (2:1) -> 1280 x 640
+    assert clean_img.size == (1280, 640)
+
+def test_metrics_endpoint(client):
+    response = client.get("/api/v1/metrics")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total_requests" in data
+    assert "error_rate" in data
+    assert "ood_rejections" in data
+    assert "diagnose_p50_latency_ms" in data
+    assert "diagnose_p95_latency_ms" in data
+
+def test_health_readiness(client):
+    from app.services import inference
+    original_warmup = inference.warmup_succeeded
+
+    # 1. Warmup succeeded = True -> 200 OK
+    inference.warmup_succeeded = True
+    response = client.get("/api/v1/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "ready"
+    assert data["model_loaded"] is True
+
+    # 2. Warmup succeeded = False -> 503 Service Unavailable
+    inference.warmup_succeeded = False
+    response = client.get("/api/v1/health")
+    assert response.status_code == 503
+    data = response.json()
+    assert data["status"] == "not-ready"
+    assert data["model_loaded"] is False
+
+    # Restore original state
+    inference.warmup_succeeded = original_warmup
+
 
 

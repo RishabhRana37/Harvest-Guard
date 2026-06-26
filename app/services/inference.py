@@ -16,6 +16,7 @@ class_index = {}
 temperature = 1.0
 tau_low = 0.55
 model_loaded = False
+warmup_succeeded = False
 disease_cache = {}  # maps slug -> {"crop": str, "name": str}
 
 def load_model_artifacts():
@@ -155,11 +156,16 @@ def get_predictions(calibrated_probs: np.ndarray) -> tuple[Prediction, list[Pred
 
 def warmup():
     """Run one dummy inference at startup if the model is loaded."""
+    global warmup_succeeded
     if model_loaded and model is not None:
         try:
             logger.info("Running warmup inference...")
             dummy_input = np.zeros((1, 224, 224, 3), dtype=np.float32)
             _ = predict(dummy_input)
+            warmup_succeeded = True
             logger.info("Warmup inference completed successfully.")
         except Exception as e:
             logger.error(f"Warmup inference failed: {e}")
+            warmup_succeeded = False
+    else:
+        warmup_succeeded = False
