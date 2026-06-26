@@ -1,0 +1,35 @@
+# Ignore local environment folders
+venv/
+.venv/
+env/
+
+# Ignore Python caches and temporary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Ignore development environment secrets and config
+.env
+.env.*
+!.env.example
+
+# Ignore local databases and fallbacks
+*fallback.json
+app/data/scans_fallback.json
+app/data/feedback_fallback.json
+
+# Ignore version control systems
+.git/
+.gitignore
+
+# Ignore IDE specific metadata
+.vscode/
+.idea/
+.gemini/
+/artifacts/
+/brain/
