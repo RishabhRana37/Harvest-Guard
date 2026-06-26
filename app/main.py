@@ -8,9 +8,10 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
-from app.db import get_client
+from app.db import get_client, db_client
 from app.routers.health import router as health_router
 from app.routers.diagnose import router as diagnose_router
+from app.routers.diseases import router as diseases_router
 from app.utils.errors import (
     AppError,
     request_id_var,
@@ -31,14 +32,15 @@ logger = logging.getLogger("app.main")
 async def lifespan(app: FastAPI):
     # Startup actions
     logger.info("Starting CropDoc AI Backend Service...")
-    # Initialize Motor client to trigger early connection checks
+    # Initialize Motor client and run ping verification
     try:
-        client = get_client()
-        # Verify connectivity
-        await client.admin.command('ping')
-        logger.info("Successfully connected to MongoDB.")
+        connected = await db_client.ping()
+        if connected:
+            logger.info("Successfully connected to MongoDB.")
+        else:
+            logger.warning("Failed to connect to MongoDB during startup. Using local JSON database.")
     except Exception as e:
-        logger.error(f"Failed to connect to MongoDB during startup: {e}")
+        logger.error(f"Error checking MongoDB connection during startup: {e}")
     yield
     # Shutdown actions
     logger.info("Shutting down CropDoc AI Backend Service...")
@@ -94,6 +96,7 @@ app.add_exception_handler(Exception, general_exception_handler)
 api_v1_router = APIRouter(prefix=settings.API_V1_STR)
 api_v1_router.include_router(health_router)
 api_v1_router.include_router(diagnose_router)
+api_v1_router.include_router(diseases_router)
 
 app.include_router(api_v1_router)
 

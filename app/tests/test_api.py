@@ -123,3 +123,60 @@ def test_diagnose_invalid_image_decoding(client):
     assert "error" in res_data
     assert res_data["error"]["code"] == "INVALID_IMAGE"
     assert res_data["error"]["request_id"].startswith("req_")
+
+def test_list_diseases_unfiltered(client):
+    response = client.get("/api/v1/diseases?page_size=50")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] == 38
+    assert len(data["items"]) == 38
+    assert data["page"] == 1
+    assert data["page_size"] == 50
+    # Check fields in lightweight items
+    first_item = data["items"][0]
+    assert "slug" in first_item
+    assert "crop" in first_item
+    assert "name" in first_item
+    assert "is_healthy" in first_item
+    # These lightweight items should have default values or null for other fields
+    assert first_item["pathogen"] == "None" or first_item["pathogen"] is not None
+
+def test_list_diseases_crop_filter(client):
+    response = client.get("/api/v1/diseases?crop=Tomato&page_size=50")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] == 10
+    for item in data["items"]:
+        assert item["crop"].lower() == "tomato"
+
+def test_list_diseases_search(client):
+    # Searching for 'Blight'
+    response = client.get("/api/v1/diseases?q=Blight")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["total"] > 0
+    for item in data["items"]:
+        # Verify that either name or symptoms contains 'blight' (case-insensitive)
+        text = (item["name"] + " " + " ".join(item["symptoms"])).lower()
+        assert "blight" in text
+
+def test_get_disease_by_slug_success(client):
+    response = client.get("/api/v1/diseases/tomato-early-blight")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["slug"] == "tomato-early-blight"
+    assert data["crop"] == "Tomato"
+    assert data["name"] == "Early Blight"
+    assert data["is_healthy"] is False
+    assert len(data["symptoms"]) > 0
+    assert "organic" in data["treatments"]
+
+def test_get_disease_by_slug_not_found(client):
+    response = client.get("/api/v1/diseases/unknown-slug-format")
+    assert response.status_code == 404
+    data = response.json()
+    assert "error" in data
+    assert data["error"]["code"] == "NOT_FOUND"
+    assert "Unknown disease" in data["error"]["message"]
+    assert data["error"]["request_id"].startswith("req_")
+
