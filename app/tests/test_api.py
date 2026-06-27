@@ -394,6 +394,27 @@ def test_diagnose_poor_quality_rejection(client):
     assert "quality is too poor" in data["error"]["message"]
     assert "Tips:" in data["error"]["message"]
 
+def test_tta_calculation():
+    from app.services.tta import tta_probs
+    import numpy as np
+
+    class MockEngine:
+        def predict_probs(self, x):
+            if np.array_equal(x, base_input):
+                return np.array([[0.6, 0.4]])
+            elif np.array_equal(x, base_input[:, :, ::-1, :]):
+                return np.array([[0.5, 0.5]])
+            else:
+                return np.array([[0.4, 0.6]])
+
+    base_input = np.arange(224 * 224 * 3).reshape((1, 224, 224, 3)).astype(np.float32)
+    engine = MockEngine()
+    probs = tta_probs(engine, base_input)
+
+    # Average: (0.6 + 0.5 + 0.4)/3 = 0.5, (0.4 + 0.5 + 0.6)/3 = 0.5
+    assert probs.shape == (1, 2)
+    assert np.allclose(probs, np.array([[0.5, 0.5]]))
+
 
 
 

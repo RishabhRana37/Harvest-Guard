@@ -126,6 +126,8 @@ def predict(input_array: np.ndarray) -> np.ndarray:
     calibrated_probs = exp_logits / np.sum(exp_logits, axis=-1, keepdims=True)
     return calibrated_probs
 
+predict_probs = predict
+
 def get_predictions(calibrated_probs: np.ndarray) -> tuple[Prediction, list[Prediction]]:
     """
     Given calibrated probabilities (shape (1, 38)), build the top-1 Prediction

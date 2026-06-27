@@ -116,10 +116,11 @@ async def diagnose_leaf(
     preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
     request.state.preprocess_ms = preprocess_ms
 
-    # 5. Model Inference & Temperature scaling in thread pool
+    # 5. Model Inference with Test-Time Augmentation (TTA) in thread pool
+    from app.services.tta import tta_probs
     infer_start = time.perf_counter()
     try:
-        calibrated_probs = await loop.run_in_executor(None, inference.predict, input_array)
+        calibrated_probs = await loop.run_in_executor(None, tta_probs, inference, input_array)
     except Exception as e:
         raise AppError(
             status_code=500,
