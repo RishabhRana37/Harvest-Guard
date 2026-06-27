@@ -29,7 +29,7 @@ const resources = {
       },
       home: {
         scanCTA: 'Scan a leaf',
-        cameraTip: 'Fill the frame with one leaf, good light, steady hands.',
+        cameraTip: 'Fill the frame with one leaf · good light · hold steady.',
         takePhoto: 'Take Photo',
         uploadGallery: 'Upload from Gallery',
         recentScans: 'Recent Scans',
@@ -145,7 +145,7 @@ const resources = {
       },
       home: {
         scanCTA: 'पत्ती स्कैन करें',
-        cameraTip: 'पत्ती से फ्रेम भरें, अच्छी रोशनी रखें, हाथ स्थिर रखें।',
+        cameraTip: 'पत्ती से फ्रेम भरें · अच्छी रोशनी · हाथ स्थिर रखें।',
         takePhoto: 'फोटो खींचें',
         uploadGallery: 'गैलरी से अपलोड करें',
         recentScans: 'हाल के स्कैन',
