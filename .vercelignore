@@ -1,0 +1,15 @@
+# Exclude the Python backend entirely — it's deployed on Render, not Vercel.
+# Including it would cause the TensorFlow bundle (~2.5 GB) to exceed Vercel's 500 MB limit.
+backend/
+venv/
+*.keras
+*.h5
+*.pkl
+__pycache__/
+*.pyc
+.pytest_cache/
+docs/
+scripts/
+.env
+.env.*
+!frontend/.env.production
