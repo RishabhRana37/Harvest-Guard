@@ -66,7 +66,7 @@ export const CapturePreview: React.FC<CapturePreviewProps> = ({ file, onAnalyze,
     return () => {
       URL.revokeObjectURL(url);
     };
-  }, [file]);
+  }, [file, onAnalyze]);
 
   const handleUseAnyway = () => {
     if (pipelineResult) {
