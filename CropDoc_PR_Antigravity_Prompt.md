@@ -96,14 +96,14 @@ globally-deployed crop disease detection platform.
 
 | Screen | Mobile | Desktop |
 |--------|--------|---------|
-| Landing | ![Landing Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/landing-mobile.png) | ![Landing Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/landing-desktop.png) |
-| Login | ![Login Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/login-mobile.png) | ![Login Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/login-desktop.png) |
-| Home / Scan | ![Scan Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/scan-mobile.png) | ![Scan Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/scan-desktop.png) |
-| Analyzing | ![Analyzing Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/analyzing-mobile.png) | ![Analyzing Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/analyzing-desktop.png) |
-| Result | ![Result Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/result-mobile.png) | ![Result Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/result-desktop.png) |
-| Crop Gallery | ![Gallery Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/gallery-mobile.png) | ![Gallery Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/gallery-desktop.png) |
-| Countries | ![Countries Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/countries-mobile.png) | ![Countries Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/countries-desktop.png) |
-| Profile | ![Profile Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/profile-mobile.png) | ![Profile Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/antigravity-v2/screenshots/profile-desktop.png) |
+| Landing | ![Landing Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/landing-mobile.png) | ![Landing Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/landing-desktop.png) |
+| Login | ![Login Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/login-mobile.png) | ![Login Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/login-desktop.png) |
+| Home / Scan | ![Scan Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/scan-mobile.png) | ![Scan Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/scan-desktop.png) |
+| Analyzing | ![Analyzing Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/analyzing-mobile.png) | ![Analyzing Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/analyzing-desktop.png) |
+| Result | ![Result Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/result-mobile.png) | ![Result Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/result-desktop.png) |
+| Crop Gallery | ![Gallery Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/gallery-mobile.png) | ![Gallery Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/gallery-desktop.png) |
+| Countries | ![Countries Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/countries-mobile.png) | ![Countries Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/countries-desktop.png) |
+| Profile | ![Profile Mobile](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/profile-mobile.png) | ![Profile Desktop](https://github.com/RishabhRana37/Harvest-Guard/raw/feat/frontend-ui/screenshots/profile-desktop.png) |
 
 ---
 
@@ -113,7 +113,7 @@ globally-deployed crop disease detection platform.
 # 1. Clone and switch to the branch
 git clone https://github.com/RishabhRana37/Harvest-Guard.git
 cd Harvest-Guard
-git checkout feat/antigravity-v2
+git checkout feat/frontend-ui
 
 # 2. Install dependencies
 npm install
