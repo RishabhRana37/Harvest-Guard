@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Save, Share2, Plus } from 'lucide-react';
+import { Save, Share2, Plus, FileDown } from 'lucide-react';
 import { getScan } from '../utils/db';
 import { DiagnosisHeader } from '../components/DiagnosisHeader';
 import { HeatmapViewer } from '../components/HeatmapViewer';
@@ -14,6 +14,8 @@ import { WeatherRiskCard } from '../components/WeatherRiskCard';
 import { PestResultCard } from '../components/PestResultCard';
 import { Toast } from '../components/shared/Toast';
 import type { ToastType } from '../components/shared/Toast';
+
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://api.cropdoc.ai/v1';
 
 export const ResultPage: React.FC = () => {
   const { t } = useTranslation();
@@ -72,32 +74,48 @@ export const ResultPage: React.FC = () => {
     setShowToast(true);
   };
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      triggerToast('Result summary and link copied to clipboard!');
+    } catch (error) {
+      triggerToast('Failed to copy text.', 'error');
+    }
+  };
+
   const handleShare = async () => {
     if (!scan) return;
     
-    const isPest = activeTab === 'pest' && scan.pest;
-    const diagnosisName = isPest ? scan.pest.name : (scan.prediction?.name || 'Healthy');
-    const shareTitle = `CropDoc AI Diagnosis: ${scan.prediction?.crop || 'Crop'} - ${diagnosisName}`;
-    const shareText = `CropDoc AI diagnosed ${scan.prediction?.crop || 'Crop'} leaf with ${diagnosisName} (${((scan.confidence || 0.8) * 100).toFixed(0)}% confidence). Severity: ${scan.severity}. Check details: ${window.location.origin}/#/library`;
+    const cropName = scan.prediction?.crop || 'Crop';
+    const diseaseName = activeTab === 'pest' && scan.pest ? scan.pest.name : (scan.prediction?.name || 'Healthy');
+    const confidenceVal = scan.confidence ?? 0.87;
+    const confidencePercentage = `${Math.round(confidenceVal * 100)}%`;
+    
+    const summaryText = `CropDoc AI: ${cropName} — ${diseaseName}, ${confidencePercentage} confidence`;
+    const shareUrl = window.location.href;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: shareTitle,
-          text: shareText,
-          url: window.location.href
+          title: `CropDoc AI - ${cropName}`,
+          text: summaryText,
+          url: shareUrl
         });
       } catch (error) {
-        console.log('Sharing error:', error);
+        if ((error as Error).name !== 'AbortError') {
+          console.log('Sharing error:', error);
+          copyToClipboard(`${summaryText}\n${shareUrl}`);
+        }
       }
     } else {
-      try {
-        await navigator.clipboard.writeText(shareText);
-        triggerToast('Result text copied to clipboard!');
-      } catch (error) {
-        triggerToast('Failed to copy share text.', 'error');
-      }
+      copyToClipboard(`${summaryText}\n${shareUrl}`);
     }
+  };
+
+  const handleDownloadReport = () => {
+    if (!scan) return;
+    const reportUrl = `${API_BASE_URL}/scans/${scan.scan_id}/report`;
+    window.open(reportUrl, '_blank');
   };
 
   const handleSave = () => {
@@ -297,11 +315,19 @@ export const ResultPage: React.FC = () => {
             </button>
 
             <button
+              onClick={handleDownloadReport}
+              className="flex items-center justify-center gap-2 bg-bg-surface border border-border hover:bg-bg-overlay active:scale-95 text-white font-bold py-3.5 px-4 rounded-12 shadow-sm text-xs min-h-[48px] flex-1 transition-all"
+            >
+              <FileDown className="w-4 h-4 text-text-secondary" />
+              Download Report
+            </button>
+
+            <button
               onClick={() => navigate('/scan')}
-              className="flex items-center justify-center gap-2 bg-green-neon hover:bg-green-bright text-bg-base font-bold py-3.5 px-4 rounded-12 shadow-lg text-xs min-h-[48px] flex-1 transition-all active:scale-95 col-span-2"
+              className="flex items-center justify-center gap-2 bg-green-neon hover:bg-green-bright text-bg-base font-bold py-3.5 px-4 rounded-12 shadow-lg text-xs min-h-[48px] flex-1 transition-all active:scale-95"
             >
               <Plus className="w-4 h-4" />
-              Diagnose New Leaf
+              New Scan
             </button>
           </div>
         </div>

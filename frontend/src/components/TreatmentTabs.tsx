@@ -42,15 +42,15 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
   if (!treatments) return null;
 
   return (
-    <div className="w-full bg-surface rounded-16 border border-border shadow-sm overflow-hidden select-none">
+    <div className="w-full bg-bg-surface rounded-16 border border-border shadow-sm overflow-hidden select-none">
       {/* Collapsible header for treatment plan */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-3.5 flex items-center justify-between font-bold text-sm bg-surface hover:bg-surface-alt transition-colors border-b border-border min-h-[48px]"
+        className="w-full px-4 py-3.5 flex items-center justify-between font-bold text-sm bg-bg-surface hover:bg-bg-overlay transition-colors border-b border-border min-h-[48px]"
         aria-expanded={isExpanded}
       >
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-green-700" />
+          <ShieldCheck className="w-4 h-4 text-green-neon" />
           <span>{t('result.treatmentTitle')}</span>
           {!isConfident && (
             <span className="inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-bold bg-sev-mild/10 text-sev-mild rounded-full border border-sev-mild/20">
@@ -70,19 +70,19 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="overflow-hidden bg-surface-alt/10"
+            className="overflow-hidden bg-bg-elevated/40"
           >
             {/* Tab Swapping Headers */}
-            <div className="flex bg-surface-alt border-b border-border">
+            <div className="flex bg-bg-overlay border-b border-border">
               <button
                 onClick={() => setActiveTab('organic')}
                 disabled={!hasOrganic}
                 className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 text-xs font-bold transition-all min-h-[44px] ${
-                  !hasOrganic ? 'opacity-40 cursor-not-allowed text-text-muted' : ''
+                  !hasOrganic ? 'opacity-45 cursor-not-allowed text-text-muted' : ''
                 } ${
                   activeTab === 'organic' && hasOrganic
-                    ? 'bg-green-700 text-white'
-                    : 'text-text-muted hover:text-text-strong'
+                    ? 'bg-green-deep text-green-neon border-b-2 border-green-neon shadow-inner'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 <Leaf className="w-3.5 h-3.5" />
@@ -93,11 +93,11 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
                 onClick={() => setActiveTab('chemical')}
                 disabled={!hasChemical}
                 className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 text-xs font-bold transition-all min-h-[44px] ${
-                  !hasChemical ? 'opacity-40 cursor-not-allowed text-text-muted' : ''
+                  !hasChemical ? 'opacity-45 cursor-not-allowed text-text-muted' : ''
                 } ${
                   activeTab === 'chemical' && hasChemical
-                    ? 'bg-green-700 text-white'
-                    : 'text-text-muted hover:text-text-strong'
+                    ? 'bg-sev-severe/15 text-sev-severe border-b-2 border-sev-severe shadow-inner'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 <FlaskConical className="w-3.5 h-3.5" />
@@ -108,11 +108,11 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
                 onClick={() => setActiveTab('prevention')}
                 disabled={!hasPrevention}
                 className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 text-xs font-bold transition-all min-h-[44px] ${
-                  !hasPrevention ? 'opacity-40 cursor-not-allowed text-text-muted' : ''
+                  !hasPrevention ? 'opacity-45 cursor-not-allowed text-text-muted' : ''
                 } ${
                   activeTab === 'prevention' && hasPrevention
-                    ? 'bg-green-700 text-white'
-                    : 'text-text-muted hover:text-text-strong'
+                    ? 'bg-green-deep text-green-neon border-b-2 border-green-neon shadow-inner'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
@@ -125,13 +125,13 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
               {activeTab === 'organic' && hasOrganic && (
                 <div className="flex flex-col gap-3">
                   {treatments.organic.map((item, idx) => (
-                    <div key={idx} className="bg-surface rounded-12 p-3.5 border border-border flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between text-sm font-bold text-text-strong">
+                    <div key={idx} className="bg-bg-surface rounded-12 p-3.5 border border-border flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between text-sm font-bold text-text-primary">
                         <span>{item.action}</span>
-                        <span className="text-xs text-green-700 px-2 py-0.5 bg-sage-100 rounded-6">{item.dosage}</span>
+                        <span className="text-xs text-green-neon px-2 py-0.5 bg-green-deep/30 rounded-6">{item.dosage}</span>
                       </div>
-                      <div className="text-xs text-text-muted flex justify-between">
-                        <span>Frequency: <strong className="text-text-strong">{item.frequency}</strong></span>
+                      <div className="text-xs text-text-secondary flex justify-between">
+                        <span>Frequency: <strong className="text-text-primary">{item.frequency}</strong></span>
                       </div>
                       {item.safety && (
                         <div className="text-[11px] text-sev-mild font-medium border-t border-border/50 pt-1.5 mt-1">
@@ -146,13 +146,13 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
               {activeTab === 'chemical' && hasChemical && (
                 <div className="flex flex-col gap-3">
                   {treatments.chemical.map((item, idx) => (
-                    <div key={idx} className="bg-surface rounded-12 p-3.5 border border-border flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between text-sm font-bold text-text-strong">
+                    <div key={idx} className="bg-bg-surface rounded-12 p-3.5 border border-border flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between text-sm font-bold text-text-primary">
                         <span>{item.action}</span>
-                        <span className="text-xs text-sev-severe px-2 py-0.5 bg-sev-severe/10 rounded-6">{item.dosage}</span>
+                        <span className="text-xs text-sev-severe px-2 py-0.5 bg-sev-severe/15 rounded-6">{item.dosage}</span>
                       </div>
-                      <div className="text-xs text-text-muted flex justify-between">
-                        <span>Frequency: <strong className="text-text-strong">{item.frequency}</strong></span>
+                      <div className="text-xs text-text-secondary flex justify-between">
+                        <span>Frequency: <strong className="text-text-primary">{item.frequency}</strong></span>
                       </div>
                       {item.safety && (
                         <div className="text-[11px] text-sev-severe font-medium border-t border-border/50 pt-1.5 mt-1">
@@ -167,8 +167,8 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
               {activeTab === 'prevention' && hasPrevention && (
                 <ul className="flex flex-col gap-2.5">
                   {treatments.prevention.map((action, idx) => (
-                    <li key={idx} className="bg-surface rounded-12 p-3 px-4 border border-border text-sm font-medium text-text-strong flex items-start gap-2.5">
-                      <span className="text-green-500 font-bold shrink-0 mt-0.5">•</span>
+                    <li key={idx} className="bg-bg-surface rounded-12 p-3 px-4 border border-border text-sm font-medium text-text-primary flex items-start gap-2.5">
+                      <span className="text-green-neon font-bold shrink-0 mt-0.5">•</span>
                       <span>{action}</span>
                     </li>
                   ))}
