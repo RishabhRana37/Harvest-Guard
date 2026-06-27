@@ -14,6 +14,8 @@ export const MOCK_CONFIDENT_DIAGNOSIS = {
   confidence_band: "high",
   severity: "mild",
   urgency_days: 3,
+  explanation: "The model is confident this is Tomato — Early Blight (87% confidence). Caught early — act within about 3 days to stop the spread.",
+  quality: { is_acceptable: true, tips: [] },
   prediction: {
     slug: "tomato-early-blight",
     crop: "Tomato",
@@ -67,6 +69,8 @@ export const MOCK_LOW_CONF_DIAGNOSIS = {
   confidence_band: "low",
   severity: "mild",
   urgency_days: 5,
+  explanation: "The model is unsure, but leans toward this is Potato — Late Blight (48% confidence). Caught early — act within about 5 days to stop the spread.",
+  quality: { is_acceptable: true, tips: ["Try better lighting", "Fill the frame with one leaf"] },
   prediction: {
     slug: "potato-late-blight",
     crop: "Potato",
@@ -118,10 +122,66 @@ export const MOCK_NOT_LEAF_DIAGNOSIS = {
   confidence_band: null,
   severity: null,
   urgency_days: null,
+  explanation: "That doesn't look like a crop leaf. Point the camera at a single leaf and retake.",
+  quality: null,
   prediction: null,
   top_k: [],
   heatmap: null,
   disease: null
+};
+
+export const MOCK_SEVERE_DIAGNOSIS = {
+  scan_id: "scan_665f1c2a9b45",
+  created_at: "2026-06-25T10:19:00Z",
+  is_leaf: true,
+  is_confident: true,
+  confidence: 0.93,
+  confidence_band: "high",
+  severity: "severe",
+  urgency_days: 1,
+  explanation: "The model is confident this is Grape — Black Rot (93% confidence). Advanced infection — treat within about 1 day to limit loss.",
+  quality: { is_acceptable: true, tips: [] },
+  prediction: {
+    slug: "grape-black-rot",
+    crop: "Grape",
+    name: "Black Rot",
+    prob: 0.93
+  },
+  top_k: [
+    { slug: "grape-black-rot", crop: "Grape", name: "Black Rot", prob: 0.93 },
+    { slug: "grape-esca-black-measles", crop: "Grape", name: "Esca (Black Measles)", prob: 0.05 },
+    { slug: "grape-healthy", crop: "Grape", name: "Healthy", prob: 0.02 }
+  ],
+  heatmap: MOCK_HEATMAP_BASE64,
+  disease: {
+    slug: "grape-black-rot",
+    crop: "Grape",
+    name: "Black Rot",
+    pathogen: "Guignardia bidwellii",
+    is_healthy: false,
+    symptoms: [
+      "Circular brown lesions with dark borders on leaves",
+      "Shrivelled, mummified berries turning black",
+      "Small black fruiting bodies (pycnidia) visible on lesions"
+    ],
+    cause: "Fungal pathogen spread by rain splash and wind during warm, humid periods.",
+    lifecycle: "Overwinters in mummified berries and cane lesions; releases spores at bud break.",
+    treatments: {
+      organic: [
+        { action: "Sulfur dust", dosage: "3 g/L", frequency: "every 7 days", safety: "Apply before rain events; keep away from eyes." }
+      ],
+      chemical: [
+        { action: "Myclobutanil spray", dosage: "1.5 ml/L", frequency: "every 10 days", safety: "14-day PHI; wear full PPE." }
+      ],
+      prevention: [
+        "Remove all mummified berries and cane lesions before winter.",
+        "Prune to improve canopy airflow and reduce humidity.",
+        "Apply protectant fungicides from bud break through fruit set."
+      ]
+    },
+    confused_with: ["grape-esca-black-measles"],
+    image_url: MOCK_LEAF_IMAGE_BASE64
+  }
 };
 
 export const MOCK_HEALTHY_DIAGNOSIS = {

@@ -4,6 +4,7 @@ import {
   MOCK_NOT_LEAF_DIAGNOSIS, 
   MOCK_HEALTHY_DIAGNOSIS, 
   MOCK_PEST_DIAGNOSIS,
+  MOCK_SEVERE_DIAGNOSIS,
   MOCK_DISEASES_LIST,
   MOCK_LEAF_IMAGE_BASE64
 } from './fixtures';
@@ -28,7 +29,7 @@ export const getDeviceId = (): string => {
 };
 
 // Mock Mode management
-export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'pest' | 'disabled';
+export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'pest' | 'severe' | 'disabled';
 
 export const getMockMode = (): MockMode => {
   return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || 'confident'; // default to confident mock for local mode
@@ -71,6 +72,9 @@ export const api = {
           break;
         case 'pest':
           result = JSON.parse(JSON.stringify(MOCK_PEST_DIAGNOSIS));
+          break;
+        case 'severe':
+          result = JSON.parse(JSON.stringify(MOCK_SEVERE_DIAGNOSIS));
           break;
         default:
           result = JSON.parse(JSON.stringify(MOCK_CONFIDENT_DIAGNOSIS));
