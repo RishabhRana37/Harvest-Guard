@@ -415,6 +415,46 @@ def test_tta_calculation():
     assert probs.shape == (1, 2)
     assert np.allclose(probs, np.array([[0.5, 0.5]]))
 
+def test_generate_explanation():
+    from app.services.explain import generate_explanation
+
+    # Case 1: is_leaf is False
+    res_non_leaf = {"is_leaf": False}
+    exp_non_leaf = generate_explanation(res_non_leaf)
+    assert "doesn't look like a crop leaf" in exp_non_leaf
+
+    # Case 2: Healthy, high confidence, heatmap present
+    res_healthy = {
+        "is_leaf": True,
+        "prediction": {"crop": "Apple", "name": "Apple Healthy"},
+        "confidence_band": "high",
+        "confidence": 0.95,
+        "severity": "healthy",
+        "urgency_days": None,
+        "heatmap": "data:image/png;base64,..."
+    }
+    exp_healthy = generate_explanation(res_healthy)
+    assert "Apple — Apple Healthy" in exp_healthy
+    assert "95% confidence" in exp_healthy
+    assert "appears healthy" in exp_healthy
+    assert "Highlighted areas" in exp_healthy
+
+    # Case 3: Diseased, low confidence, severe severity, no heatmap
+    res_severe = {
+        "is_leaf": True,
+        "prediction": {"crop": "Tomato", "name": "Late Blight"},
+        "confidence_band": "low",
+        "confidence": 0.45,
+        "severity": "severe",
+        "urgency_days": 1,
+        "heatmap": None
+    }
+    exp_severe = generate_explanation(res_severe)
+    assert "Tomato — Late Blight" in exp_severe
+    assert "45% confidence" in exp_severe
+    assert "Advanced infection — treat within about 1 day(s)" in exp_severe
+    assert "retake in good light" in exp_severe
+
 
 
 

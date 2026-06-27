@@ -152,6 +152,9 @@ async def diagnose_leaf(
         metrics_tracker.record_diagnose_latency((time.perf_counter() - t_start) * 1000)
 
         # Return DiagnosisResult with is_leaf:false and other prediction/disease/heatmap fields as null
+        from app.services.explain import generate_explanation
+        explanation = generate_explanation({"is_leaf": False})
+
         scan_doc = {
             "_id": scan_id,
             "scan_id": scan_id,
@@ -179,7 +182,8 @@ async def diagnose_leaf(
             prediction=None,
             top_k=[],
             heatmap=None,
-            disease=None
+            disease=None,
+            explanation=explanation
         )
 
     request.state.is_leaf = True
@@ -263,6 +267,18 @@ async def diagnose_leaf(
     }
     background_tasks.add_task(save_scan_history, scan_doc)
 
+    from app.services.explain import generate_explanation
+    result_dict = {
+        "is_leaf": True,
+        "prediction": {"crop": prediction.crop, "name": prediction.name},
+        "confidence_band": confidence_band,
+        "confidence": confidence,
+        "severity": severity,
+        "urgency_days": urgency_days,
+        "heatmap": heatmap_uri
+    }
+    explanation = generate_explanation(result_dict)
+
     result = DiagnosisResult(
         scan_id=scan_id,
         created_at=created_at,
@@ -275,7 +291,8 @@ async def diagnose_leaf(
         prediction=prediction,
         top_k=top_k,
         heatmap=heatmap_uri,
-        disease=disease
+        disease=disease,
+        explanation=explanation
     )
 
     return result

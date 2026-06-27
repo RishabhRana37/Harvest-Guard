@@ -140,6 +140,21 @@ async def get_single_scan(
     if "is_confident" not in scan_doc and scan_doc.get("confidence") is not None:
         is_confident = scan_doc.get("confidence", 0.0) >= inference.tau_low
         
+    severity = scan_doc.get("severity")
+    urgency_days = 1 if severity == "severe" else (None if severity == "healthy" else 3)
+
+    from app.services.explain import generate_explanation
+    result_dict = {
+        "is_leaf": scan_doc.get("is_leaf", True),
+        "prediction": {"crop": prediction.crop, "name": prediction.name} if prediction else None,
+        "confidence_band": scan_doc.get("confidence_band"),
+        "confidence": scan_doc.get("confidence"),
+        "severity": severity,
+        "urgency_days": urgency_days,
+        "heatmap": None
+    }
+    explanation = generate_explanation(result_dict)
+
     return DiagnosisResult(
         scan_id=id,
         created_at=scan_doc.get("created_at"),
@@ -147,10 +162,11 @@ async def get_single_scan(
         is_confident=is_confident,
         confidence=scan_doc.get("confidence"),
         confidence_band=scan_doc.get("confidence_band"),
-        severity=scan_doc.get("severity"),
-        urgency_days=1 if scan_doc.get("severity") == "severe" else (None if scan_doc.get("severity") == "healthy" else 3),
+        severity=severity,
+        urgency_days=urgency_days,
         prediction=prediction,
         top_k=top_k_list,
         heatmap=None,  # Heatmap is null on re-fetch
-        disease=disease
+        disease=disease,
+        explanation=explanation
     )
