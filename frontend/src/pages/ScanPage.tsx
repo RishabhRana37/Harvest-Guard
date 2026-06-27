@@ -5,7 +5,7 @@ import { ScanButton } from '../components/ScanButton';
 import { CapturePreview } from '../components/CapturePreview';
 import { AnalyzingOverlay } from '../components/AnalyzingOverlay';
 import { WeatherRiskCard } from '../components/WeatherRiskCard';
-import { api } from '../services/api';
+import { api, getDeviceId, triggerGlobalToast } from '../services/api';
 import { getAllScans, enqueueOfflineScan } from '../utils/db';
 import type { SavedScan } from '../utils/db';
 import { useOffline } from '../hooks/useOffline';
@@ -36,6 +36,7 @@ export const ScanPage: React.FC = () => {
     };
     loadProfile();
     window.addEventListener('storage', loadProfile);
+    getDeviceId(); // initialize device identity on load
     return () => window.removeEventListener('storage', loadProfile);
   }, []);
 
@@ -66,7 +67,7 @@ export const ScanPage: React.FC = () => {
     try {
       if (isOffline) {
         const pendingId = await enqueueOfflineScan(compressedBlob, selectedFile?.name?.split('.')[0] || 'Leaf');
-        alert("Saved — will diagnose when you're back online.");
+        triggerGlobalToast("Saved — will diagnose when you're back online.", "success");
         setIsAnalyzing(false);
         setSelectedFile(null);
         setAnalyzingBlob(null);
@@ -96,7 +97,7 @@ export const ScanPage: React.FC = () => {
         console.log('Analysis aborted by user.');
       } else {
         console.error('Analysis failed:', error);
-        alert(error.message || 'Server connection issue. Please try again.');
+        triggerGlobalToast(error.message || 'Server connection issue. Please try again.', 'error');
       }
       setIsAnalyzing(false);
       setSelectedFile(null);

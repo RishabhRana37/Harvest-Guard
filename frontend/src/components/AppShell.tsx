@@ -13,8 +13,9 @@ import {
   BrainCircuit, 
   ChevronLeft 
 } from 'lucide-react';
-import { getMockMode, setMockMode } from '../services/api';
+import { getMockMode, setMockMode, api } from '../services/api';
 import type { MockMode } from '../services/api';
+import { Toast, type ToastType } from './shared/Toast';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -28,6 +29,10 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [mockMode, setLocalMockMode] = useState<MockMode>(getMockMode());
   const [user, setUser] = useState<any>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<ToastType>('info');
+  const [modelLoading, setModelLoading] = useState(false);
 
   // Sync user profile
   useEffect(() => {
@@ -41,6 +46,35 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
     window.addEventListener('storage', fetchUser);
     return () => window.removeEventListener('storage', fetchUser);
   }, []);
+
+  // Check backend health connectivity and handle global toasts
+  useEffect(() => {
+    const checkStatus = async () => {
+      if (getMockMode() !== 'disabled') {
+        setModelLoading(false);
+        return;
+      }
+      const health = await api.checkHealth();
+      setModelLoading(!health.model_loaded);
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 5000);
+
+    const handleToastEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<{ message: string; type: ToastType }>;
+      if (customEvent.detail) {
+        setToastMessage(customEvent.detail.message);
+        setToastType(customEvent.detail.type || 'info');
+      }
+    };
+
+    window.addEventListener('cropdoc-toast', handleToastEvent);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('cropdoc-toast', handleToastEvent);
+    };
+  }, [mockMode]);
 
   const handleMockChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as MockMode;
@@ -174,6 +208,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
       {/* 2. MAIN CONTENT VIEWPORT */}
       <div className="flex-1 flex flex-col min-w-0 min-h-screen relative pb-20 md:pb-0">
         
+        {modelLoading && (
+          <div className="bg-yellow-600/20 border-b border-yellow-500/20 text-yellow-300 text-center py-2 px-4 text-xs font-semibold animate-pulse z-40 select-none">
+            ⚠️ Backend is starting up (model warming up)... Please wait.
+          </div>
+        )}
+        
         {/* MOBILE HEADER (Visible on screens < 768px) */}
         <header className="flex md:hidden sticky top-0 z-30 bg-bg-surface/90 backdrop-blur-md border-b border-border px-4 py-3.5 items-center justify-between h-14">
           <div className="flex items-center gap-2">
@@ -268,6 +308,13 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
             <span className="text-[10px] tracking-wide">Profile</span>
           </Link>
         </nav>
+        
+        <Toast
+          isVisible={toastMessage !== ''}
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setToastMessage('')}
+        />
 
       </div>
 

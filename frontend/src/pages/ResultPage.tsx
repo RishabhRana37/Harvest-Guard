@@ -15,7 +15,7 @@ import { PestResultCard } from '../components/PestResultCard';
 import { Toast } from '../components/shared/Toast';
 import type { ToastType } from '../components/shared/Toast';
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://api.cropdoc.ai/v1';
+import { API_BASE_URL } from '../services/api';
 
 export const ResultPage: React.FC = () => {
   const { t } = useTranslation();
@@ -129,10 +129,23 @@ export const ResultPage: React.FC = () => {
     }
   };
 
-  const handleDownloadReport = () => {
+  const handleDownloadReport = async () => {
     if (!scan) return;
-    const reportUrl = `${API_BASE_URL}/scans/${scan.scan_id}/report`;
-    window.open(reportUrl, '_blank');
+    try {
+      const response = await fetch(`${API_BASE_URL}/scans/${scan.scan_id}/report`, {
+        headers: {
+          'X-Device-Id': localStorage.getItem('cropdoc_device_id') || '',
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to download report PDF');
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    } catch (err) {
+      triggerToast('Error downloading report PDF.', 'error');
+    }
   };
 
   const handleSave = () => {
@@ -250,7 +263,7 @@ export const ResultPage: React.FC = () => {
                   result.quality.tips — advisory chips from the backend's
                   image quality assessment gate. Only shown when tips exist.
               */}
-              {scan.quality?.tips && scan.quality.tips.length > 0 && (
+              {scan?.quality?.tips && Array.isArray(scan.quality.tips) && scan.quality.tips.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {scan.quality.tips.map((tip: string, i: number) => (
                     <span
@@ -267,18 +280,18 @@ export const ResultPage: React.FC = () => {
               )}
 
               {/* Low Confidence Banner - Conditional */}
-              {!scan.is_confident && scan.prediction && (
+              {!scan?.is_confident && scan?.prediction && (
                 <LowConfidenceBanner
-                  topClassName={scan.prediction.name}
+                  topClassName={scan.prediction?.name || 'Unknown'}
                   onRetake={() => navigate('/scan')}
                 />
               )}
 
               {/* Treatments section - hide for healthy leaves */}
-              {!isHealthy && scan.disease?.treatments && (
+              {!isHealthy && scan?.disease?.treatments && (
                 <TreatmentTabs
                   treatments={scan.disease.treatments}
-                  isConfident={scan.is_confident}
+                  isConfident={!!scan.is_confident}
                 />
               )}
 
@@ -309,7 +322,7 @@ export const ResultPage: React.FC = () => {
           />
 
           {/* Alternate predictions list */}
-          {scan.top_k && scan.top_k.length > 1 && activeTab === 'disease' && (
+          {scan?.top_k && Array.isArray(scan.top_k) && scan.top_k.length > 1 && activeTab === 'disease' && (
             <PredictionList predictions={scan.top_k} />
           )}
 

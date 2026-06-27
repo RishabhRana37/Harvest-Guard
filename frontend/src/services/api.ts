@@ -11,13 +11,17 @@ import {
 import { saveScan } from '../utils/db';
 import { compressImageForUpload } from '../utils/imagePipeline';
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://api.cropdoc.ai/v1';
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+let normalizedBase = VITE_API_BASE_URL.replace(/\/+$/, '');
+if (normalizedBase.endsWith('/api/v1')) {
+  normalizedBase = normalizedBase.slice(0, -7);
+}
+export const API_BASE_URL = normalizedBase ? `${normalizedBase}/api/v1` : '/api/v1';
 
 // Device ID management (UUID)
 export const getDeviceId = (): string => {
   let id = localStorage.getItem('cropdoc_device_id');
   if (!id) {
-    // Generate simple UUID or use randomUUID if available
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
       id = crypto.randomUUID();
     } else {
@@ -28,34 +32,125 @@ export const getDeviceId = (): string => {
   return id;
 };
 
+// Global Toast dispatch helper
+export const triggerGlobalToast = (message: string, type: string = 'info') => {
+  window.dispatchEvent(new CustomEvent('cropdoc-toast', { detail: { message, type } }));
+};
+
 // Mock Mode management
 export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'pest' | 'severe' | 'disabled';
 
 export const getMockMode = (): MockMode => {
-  return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || 'confident'; // default to confident mock for local mode
+  const saved = localStorage.getItem('cropdoc_mock_mode');
+  if (saved) return saved as MockMode;
+  
+  // Default to disabled (live cloud mode) if VITE_API_BASE_URL is provided,
+  // else default to confident mock for local standalone test
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return 'disabled';
+  }
+  return 'confident';
 };
 
 export const setMockMode = (mode: MockMode) => {
   localStorage.setItem('cropdoc_mock_mode', mode);
 };
 
-// Headers builder
-const getHeaders = () => {
-  return {
-    'X-Device-Id': getDeviceId(),
+// Centralized request wrapper with headers, 503 retries, and clean error envelope translations
+const request = async (
+  endpoint: string,
+  options: RequestInit = {},
+  retryOn503 = true
+): Promise<any> => {
+  const url = `${API_BASE_URL}${endpoint}`;
+  const headers = new Headers(options.headers || {});
+  headers.set('X-Device-Id', getDeviceId());
+
+  const finalOptions = {
+    ...options,
+    headers,
   };
+
+  try {
+    const response = await fetch(url, finalOptions);
+
+    if (!response.ok) {
+      const status = response.status;
+
+      // Auto-retry once on 503 after 4 seconds
+      if (status === 503 && retryOn503) {
+        console.warn("Model warming up (503). Retrying in 4 seconds...");
+        triggerGlobalToast("warming up, retry in a few seconds", "warning");
+        await new Promise((resolve) => setTimeout(resolve, 4000));
+        return await request(endpoint, options, false);
+      }
+
+      // Try to parse error envelope from backend
+      let errorMessage = '';
+      let errorCode = 'UNKNOWN';
+      try {
+        const errorData = await response.json();
+        if (errorData?.error) {
+          errorMessage = errorData.error.message || '';
+          errorCode = errorData.error.code || 'UNKNOWN';
+        }
+      } catch (jsonErr) {
+        // Not a JSON response
+      }
+
+      let displayMessage = errorMessage;
+      if (status === 413 || status === 415 || status === 422) {
+        displayMessage = errorMessage || "Invalid image format or size exceeded. Please try another image.";
+      } else if (status === 429) {
+        displayMessage = "slow down";
+      } else if (status === 503) {
+        displayMessage = "warming up, retry in a few seconds";
+      } else {
+        displayMessage = errorMessage || `Request failed with status ${status}`;
+      }
+
+      const error = new Error(displayMessage);
+      (error as any).status = status;
+      (error as any).code = errorCode;
+      throw error;
+    }
+
+    return await response.json();
+  } catch (err: any) {
+    if (err.name === 'AbortError') {
+      throw err;
+    }
+    // Handle network drop / fetch connection failures
+    if (!err.status && !err.message.includes("slow down") && !err.message.includes("warming up")) {
+      throw new Error("Cannot connect to server. Please check your internet connection.");
+    }
+    throw err;
+  }
 };
 
 // Main API calls
 export const api = {
+  // Check live backend connectivity
+  checkHealth: async (): Promise<{ model_loaded: boolean }> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/health`);
+      if (!response.ok) {
+        return { model_loaded: false };
+      }
+      const data = await response.json();
+      return { model_loaded: data.model_loaded === true };
+    } catch {
+      return { model_loaded: false };
+    }
+  },
+
   // Diagnose a leaf
   diagnose: async (imageBlob: Blob, cropHint?: string, signal?: AbortSignal): Promise<any> => {
     const mockMode = getMockMode();
     
-    // Simulate network delay for realistic visual transitions
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
+    // Simulate network delay for mock visual transitions
     if (mockMode !== 'disabled') {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       let result;
       switch (mockMode) {
         case 'confident':
@@ -80,7 +175,6 @@ export const api = {
           result = JSON.parse(JSON.stringify(MOCK_CONFIDENT_DIAGNOSIS));
       }
       
-      // Inject unique scan ID and actual timestamp for history listings
       const now = new Date();
       result.scan_id = 'scan_' + now.getTime();
       result.created_at = now.toISOString();
@@ -88,8 +182,6 @@ export const api = {
         result.prediction.crop = cropHint.charAt(0).toUpperCase() + cropHint.slice(1);
       }
       
-      // Store in local IndexedDB history immediately
-      // Capture the original image as a local URL for the history thumbnail
       const localImageUrl = URL.createObjectURL(imageBlob);
       const scanToSave = {
         ...result,
@@ -108,19 +200,11 @@ export const api = {
       formData.append('crop_hint', cropHint);
     }
 
-    const response = await fetch(`${API_BASE_URL}/diagnose`, {
+    const result = await request('/diagnose', {
       method: 'POST',
-      headers: getHeaders(),
       body: formData,
       signal
     });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || 'Failed to analyze leaf image.');
-    }
-
-    const result = await response.json();
     
     // Save to local scan history database
     const localImageUrl = URL.createObjectURL(imageBlob);
@@ -171,9 +255,7 @@ export const api = {
     if (params.page) queryParams.append('page', String(params.page));
     if (params.page_size) queryParams.append('page_size', String(params.page_size));
 
-    const response = await fetch(`${API_BASE_URL}/diseases?${queryParams.toString()}`);
-    if (!response.ok) throw new Error('Failed to fetch disease list.');
-    return response.json();
+    return await request(`/diseases?${queryParams.toString()}`);
   },
 
   // Get full details for a single disease slug
@@ -181,12 +263,10 @@ export const api = {
     const mockMode = getMockMode();
     if (mockMode !== 'disabled') {
       await new Promise((resolve) => setTimeout(resolve, 200));
-      // Find inside confident/lowconf fixtures or return default
       if (slug === 'tomato-early-blight') return MOCK_CONFIDENT_DIAGNOSIS.disease;
       if (slug === 'potato-late-blight') return MOCK_LOW_CONF_DIAGNOSIS.disease;
       if (slug === 'tomato-healthy') return MOCK_HEALTHY_DIAGNOSIS.disease;
       
-      // Fallback stubbing
       const found = MOCK_DISEASES_LIST.items.find(item => item.slug === slug);
       return {
         slug: slug,
@@ -207,18 +287,12 @@ export const api = {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/diseases/${slug}`);
-    if (!response.ok) throw new Error('Failed to fetch disease detail.');
-    return response.json();
+    return await request(`/diseases/${slug}`);
   },
 
   // Get history list
   getHistory: async (): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/scans`, {
-      headers: getHeaders()
-    });
-    if (!response.ok) throw new Error('Failed to fetch scans history.');
-    return response.json();
+    return await request('/scans');
   },
 
   // Submit feedback
@@ -233,16 +307,12 @@ export const api = {
       };
     }
 
-    const response = await fetch(`${API_BASE_URL}/feedback`, {
+    return await request('/feedback', {
       method: 'POST',
       headers: {
-        ...getHeaders(),
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(feedback)
     });
-
-    if (!response.ok) throw new Error('Failed to submit feedback.');
-    return response.json();
   }
 };
