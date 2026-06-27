@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     
     # CORS Settings
     # Comma-separated list of origins in env
-    ALLOWED_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000"
+    ALLOWED_ORIGINS: str = "https://frontend-two-pi-24.vercel.app,http://localhost:5173,http://localhost:3000"
     
     # Database Settings
     MONGODB_URI: str = "mongodb://localhost:27017"

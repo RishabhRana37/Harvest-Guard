@@ -29,7 +29,7 @@ def _wrap(text, width):
     return lines
 
 @router.get("/scans/{scan_id}/report")
-async def scan_report(scan_id: str, x_device_id: str = Header(...)):
+async def scan_report(scan_id: str, x_device_id: str = Header(..., alias="X-Device-Id")):
     db = get_db()
     scan = await db.scans.find_one({"_id": scan_id})
     if not scan:

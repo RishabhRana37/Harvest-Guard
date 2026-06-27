@@ -50,6 +50,11 @@ def test_health_endpoint(client):
     assert data["db"] in ["connected", "down"]
     assert data["version"] == settings.VERSION
 
+def test_ping_endpoint(client):
+    response = client.get("/api/v1/ping")
+    assert response.status_code == 200
+    assert response.json() == {"ok": True}
+
 def test_diagnose_valid_request(client, valid_image):
     headers = {"X-Device-Id": "test-device-uuid"}
     files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}

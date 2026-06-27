@@ -6,6 +6,14 @@ from app.services import inference
 
 router = APIRouter(tags=["Health"])
 
+@router.get("/ping")
+async def ping():
+    """
+    Lightweight health-ping check for fast uptime monitoring.
+    Does not check DB or load model.
+    """
+    return {"ok": True}
+
 @router.get("/health")
 async def health_check():
     """

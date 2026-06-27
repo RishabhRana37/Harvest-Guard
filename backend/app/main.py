@@ -91,16 +91,6 @@ app = FastAPI(
 )
 app.state.limiter = limiter
 
-# CORS configuration
-# Parsed from comma-separated env origins
-origins = [origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["*"],
-)
 
 # Custom Structured JSON Logging Middleware
 class JsonLoggingMiddleware(BaseHTTPMiddleware):
@@ -160,6 +150,16 @@ app.add_middleware(JsonLoggingMiddleware)
 app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(RequestIdMiddleware)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# CORS configuration (registered last, executes first)
+origins = [origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "X-Device-Id", "Authorization", "Accept", "Origin"],
+)
 
 # Register uniform error envelope handlers
 app.add_exception_handler(AppError, app_error_handler)
