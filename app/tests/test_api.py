@@ -507,6 +507,46 @@ def test_model_info(client):
     assert "metrics" in data
     assert data["version"] == "1.0.0"
 
+def test_diagnose_low_quality_confident_leaf(client):
+    from app.services import inference
+    import numpy as np
+    # Mock inference to return highly confident probabilities (e.g. 0.95)
+    original_predict = inference.predict
+    original_predict_probs = inference.predict_probs
+    original_warmup = inference.warmup_succeeded
+    
+    # We set a highly confident prediction so it bypasses early 422 quality rejection
+    mock_fn = lambda x: np.array([[0.95] + [0.05 / 37] * 37])
+    inference.predict = mock_fn
+    inference.predict_probs = mock_fn
+    inference.warmup_succeeded = True
+    
+    headers = {"X-Device-Id": "confident-low-quality-device"}
+    # Flat solid green image has blur_var = 0 (unacceptable quality)
+    flat_img = Image.new("RGB", (100, 100), (34, 139, 34))
+    buf = io.BytesIO()
+    flat_img.save(buf, format="JPEG")
+    buf.seek(0)
+    files = {"image": ("flat_confident.jpg", buf, "image/jpeg")}
+
+    try:
+        response = client.post(
+            "/api/v1/diagnose",
+            files=files,
+            headers=headers
+        )
+        print("Response JSON:", response.json())
+        assert response.status_code == 200
+        data = response.json()
+        assert data["is_leaf"] is True
+        assert data["quality"] is not None
+        assert data["quality"]["is_acceptable"] is False
+        assert len(data["quality"]["tips"]) > 0
+    finally:
+        inference.predict = original_predict
+        inference.predict_probs = original_predict_probs
+        inference.warmup_succeeded = original_warmup
+
 
 
 

@@ -46,6 +46,7 @@ class DiagnosisResult(BaseModel):
     heatmap: Optional[str] = None          # base64 data URI
     disease: Optional[Disease] = None
     explanation: Optional[str] = None
+    quality: Optional[dict] = None
 
 class DiseaseListResponse(BaseModel):
     items: List[Disease]
