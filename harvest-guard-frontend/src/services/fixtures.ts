@@ -1,5 +1,4 @@
 // Mock Image and Heatmap constants (valid base64 Data URIs)
-// Tiny 1x1 or small colored pixel structures to verify the multiplier blending
 export const MOCK_LEAF_IMAGE_BASE64 = 
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADVJREFUeNpi/M8ABP8Z0ASgzsDACAoYQAFMEC4jKIALwEqYwFzGf6gCZEF0AboArAAkABBgAD15BAX4Nl4fAAAAAElFTkSuQmCC"; // simple leaf-green block
 
@@ -165,6 +164,47 @@ export const MOCK_HEALTHY_DIAGNOSIS = {
   }
 };
 
+export const MOCK_PEST_DIAGNOSIS = {
+  scan_id: "scan_665f1c2a9b43",
+  created_at: "2026-06-25T10:18:00Z",
+  is_leaf: true,
+  is_confident: true,
+  confidence: 0.92,
+  confidence_band: "high",
+  severity: "severe",
+  urgency_days: 2,
+  scan_mode: "pest",
+  prediction: {
+    slug: "pest-aphids",
+    crop: "Tomato",
+    name: "Aphids Infestation",
+    prob: 0.92
+  },
+  top_k: [
+    { slug: "pest-aphids", crop: "Tomato", name: "Aphids Infestation", prob: 0.92 },
+    { slug: "pest-whitefly", crop: "Tomato", name: "Whitefly Infestation", prob: 0.05 },
+    { slug: "tomato-healthy", crop: "Tomato", name: "Healthy", prob: 0.03 }
+  ],
+  heatmap: MOCK_HEATMAP_BASE64,
+  pest: {
+    slug: "pest-aphids",
+    crop: "Tomato",
+    name: "Aphids",
+    severity: "severe",
+    description: "Clusters of small, soft-bodied sap-sucking insects on the undersides of leaves, causing yellowing, curling, and honeydew mold secretion.",
+    treatments: {
+      organic: [
+        "Hose leaves with strong water streams to dislodge clusters.",
+        "Apply organic neem oil solution (5ml/L) or insecticidal soaps."
+      ],
+      chemical: [
+        "Spray systemic acetamiprid according to local product safety guides.",
+        "Wear masks and gloves; observe a 7-day pre-harvest limit."
+      ]
+    }
+  }
+};
+
 export const MOCK_DISEASES_LIST = {
   items: [
     { slug: "tomato-early-blight", crop: "Tomato", name: "Early Blight", is_healthy: false, image_url: MOCK_LEAF_IMAGE_BASE64 },
@@ -178,11 +218,12 @@ export const MOCK_DISEASES_LIST = {
     { slug: "wheat-rust", crop: "Wheat", name: "Rust", is_healthy: false, image_url: MOCK_LEAF_IMAGE_BASE64 },
     { slug: "wheat-healthy", crop: "Wheat", name: "Healthy", is_healthy: true, image_url: MOCK_LEAF_IMAGE_BASE64 },
     { slug: "maize-smut", crop: "Maize", name: "Smut", is_healthy: false, image_url: MOCK_LEAF_IMAGE_BASE64 },
-    { slug: "maize-healthy", crop: "Maize", name: "Healthy", is_healthy: true, image_url: MOCK_LEAF_IMAGE_BASE64 }
+    { slug: "maize-healthy", crop: "Maize", name: "Healthy", is_healthy: true, image_url: MOCK_LEAF_IMAGE_BASE64 },
+    { slug: "pest-aphids", crop: "Tomato", name: "Aphids Infestation", is_healthy: false, image_url: MOCK_LEAF_IMAGE_BASE64 }
   ],
   page: 1,
   page_size: 20,
-  total: 12
+  total: 13
 };
 
 export const MOCK_SCANS_LIST = {

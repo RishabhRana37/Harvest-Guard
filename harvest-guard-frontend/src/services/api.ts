@@ -3,12 +3,13 @@ import {
   MOCK_LOW_CONF_DIAGNOSIS, 
   MOCK_NOT_LEAF_DIAGNOSIS, 
   MOCK_HEALTHY_DIAGNOSIS, 
+  MOCK_PEST_DIAGNOSIS,
   MOCK_DISEASES_LIST,
   MOCK_LEAF_IMAGE_BASE64
 } from './fixtures';
 import { saveScan } from '../utils/db';
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://cropdoc-api.zenverse.hackathon/api/v1';
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://api.cropdoc.ai/v1';
 
 // Device ID management (UUID)
 export const getDeviceId = (): string => {
@@ -26,10 +27,10 @@ export const getDeviceId = (): string => {
 };
 
 // Mock Mode management
-export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'disabled';
+export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'pest' | 'disabled';
 
 export const getMockMode = (): MockMode => {
-  return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || 'confident'; // default to confident mock for demo
+  return (localStorage.getItem('cropdoc_mock_mode') as MockMode) || 'confident'; // default to confident mock for local mode
 };
 
 export const setMockMode = (mode: MockMode) => {
@@ -67,11 +68,14 @@ export const api = {
         case 'healthy':
           result = JSON.parse(JSON.stringify(MOCK_HEALTHY_DIAGNOSIS));
           break;
+        case 'pest':
+          result = JSON.parse(JSON.stringify(MOCK_PEST_DIAGNOSIS));
+          break;
         default:
           result = JSON.parse(JSON.stringify(MOCK_CONFIDENT_DIAGNOSIS));
       }
       
-      // Inject unique scan ID and actual timestamp so demo history populates realistically
+      // Inject unique scan ID and actual timestamp for history listings
       const now = new Date();
       result.scan_id = 'scan_' + now.getTime();
       result.created_at = now.toISOString();

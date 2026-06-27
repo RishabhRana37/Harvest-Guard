@@ -1,59 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   /* Strict Design Tokens from PRD mapped directly to Tailwind v4 theme variables */
-  --color-green-900: #143A1B;   /* dark surfaces, nav bar */
-  --color-green-700: #2C5F2D;   /* primary brand, buttons, PWA theme */
-  --color-green-500: #4F9D52;   /* active/hover states */
-  --color-moss-400:  #97BC62;   /* secondary fills, chips */
-  --color-sage-100:  #EAF2E3;   /* light surface tint, card backgrounds */
+  --color-bg-base: #050E07;
+  --color-bg-surface: #0C1A0E;
+  --color-bg-elevated: #132015;
+  --color-bg-overlay: #1A2E1C;
 
-  --color-ai-blue-500: #2D6CDF; /* AI accent — heatmap legend, confidence gauge */
+  --color-green-neon: #39FF87;
+  --color-green-bright: #2ECC71;
+  --color-green-mid: #1A7A3C;
+  --color-green-deep: #0D3B1F;
 
-  --color-sev-healthy: #2EA44F; /* green severity */
-  --color-sev-mild:    #E8A23D; /* amber severity */
-  --color-sev-severe:  #D64545; /* red severity */
+  --color-ai-blue: #4D9FFF;
+  --color-ai-purple: #8B5CF6;
 
-  --color-surface:     #FFFFFF;
-  --color-surface-alt: #F6F8F4;
-  --color-text-strong: #16241A;
-  --color-text-muted:  #5B6B5E;
-  --color-border:      #E1E7DE;
+  --color-sev-healthy: #39FF87;
+  --color-sev-mild: #FFAA00;
+  --color-sev-severe: #FF4545;
+  --color-sev-pending: #7B8FA1;
 
+  --color-text-primary: #E8F5EB;
+  --color-text-secondary: #8FA894;
+  --color-text-muted: #4A5E4D;
+  --color-text-accent: #39FF87;
+
+  --color-border: #1E3522;
+  --color-border-bright: #2ECC71;
+  --color-border-glow: rgba(57, 255, 135, 0.25);
+  --color-bg-particle: rgba(57, 255, 135, 0.04);
+  --color-bg-gradient-1: rgba(46, 204, 113, 0.06);
+  --color-bg-gradient-2: rgba(77, 159, 255, 0.04);
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
   --radius-16: 16px;
   --radius-12: 12px;
+  --radius-8: 8px;
 }
 
 :root {
-  /* Setup raw CSS custom properties so SVG tracks and other native elements reference them safely */
-  --green-900: #143A1B;
-  --green-700: #2C5F2D;
-  --green-500: #4F9D52;
-  --moss-400:  #97BC62;
-  --sage-100:  #EAF2E3;
-  --ai-blue-500: #2D6CDF;
-  --sev-healthy: #2EA44F;
-  --sev-mild:    #E8A23D;
-  --sev-severe:  #D64545;
-  --surface:     #FFFFFF;
-  --surface-alt: #F6F8F4;
-  --text-strong: #16241A;
-  --text-muted:  #5B6B5E;
-  --border:      #E1E7DE;
+  /* Raw CSS custom properties for SVG tracks and other native elements */
+  --bg-base: #050E07;
+  --bg-surface: #0C1A0E;
+  --bg-elevated: #132015;
+  --bg-overlay: #1A2E1C;
+
+  --green-neon: #39FF87;
+  --green-bright: #2ECC71;
+  --green-mid: #1A7A3C;
+  --green-deep: #0D3B1F;
+
+  --ai-blue: #4D9FFF;
+  --ai-blue-500: #4D9FFF;
+  --ai-purple: #8B5CF6;
+
+  --sev-healthy: #39FF87;
+  --sev-mild: #FFAA00;
+  --sev-severe: #FF4545;
+  --sev-pending: #7B8FA1;
+
+  --text-primary: #E8F5EB;
+  --text-secondary: #8FA894;
+  --text-muted: #4A5E4D;
+  --text-accent: #39FF87;
+
+  --border: #1E3522;
+  --border-bright: #2ECC71;
+  --border-glow: rgba(57, 255, 135, 0.25);
+  --bg-particle: rgba(57, 255, 135, 0.04);
+  --bg-gradient-1: rgba(46, 204, 113, 0.06);
+  --bg-gradient-2: rgba(77, 159, 255, 0.04);
 }
 
 @utility focus-visible {
   outline: none;
   ring-width: 2px;
-  ring-color: var(--green-500);
+  ring-color: var(--green-bright);
   ring-offset-width: 2px;
 }
 
 body {
-  background-color: var(--surface-alt);
-  color: var(--text-strong);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   min-height: -webkit-fill-available;
@@ -68,9 +99,9 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
   font-weight: 600;
-  color: var(--text-strong);
+  color: var(--text-primary);
 }
 
 /* Custom shimmer animation for scanning */
@@ -92,9 +123,30 @@ h1, h2, h3, h4, h5, h6 {
   transition: stroke-dashoffset 800ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Sunlight-proof high-contrast enhancements */
-@media (max-width: 640px) {
-  .sunlight-high-contrast {
-    text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+/* Background pulse animation */
+@keyframes bgPulse {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
+
+.bg-pulse-anim {
+  background-size: 200% 200%;
+  animation: bgPulse 15s ease-in-out infinite alternate;
+}
+
+/* Scrollbar styling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
