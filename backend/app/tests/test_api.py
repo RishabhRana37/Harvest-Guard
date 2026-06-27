@@ -674,6 +674,71 @@ def test_i18n_localization(client, valid_image):
         inference.predict_probs = original_predict_probs
         inference.warmup_succeeded = original_warmup
 
+def test_progression_and_extended_metrics(client, valid_image):
+    headers = {"X-Device-Id": "progression-test-device-uuid"}
+    
+    # 1. Seed database first to make sure Tomato exists in DB
+    client.post("/api/v1/diseases/seed")
+
+    from app.services import inference
+    original_predict = inference.predict
+    original_predict_probs = inference.predict_probs
+    original_warmup = inference.warmup_succeeded
+
+    target_idx = None
+    for idx_str, slug in inference.class_index.items():
+        if slug == "tomato-early-blight":
+            target_idx = int(idx_str)
+            break
+    assert target_idx is not None
+
+    mock_prob = [0.0] * len(inference.class_index)
+    mock_prob[target_idx] = 0.95
+    import numpy as np
+    mock_probs_arr = np.array([mock_prob], dtype=np.float32)
+
+    def mock_fn(*args, **kwargs):
+        return mock_probs_arr
+
+    inference.predict = mock_fn
+    inference.predict_probs = mock_fn
+    inference.warmup_succeeded = True
+
+    try:
+        # Submit 3 successful diagnoses
+        for _ in range(3):
+            buf = io.BytesIO(valid_image.getvalue())
+            res = client.post("/api/v1/diagnose", files={"image": ("leaf.jpg", buf, "image/jpeg")}, headers=headers)
+            assert res.status_code == 200
+        
+        # 2. GET /scans/progression?crop=tomato
+        prog_res = client.get("/api/v1/scans/progression?crop=tomato", headers=headers)
+        assert prog_res.status_code == 200
+        prog_data = prog_res.json()
+        assert "items" in prog_data
+        assert "trend" in prog_data
+        assert len(prog_data["items"]) >= 3
+        
+        # Verify ordering is oldest first
+        dates = [item["date"] for item in prog_data["items"]]
+        assert dates == sorted(dates)
+        
+        # 3. GET /metrics
+        metrics_res = client.get("/api/v1/metrics")
+        assert metrics_res.status_code == 200
+        metrics_data = metrics_res.json()
+        assert metrics_data["total_diagnoses"] >= 3
+        assert "predicted_diseases_distribution_top_5" in metrics_data
+        assert "ood_rejection_rate" in metrics_data
+        assert "average_confidence" in metrics_data
+        assert "inference_p50_latency_ms" in metrics_data
+        assert "inference_p95_latency_ms" in metrics_data
+    finally:
+        inference.predict = original_predict
+        inference.predict_probs = original_predict_probs
+        inference.warmup_succeeded = original_warmup
+
+
 
 
 

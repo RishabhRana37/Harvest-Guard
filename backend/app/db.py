@@ -204,10 +204,14 @@ class FallbackCursor:
 
     def sort(self, *args, **kwargs):
         try:
+            reverse = True
+            if args:
+                if len(args) > 1 and args[1] == 1:
+                    reverse = False
             self._data = sorted(
                 self._data,
                 key=lambda x: x.get("created_at").isoformat() if hasattr(x.get("created_at"), "isoformat") else str(x.get("created_at")),
-                reverse=True
+                reverse=reverse
             )
         except Exception:
             pass

@@ -1,7 +1,10 @@
 from typing import Optional
 from fastapi import APIRouter, Header, Query
 from app.db import get_db
-from app.schemas import DiagnosisResult, Prediction, Disease, ScanListResponse, ScanListItem, ScanPredictedInfo
+from app.schemas import (
+    DiagnosisResult, Prediction, Disease, ScanListResponse, ScanListItem,
+    ScanPredictedInfo, ProgressionResponse, ProgressionItem
+)
 from app.utils.errors import AppError
 from app.services import inference
 
@@ -76,6 +79,75 @@ async def list_scans(
         page_size=page_size,
         total=total
     )
+
+@router.get("/scans/progression", response_model=ProgressionResponse)
+async def get_progression(
+    crop: str = Query(..., description="Crop filter (e.g. tomato)"),
+    x_device_id: str = Header(..., alias="X-Device-Id")
+):
+    """
+    Get user scan progression for a specific crop over time, ordered oldest to newest.
+    Calculates a trend score based on severities.
+    """
+    db = get_db()
+    cursor = db.scans.find({
+        "device_id": x_device_id,
+        "is_leaf": True
+    }).sort("created_at", 1) # Oldest first
+
+    if hasattr(cursor, "to_list"):
+        scans_docs = await cursor.to_list(length=1000)
+    else:
+        scans_docs = await cursor.to_list(1000)
+
+    items = []
+    scores = []
+    
+    for doc in scans_docs:
+        slug = doc.get("predicted_slug")
+        if not slug:
+            continue
+            
+        disease_info = inference.disease_cache.get(slug, {"crop": "Unknown", "name": "Unknown"})
+        if disease_info["crop"].lower() != crop.lower():
+            continue
+            
+        severity = doc.get("severity", "healthy")
+        confidence = doc.get("confidence", 0.0)
+        
+        items.append(ProgressionItem(
+            date=doc.get("created_at"),
+            slug=slug,
+            name=disease_info["name"],
+            severity=severity,
+            confidence=confidence
+        ))
+        
+        # Mapping score: healthy=0, mild=1, severe=2
+        severity_score = 0
+        if severity == "mild":
+            severity_score = 1
+        elif severity == "severe":
+            severity_score = 2
+        scores.append(severity_score)
+
+    # Heuristic trend check
+    trend = "stable"
+    if len(scores) >= 2:
+        mid = len(scores) // 2
+        first_half = scores[:mid]
+        second_half = scores[mid:]
+        avg_first = sum(first_half) / len(first_half)
+        avg_second = sum(second_half) / len(second_half)
+        
+        if avg_second > avg_first + 0.1:
+            trend = "worsening"
+        elif avg_second < avg_first - 0.1:
+            trend = "improving"
+        else:
+            trend = "stable"
+
+    return ProgressionResponse(items=items, trend=trend)
 
 @router.get("/scans/{id}", response_model=DiagnosisResult)
 async def get_single_scan(

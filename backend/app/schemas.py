@@ -54,6 +54,17 @@ class DiseaseListResponse(BaseModel):
     page_size: int
     total: int
 
+class ProgressionItem(BaseModel):
+    date: datetime
+    slug: Optional[str] = None
+    name: Optional[str] = None
+    severity: Optional[str] = None
+    confidence: Optional[float] = None
+
+class ProgressionResponse(BaseModel):
+    items: List[ProgressionItem]
+    trend: str # "improving" | "worsening" | "stable"
+
 class ScanPredictedInfo(BaseModel):
     slug: str
     crop: str

@@ -78,6 +78,7 @@ async def _diagnose_leaf_internal(
         )
     infer_ms = (time.perf_counter() - infer_start) * 1000
     request.state.infer_ms = infer_ms
+    metrics_tracker.record_inference_latency(infer_ms)
 
     probs = calibrated_probs[0]
     max_prob = float(np.max(probs))
@@ -243,6 +244,7 @@ async def _diagnose_leaf_internal(
     else:
         confidence_band = "low"
     is_confident = confidence >= inference.tau_low
+    metrics_tracker.record_successful_diagnosis(prediction.slug, confidence)
 
     # Set state values for Logging
     request.state.predicted_slug = prediction.slug
@@ -317,6 +319,7 @@ async def diagnose_leaf(
     """
     t_start = time.perf_counter()
     preprocess_start = time.perf_counter()
+    metrics_tracker.record_diagnose_call()
 
     # 0. Check model availability
     if not inference.model_loaded:
