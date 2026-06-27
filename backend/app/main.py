@@ -55,8 +55,9 @@ async def lifespan(app: FastAPI):
             # Ensure indexes exist
             db = db_client.get_db()
             await db.scans.create_index([("device_id", 1), ("created_at", -1)])
+            await db.scans.create_index([("created_at", 1)], expireAfterSeconds=30 * 24 * 60 * 60)
             await db.feedback.create_index([("scan_id", 1)])
-            logger.info("Created indexes on scans and feedback collections.")
+            logger.info("Created indexes on scans and feedback collections (including 30-day TTL).")
         else:
             logger.warning("Failed to connect to MongoDB during startup. Using local JSON database.")
     except Exception as e:

@@ -29,6 +29,28 @@ class FallbackCollection:
             try:
                 with open(self.filepath, "r", encoding="utf-8") as f:
                     self._data = json.load(f)
+                
+                # TTL Simulation: Evict old scans older than 30 days
+                if self.name == "scans":
+                    from datetime import datetime, timezone
+                    now = datetime.now(timezone.utc)
+                    valid_data = []
+                    for item in self._data:
+                        created_at_str = item.get("created_at")
+                        if created_at_str:
+                            try:
+                                if created_at_str.endswith("Z"):
+                                    created_at_str = created_at_str[:-1] + "+00:00"
+                                dt = datetime.fromisoformat(created_at_str)
+                                if (now - dt).total_seconds() > 30 * 24 * 60 * 60:
+                                    continue
+                            except Exception:
+                                pass
+                        valid_data.append(item)
+                    if len(valid_data) != len(self._data):
+                        self._data = valid_data
+                        self._save_fallback_data()
+                
                 logger.info(f"Loaded {len(self._data)} fallback items for {self.name} from {self.filepath}")
             except Exception as e:
                 logger.error(f"Failed to load fallback data for {self.name}: {e}")

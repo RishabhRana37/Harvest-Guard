@@ -30,6 +30,22 @@ async def save_scan_history(scan_doc: dict):
     except Exception as e:
         logger.error(f"Failed to persist scan in background: {e}")
 
+def make_thumbnail_b64(img: Image.Image) -> str:
+    try:
+        resample = Image.Resampling.LANCZOS
+    except AttributeError:
+        try:
+            resample = Image.LANCZOS
+        except AttributeError:
+            resample = Image.ANTIALIAS
+            
+    thumb = img.resize((96, 96), resample)
+    buf = io.BytesIO()
+    thumb.convert("RGB").save(buf, format="JPEG", quality=85)
+    import base64
+    b64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+    return f"data:image/jpeg;base64,{b64_str}"
+
 router = APIRouter(tags=["Diagnosis"])
 
 @router.post("/diagnose", response_model=DiagnosisResult)
@@ -93,6 +109,7 @@ async def diagnose_leaf(
         import numpy as np
         original_np = np.array(img)
         input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
+        thumb_uri = await loop.run_in_executor(None, make_thumbnail_b64, img)
     except AppError:
         raise
     except Exception as e:
@@ -167,7 +184,7 @@ async def diagnose_leaf(
             "is_leaf": False,
             "severity": None,
             "top_k": [],
-            "thumb_url": None,
+            "thumb_b64": thumb_uri,
             "heatmap_b64": None,
             "quality": quality_res
         }
@@ -276,7 +293,7 @@ async def diagnose_leaf(
         "is_leaf": True,
         "severity": severity,
         "top_k": [{"slug": tk.slug, "prob": tk.prob} for tk in top_k],
-        "thumb_url": None,
+        "thumb_b64": thumb_uri,
         "heatmap_b64": heatmap_uri,
         "quality": quality_res
     }

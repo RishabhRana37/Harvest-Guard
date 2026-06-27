@@ -274,7 +274,7 @@ def test_scans_history_and_feedback(client, valid_image):
     assert detail_response.status_code == 200
     detail_data = detail_response.json()
     assert detail_data["scan_id"] == scan_id
-    assert detail_data["heatmap"] is None  # Re-fetched heatmap must be null
+    assert detail_data["heatmap"] is not None  # Re-fetched heatmap must be returned
     
     # 4. Enforce ownership (different X-Device-Id returns 403)
     wrong_headers = {"X-Device-Id": "other-device-uuid"}

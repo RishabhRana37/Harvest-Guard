@@ -61,7 +61,7 @@ async def list_scans(
             confidence_band=doc.get("confidence_band"),
             severity=doc.get("severity"),
             is_leaf=doc.get("is_leaf", True),
-            thumb_url=doc.get("thumb_url")
+            thumb_url=doc.get("thumb_b64") or doc.get("thumb_url")
         )
         filtered_items.append(item)
         
@@ -151,7 +151,7 @@ async def get_single_scan(
         "confidence": scan_doc.get("confidence"),
         "severity": severity,
         "urgency_days": urgency_days,
-        "heatmap": None
+        "heatmap": scan_doc.get("heatmap_b64")
     }
     explanation = generate_explanation(result_dict)
 
@@ -166,7 +166,7 @@ async def get_single_scan(
         urgency_days=urgency_days,
         prediction=prediction,
         top_k=top_k_list,
-        heatmap=None,  # Heatmap is null on re-fetch
+        heatmap=scan_doc.get("heatmap_b64"),  # Return stored heatmap on re-fetch
         disease=disease,
         explanation=explanation
     )
