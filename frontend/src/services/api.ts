@@ -8,6 +8,7 @@ import {
   MOCK_LEAF_IMAGE_BASE64
 } from './fixtures';
 import { saveScan } from '../utils/db';
+import { compressImageForUpload } from '../utils/imagePipeline';
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string) || 'https://api.cropdoc.ai/v1';
 
@@ -95,9 +96,10 @@ export const api = {
       return result;
     }
 
-    // Live mode
+    // Live mode — always compress before sending
+    const uploadBlob = await compressImageForUpload(imageBlob);
     const formData = new FormData();
-    formData.append('image', imageBlob, 'leaf.jpg');
+    formData.append('image', uploadBlob, 'leaf.jpg');
     if (cropHint) {
       formData.append('crop_hint', cropHint);
     }
