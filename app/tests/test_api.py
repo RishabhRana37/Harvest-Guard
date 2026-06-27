@@ -450,10 +450,49 @@ def test_generate_explanation():
         "heatmap": None
     }
     exp_severe = generate_explanation(res_severe)
+    assert exp_severe["explanation"] if isinstance(exp_severe, dict) else exp_severe
     assert "Tomato — Late Blight" in exp_severe
     assert "45% confidence" in exp_severe
     assert "Advanced infection — treat within about 1 day(s)" in exp_severe
     assert "retake in good light" in exp_severe
+
+def test_scan_report_pdf(client, valid_image):
+    device_id = "report-test-device"
+    headers = {"X-Device-Id": device_id}
+    files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+
+    # 1. Post a diagnosis
+    diag_response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+    assert diag_response.status_code == 200
+    diag_data = diag_response.json()
+    scan_id = diag_data["scan_id"]
+
+    # 2. Get scan report
+    report_response = client.get(
+        f"/api/v1/scans/{scan_id}/report",
+        headers={"X-Device-Id": device_id}
+    )
+    assert report_response.status_code == 200
+    assert report_response.headers["content-type"] == "application/pdf"
+    assert report_response.headers["content-disposition"].startswith("inline; filename=")
+
+    # 3. 403 Forbidden on different device ID
+    forbidden_response = client.get(
+        f"/api/v1/scans/{scan_id}/report",
+        headers={"X-Device-Id": "other-device-id"}
+    )
+    assert forbidden_response.status_code == 403
+
+    # 4. 404 Not Found on unknown scan ID
+    not_found_response = client.get(
+        "/api/v1/scans/unknown-scan-id/report",
+        headers={"X-Device-Id": device_id}
+    )
+    assert not_found_response.status_code == 404
 
 
 

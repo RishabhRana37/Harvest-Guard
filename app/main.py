@@ -22,6 +22,7 @@ from app.routers.diseases import router as diseases_router
 from app.routers.scans import router as scans_router
 from app.routers.feedback import router as feedback_router
 from app.routers.metrics import router as metrics_router
+from app.routers.report import router as report_router
 
 from app.services.inference import load_model_artifacts, initialize_disease_cache, warmup
 from app.services.metrics import metrics_tracker
@@ -189,6 +190,7 @@ api_v1_router.include_router(diseases_router)
 api_v1_router.include_router(scans_router)
 api_v1_router.include_router(feedback_router)
 api_v1_router.include_router(metrics_router)
+api_v1_router.include_router(report_router)
 
 app.include_router(api_v1_router)
 

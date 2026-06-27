@@ -16,6 +16,8 @@ tensorflow-datasets
 scikit-learn
 scipy
 importlib-resources
+reportlab
+
 
 
 
