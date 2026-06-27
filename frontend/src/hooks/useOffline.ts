@@ -16,8 +16,17 @@ export const useOffline = () => {
       setIsOffline(true);
     };
 
+    const handleFocus = () => {
+      if (navigator.onLine) {
+        setIsOffline(false);
+        processOfflineQueue();
+      }
+    };
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleFocus);
 
     // Initial check on mount
     if (navigator.onLine) {
@@ -27,6 +36,8 @@ export const useOffline = () => {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleFocus);
     };
   }, []);
 

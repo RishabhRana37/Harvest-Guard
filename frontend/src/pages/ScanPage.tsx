@@ -66,6 +66,7 @@ export const ScanPage: React.FC = () => {
     try {
       if (isOffline) {
         const pendingId = await enqueueOfflineScan(compressedBlob, selectedFile?.name?.split('.')[0] || 'Leaf');
+        alert("Saved — will diagnose when you're back online.");
         setIsAnalyzing(false);
         setSelectedFile(null);
         setAnalyzingBlob(null);

@@ -68,6 +68,23 @@ export const ResultPage: React.FC = () => {
     loadScanData();
   }, [id, navigate]);
 
+  useEffect(() => {
+    if (scan && scan.is_leaf && !scan.is_pending && localStorage.getItem('cropdoc_prompted_install') !== 'true') {
+      const promptEvent = (window as any).deferredInstallPrompt;
+      if (promptEvent) {
+        setTimeout(() => {
+          promptEvent.prompt();
+          promptEvent.userChoice.then((choiceResult: any) => {
+            localStorage.setItem('cropdoc_prompted_install', 'true');
+            if (choiceResult.outcome === 'accepted') {
+              (window as any).deferredInstallPrompt = null;
+            }
+          });
+        }, 1200);
+      }
+    }
+  }, [scan]);
+
   const triggerToast = (message: string, type: ToastType = 'success') => {
     setToastMessage(message);
     setToastType(type);
