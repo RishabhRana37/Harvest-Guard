@@ -13,8 +13,14 @@ def client():
 
 @pytest.fixture
 def valid_image():
-    """Generates a simple green image in memory."""
-    img = Image.new("RGB", (100, 100), (34, 139, 34))
+    """Generates a textured green image in memory to pass quality/blur checks."""
+    import numpy as np
+    np.random.seed(42)
+    arr = np.random.randint(50, 150, (224, 224, 3), dtype=np.uint8)
+    arr[:, :, 0] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    arr[:, :, 1] = np.random.randint(150, 250, (224, 224), dtype=np.uint8)
+    arr[:, :, 2] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    img = Image.fromarray(arr)
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     buf.seek(0)
@@ -22,8 +28,14 @@ def valid_image():
 
 @pytest.fixture
 def non_leaf_image():
-    """Generates a solid red (non-green) image in memory."""
-    img = Image.new("RGB", (100, 100), (255, 0, 0))
+    """Generates a textured red (non-green) image in memory to pass quality/blur checks."""
+    import numpy as np
+    np.random.seed(42)
+    arr = np.random.randint(50, 150, (224, 224, 3), dtype=np.uint8)
+    arr[:, :, 0] = np.random.randint(150, 250, (224, 224), dtype=np.uint8)
+    arr[:, :, 1] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    arr[:, :, 2] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    img = Image.fromarray(arr)
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     buf.seek(0)
@@ -360,6 +372,28 @@ def test_health_readiness(client):
 
     # Restore original state
     inference.warmup_succeeded = original_warmup
+
+def test_diagnose_poor_quality_rejection(client):
+    headers = {"X-Device-Id": "test-device-uuid"}
+    # Flat solid green color -> blur_var = 0 -> unacceptable
+    flat_img = Image.new("RGB", (100, 100), (34, 139, 34))
+    buf = io.BytesIO()
+    flat_img.save(buf, format="JPEG")
+    buf.seek(0)
+    files = {"image": ("flat_blurry.jpg", buf, "image/jpeg")}
+
+    response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+
+    assert response.status_code == 422
+    data = response.json()
+    assert data["error"]["code"] == "INVALID_IMAGE"
+    assert "quality is too poor" in data["error"]["message"]
+    assert "Tips:" in data["error"]["message"]
+
 
 
 

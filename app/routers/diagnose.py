@@ -93,11 +93,24 @@ async def diagnose_leaf(
         import numpy as np
         original_np = np.array(img)
         input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
+    except AppError:
+        raise
     except Exception as e:
         raise AppError(
             status_code=422,
             code="INVALID_IMAGE",
             message=f"Failed to preprocess the leaf image: {e}"
+        )
+
+    # 4.b Quality Assessment in thread pool
+    from app.services.quality import assess_quality
+    quality_res = await loop.run_in_executor(None, assess_quality, original_np)
+    if not quality_res["is_acceptable"]:
+        tips_str = " ".join(quality_res["tips"])
+        raise AppError(
+            status_code=422,
+            code="INVALID_IMAGE",
+            message=f"Image quality is too poor for diagnosis. Tips: {tips_str}"
         )
 
     preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
