@@ -187,17 +187,22 @@ async def diagnose_leaf(
     prediction, top_k = inference.get_predictions(calibrated_probs)
 
     # 8. Grad-CAM generation in thread pool
-    from app.services.gradcam import generate_gradcam
+    from app.services.gradcam import gradcam_plus_plus, overlay_to_b64
     predicted_idx = int(np.argmax(probs))
     gradcam_start = time.perf_counter()
     try:
-        heatmap_uri, raw_heatmap = await loop.run_in_executor(
+        raw_heatmap = await loop.run_in_executor(
             None,
-            generate_gradcam,
+            gradcam_plus_plus,
             inference.model,
             input_array,
-            predicted_idx,
-            original_np
+            predicted_idx
+        )
+        heatmap_uri = await loop.run_in_executor(
+            None,
+            overlay_to_b64,
+            original_np,
+            raw_heatmap
         )
     except Exception as e:
         raise AppError(

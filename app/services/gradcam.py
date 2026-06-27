@@ -1,77 +1,106 @@
+# app/services/gradcam.py
 import base64
 import cv2
 import numpy as np
 import tensorflow as tf
 
-def generate_gradcam(model, input_array: np.ndarray, class_idx: int, original_image_np: np.ndarray) -> tuple[str, np.ndarray]:
-    """
-    Generate a Grad-CAM heatmap using tf.GradientTape on MobileNetV2's Conv_1 layer.
-    Overlays the translucent colormap onto the original image and returns:
-      - base64 data URI string of the superimposed image
-      - normalized raw heatmap array (7x7) for severity calculation
-    """
-    base_model = model.get_layer("mobilenetv2_1.00_224")
-    conv_layer = base_model.get_layer("Conv_1")
-    
-    # Create sub-model of the base model
-    base_sub_model = tf.keras.Model(
-        inputs=base_model.input,
-        outputs=[conv_layer.output, base_model.output]
-    )
-    
-    # We construct the complete custom multi-output pipeline
-    inputs = model.input
-    x = model.get_layer("sequential")(inputs)
-    x = model.get_layer("rescaling")(x)
-    conv_outputs, base_outputs = base_sub_model(x)
-    h = model.get_layer("global_average_pooling2d")(base_outputs)
-    h = model.get_layer("dropout")(h)
-    outputs = model.get_layer("dense")(h)
-    
-    gradcam_model = tf.keras.Model(inputs=inputs, outputs=[conv_outputs, outputs])
-    
-    # Record gradients under GradientTape
-    with tf.GradientTape() as tape:
-        conv_outputs, predictions = gradcam_model(input_array)
-        loss = predictions[:, class_idx]
+def _find_layer_and_container(model, target_name):
+    for layer in model.layers:
+        if layer.name == target_name:
+            return model, layer
+        if hasattr(layer, "layers"):
+            container, target = _find_layer_and_container(layer, target_name)
+            if target:
+                return container, target
+    return None, None
+
+def _find_last_conv_layer(model_or_layer):
+    if hasattr(model_or_layer, "layers"):
+        for layer in reversed(model_or_layer.layers):
+            res = _find_last_conv_layer(layer)
+            if res:
+                return res
+    class_name = model_or_layer.__class__.__name__.lower()
+    if "conv" in class_name:
+        return model_or_layer.name
+    return None
+
+def _last_conv_layer(model):
+    res = _find_last_conv_layer(model)
+    if res:
+        return res
+    raise ValueError("No convolutional layer found for Grad-CAM.")
+
+def gradcam_plus_plus(model, img_array, class_index, layer_name=None):
+    """img_array: (1,224,224,3) preprocessed. Returns small HxW heatmap in 0..1."""
+    layer_name = layer_name or _last_conv_layer(model)
+    container, target_layer = _find_layer_and_container(model, layer_name)
+    if container is None or target_layer is None:
+        raise ValueError(f"Layer '{layer_name}' not found in model hierarchy.")
+
+    # Check if the target layer is nested inside a submodel
+    is_nested = (container.name != model.name)
+
+    if is_nested:
+        # Build submodel for base extraction: container.input -> [target_layer.output, container.output]
+        grad_base_model = tf.keras.models.Model(container.input, [target_layer.output, container.output])
         
-    grads = tape.gradient(loss, conv_outputs)
-    
-    # Guided Grad-CAM spatially averaged gradients
-    pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
-    
-    # Weighted average of feature maps
-    conv_outputs_val = conv_outputs[0].numpy()
-    pooled_grads_val = pooled_grads.numpy()
-    
-    heatmap = conv_outputs_val @ pooled_grads_val[..., np.newaxis]
-    heatmap = np.squeeze(heatmap)
-    
-    # ReLU to keep positive influence
-    heatmap = np.maximum(heatmap, 0)
-    
-    # Normalization
-    max_val = np.max(heatmap)
-    if max_val > 0:
-        heatmap = heatmap / max_val
+        # Build classifier model from post layers: container.output -> final predictions
+        post_layers = []
+        found = False
+        for layer in model.layers:
+            if found:
+                post_layers.append(layer)
+            if layer.name == container.name:
+                found = True
         
-    # Resize heatmap to match original image dimensions
-    orig_h, orig_w = original_image_np.shape[:2]
-    heatmap_resized = cv2.resize(heatmap, (orig_w, orig_h))
-    
-    # Convert heatmap to colormap
-    heatmap_uint8 = np.uint8(255 * heatmap_resized)
-    heatmap_color = cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)
-    heatmap_color_rgb = cv2.cvtColor(heatmap_color, cv2.COLOR_BGR2RGB)
-    
-    # Superimpose on original image (using alpha weight 0.4)
-    alpha = 0.4
-    blended = cv2.addWeighted(original_image_np, 1.0 - alpha, heatmap_color_rgb, alpha, 0)
-    
-    # Convert back to BGR for cv2.imencode
-    _, buffer = cv2.imencode(".png", cv2.cvtColor(blended, cv2.COLOR_RGB2BGR))
-    base64_str = base64.b64encode(buffer).decode("utf-8")
-    
-    data_uri = f"data:image/png;base64,{base64_str}"
-    
-    return data_uri, heatmap
+        classifier_input = tf.keras.layers.Input(shape=container.output_shape[1:], dtype="float32")
+        y = classifier_input
+        for layer in post_layers:
+            y = layer(y)
+        classifier_model = tf.keras.models.Model(classifier_input, y)
+        
+        # The input img_array is fed directly to container (rescaling already done in preprocessing)
+        x_in = img_array
+    else:
+        # Flat model: construct grad model directly
+        grad_model = tf.keras.models.Model(model.inputs, [target_layer.output, model.output])
+
+    with tf.GradientTape() as g3:
+        with tf.GradientTape() as g2:
+            with tf.GradientTape() as g1:
+                if is_nested:
+                    conv, base_out = grad_base_model(x_in)
+                    preds = classifier_model(base_out)
+                else:
+                    conv, preds = grad_model(img_array)
+                score = preds[:, class_index]
+            grads = g1.gradient(score, conv)
+        grads2 = g2.gradient(grads, conv)
+    grads3 = g3.gradient(grads2, conv)
+
+    global_sum = tf.reduce_sum(conv, axis=(1, 2), keepdims=True)
+    denom = 2.0 * grads2 + global_sum * grads3
+    denom = tf.where(denom != 0.0, denom, tf.ones_like(denom))
+    alphas = grads2 / denom
+    weights = tf.reduce_sum(alphas * tf.nn.relu(grads), axis=(1, 2))
+    cam = tf.reduce_sum(weights[:, tf.newaxis, tf.newaxis, :] * conv, axis=-1)[0]
+    cam = tf.nn.relu(cam).numpy()
+    cam -= cam.min()
+    if cam.max() > 0:
+        cam /= cam.max()
+    return cam
+
+def overlay_to_b64(rgb_original, cam, alpha=0.4):
+    """rgb_original: HxWx3 uint8. cam: small 0..1 map. Returns base64 PNG data URI."""
+    h, w = rgb_original.shape[:2]
+    cam_r = cv2.resize(cam, (w, h))
+    heat = cv2.applyColorMap(np.uint8(255 * cam_r), cv2.COLORMAP_JET)
+    heat = cv2.cvtColor(heat, cv2.COLOR_BGR2RGB)
+    overlay = np.uint8(rgb_original * (1 - alpha) + heat * alpha)
+    ok, buf = cv2.imencode(".png", cv2.cvtColor(overlay, cv2.COLOR_RGB2BGR))
+    return "data:image/png;base64," + base64.b64encode(buf).decode("utf-8")
+
+def active_fraction(cam, thresh=0.5):
+    """Fraction of leaf area with strong activation — feeds severity grading."""
+    return float((cam >= thresh).mean())
