@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: cropdoc-ai-backend
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    plan: free
+    numInstances: 1
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+        description: "MongoDB connection URI (e.g. MongoDB Atlas connection string)"
+      - key: DB_NAME
+        value: cropdoc_db
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: MODEL_PATH
+        value: model.keras
+      - key: MAX_UPLOAD_BYTES
+        value: "8388608"
+      - key: RATE_LIMIT
+        value: "30"

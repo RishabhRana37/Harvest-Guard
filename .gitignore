@@ -1,0 +1,30 @@
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python cache and testing
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration secrets
+.env
+.env.local
+
+# Node modules and build output (frontend)
+node_modules/
+dist/
+.oxlintrc.json
+
+# Local dataset directory
+dummy_dataset/
+
+# Local fallback databases
+app/data/*_fallback.json
+
+
