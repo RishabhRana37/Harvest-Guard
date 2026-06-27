@@ -45,6 +45,8 @@ class DiagnosisResult(BaseModel):
     top_k: List[Prediction] = Field(default_factory=list)
     heatmap: Optional[str] = None          # base64 data URI
     disease: Optional[Disease] = None
+    explanation: Optional[str] = None
+    quality: Optional[dict] = None
 
 class DiseaseListResponse(BaseModel):
     items: List[Disease]

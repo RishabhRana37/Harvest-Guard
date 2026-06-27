@@ -16,15 +16,17 @@ class_index = {}
 temperature = 1.0
 tau_low = 0.55
 model_loaded = False
+is_loaded = False
 warmup_succeeded = False
 disease_cache = {}  # maps slug -> {"crop": str, "name": str}
+metrics = {}
 
 def load_model_artifacts():
     """
     Safely load model.keras, class_index.json, and calibration.json.
     Sets model_loaded = True on success, otherwise False. Does not crash.
     """
-    global model, class_index, temperature, tau_low, model_loaded
+    global model, class_index, temperature, tau_low, model_loaded, is_loaded, metrics
     
     model_path = settings.MODEL_PATH
     if not os.path.exists(model_path):
@@ -64,11 +66,25 @@ def load_model_artifacts():
         else:
             logger.warning(f"Calibration file not found at {calibration_path}. Using default temperature=1.0, tau_low=0.55")
             
+        # Load validation metrics
+        metrics_path = os.path.join(model_dir, "metrics.json")
+        if os.path.exists(metrics_path):
+            try:
+                with open(metrics_path, "r", encoding="utf-8") as f:
+                    metrics = json.load(f)
+                logger.info(f"Loaded validation metrics successfully: {metrics}")
+            except Exception as e:
+                logger.error(f"Failed to load metrics.json: {e}")
+        else:
+            logger.warning(f"Metrics file not found at {metrics_path}")
+
         model_loaded = True
+        is_loaded = True
         logger.info("Model artifacts loaded successfully.")
     except Exception as e:
         logger.error(f"Failed to load model artifacts: {e}", exc_info=True)
         model_loaded = False
+        is_loaded = False
 
 async def initialize_disease_cache():
     """
@@ -126,6 +142,8 @@ def predict(input_array: np.ndarray) -> np.ndarray:
     calibrated_probs = exp_logits / np.sum(exp_logits, axis=-1, keepdims=True)
     return calibrated_probs
 
+predict_probs = predict
+
 def get_predictions(calibrated_probs: np.ndarray) -> tuple[Prediction, list[Prediction]]:
     """
     Given calibrated probabilities (shape (1, 38)), build the top-1 Prediction
@@ -169,3 +187,29 @@ def warmup():
             warmup_succeeded = False
     else:
         warmup_succeeded = False
+
+class InferenceEngine:
+    @property
+    def is_loaded(self) -> bool:
+        return model_loaded
+
+    @property
+    def class_index(self) -> dict:
+        return class_index
+
+    @property
+    def temperature(self) -> float:
+        return temperature
+
+    @property
+    def tau_low(self) -> float:
+        return tau_low
+
+    @property
+    def metrics(self) -> dict:
+        return metrics
+
+    def predict_probs(self, x: np.ndarray) -> np.ndarray:
+        return predict(x)
+
+engine = InferenceEngine()

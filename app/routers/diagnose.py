@@ -93,20 +93,22 @@ async def diagnose_leaf(
         import numpy as np
         original_np = np.array(img)
         input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
+    except AppError:
+        raise
     except Exception as e:
         raise AppError(
             status_code=422,
             code="INVALID_IMAGE",
             message=f"Failed to preprocess the leaf image: {e}"
         )
-
     preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
     request.state.preprocess_ms = preprocess_ms
 
-    # 5. Model Inference & Temperature scaling in thread pool
+    # 5. Model Inference with Test-Time Augmentation (TTA) in thread pool
+    from app.services.tta import tta_probs
     infer_start = time.perf_counter()
     try:
-        calibrated_probs = await loop.run_in_executor(None, inference.predict, input_array)
+        calibrated_probs = await loop.run_in_executor(None, tta_probs, inference, input_array)
     except Exception as e:
         raise AppError(
             status_code=500,
@@ -119,6 +121,19 @@ async def diagnose_leaf(
     probs = calibrated_probs[0]
     max_prob = float(np.max(probs))
     entropy = float(-np.sum(probs * np.log(probs + 1e-15)))
+
+    # 5.b Quality Assessment in thread pool
+    from app.services.quality import assess_quality
+    quality_res = await loop.run_in_executor(None, assess_quality, original_np)
+    
+    # If not is_acceptable AND model max prob is low, we reject
+    if not quality_res["is_acceptable"] and max_prob < inference.tau_low:
+        tips_str = " ".join(quality_res["tips"])
+        raise AppError(
+            status_code=422,
+            code="INVALID_IMAGE",
+            message=f"Image quality is too poor for diagnosis. Tips: {tips_str}"
+        )
 
     # 6. OOD leaf gate check in thread pool
     from app.services.ood import check_is_leaf
@@ -138,6 +153,9 @@ async def diagnose_leaf(
         metrics_tracker.record_diagnose_latency((time.perf_counter() - t_start) * 1000)
 
         # Return DiagnosisResult with is_leaf:false and other prediction/disease/heatmap fields as null
+        from app.services.explain import generate_explanation
+        explanation = generate_explanation({"is_leaf": False})
+
         scan_doc = {
             "_id": scan_id,
             "scan_id": scan_id,
@@ -149,7 +167,9 @@ async def diagnose_leaf(
             "is_leaf": False,
             "severity": None,
             "top_k": [],
-            "thumb_url": None
+            "thumb_url": None,
+            "heatmap_b64": None,
+            "quality": quality_res
         }
         background_tasks.add_task(save_scan_history, scan_doc)
 
@@ -165,7 +185,9 @@ async def diagnose_leaf(
             prediction=None,
             top_k=[],
             heatmap=None,
-            disease=None
+            disease=None,
+            explanation=explanation,
+            quality=quality_res
         )
 
     request.state.is_leaf = True
@@ -174,17 +196,22 @@ async def diagnose_leaf(
     prediction, top_k = inference.get_predictions(calibrated_probs)
 
     # 8. Grad-CAM generation in thread pool
-    from app.services.gradcam import generate_gradcam
+    from app.services.gradcam import gradcam_plus_plus, overlay_to_b64, active_fraction
     predicted_idx = int(np.argmax(probs))
     gradcam_start = time.perf_counter()
     try:
-        heatmap_uri, raw_heatmap = await loop.run_in_executor(
+        raw_heatmap = await loop.run_in_executor(
             None,
-            generate_gradcam,
+            gradcam_plus_plus,
             inference.model,
             input_array,
-            predicted_idx,
-            original_np
+            predicted_idx
+        )
+        heatmap_uri = await loop.run_in_executor(
+            None,
+            overlay_to_b64,
+            original_np,
+            raw_heatmap
         )
     except Exception as e:
         raise AppError(
@@ -206,10 +233,19 @@ async def diagnose_leaf(
         )
     disease = Disease(**disease_doc)
 
-    # 10. Urgency & Severity mapping logic using Grad-CAM raw heatmap
-    from app.services.severity import calculate_severity
+    # 10. Severity grading logic
     is_healthy = disease_doc.get("is_healthy", False)
-    severity, urgency_days = calculate_severity(raw_heatmap, is_healthy)
+    if is_healthy:
+        severity = "healthy"
+        urgency_days = None
+    else:
+        fraction = active_fraction(raw_heatmap)
+        if fraction < 0.30:
+            severity = "mild"
+            urgency_days = 3
+        else:
+            severity = "severe"
+            urgency_days = 1
 
     # 11. Calibration confidence and band mapping
     confidence = prediction.prob
@@ -228,7 +264,7 @@ async def diagnose_leaf(
     # Record latency in metrics tracker
     metrics_tracker.record_diagnose_latency((time.perf_counter() - t_start) * 1000)
 
-    # Persist scan history in background
+    # Persist scan history in background including heatmap_b64
     scan_doc = {
         "_id": scan_id,
         "scan_id": scan_id,
@@ -240,9 +276,23 @@ async def diagnose_leaf(
         "is_leaf": True,
         "severity": severity,
         "top_k": [{"slug": tk.slug, "prob": tk.prob} for tk in top_k],
-        "thumb_url": None
+        "thumb_url": None,
+        "heatmap_b64": heatmap_uri,
+        "quality": quality_res
     }
     background_tasks.add_task(save_scan_history, scan_doc)
+
+    from app.services.explain import generate_explanation
+    result_dict = {
+        "is_leaf": True,
+        "prediction": {"crop": prediction.crop, "name": prediction.name},
+        "confidence_band": confidence_band,
+        "confidence": confidence,
+        "severity": severity,
+        "urgency_days": urgency_days,
+        "heatmap": heatmap_uri
+    }
+    explanation = generate_explanation(result_dict)
 
     result = DiagnosisResult(
         scan_id=scan_id,
@@ -256,8 +306,9 @@ async def diagnose_leaf(
         prediction=prediction,
         top_k=top_k,
         heatmap=heatmap_uri,
-        disease=disease
+        disease=disease,
+        explanation=explanation,
+        quality=quality_res
     )
 
     return result
-

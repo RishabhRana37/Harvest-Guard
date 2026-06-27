@@ -191,7 +191,7 @@
     "i18n": {}
   },
   {
-    "slug": "cherry-powdery-mildew",
+    "slug": "cherry-including-sour-powdery-mildew",
     "class_index": 5,
     "crop": "Cherry",
     "name": "Powdery Mildew",
@@ -238,7 +238,7 @@
     "i18n": {}
   },
   {
-    "slug": "cherry-healthy",
+    "slug": "cherry-including-sour-healthy",
     "class_index": 6,
     "crop": "Cherry",
     "name": "Healthy",
@@ -263,7 +263,7 @@
     "i18n": {}
   },
   {
-    "slug": "corn-grey-leaf-spot",
+    "slug": "corn-maize-cercospora-leaf-spot-gray-leaf-spot",
     "class_index": 7,
     "crop": "Corn (Maize)",
     "name": "Grey Leaf Spot",
@@ -310,7 +310,7 @@
     "i18n": {}
   },
   {
-    "slug": "corn-common-rust",
+    "slug": "corn-maize-common-rust",
     "class_index": 8,
     "crop": "Corn (Maize)",
     "name": "Common Rust",
@@ -357,7 +357,7 @@
     "i18n": {}
   },
   {
-    "slug": "corn-northern-leaf-blight",
+    "slug": "corn-maize-northern-leaf-blight",
     "class_index": 9,
     "crop": "Corn (Maize)",
     "name": "Northern Leaf Blight",
@@ -404,7 +404,7 @@
     "i18n": {}
   },
   {
-    "slug": "corn-healthy",
+    "slug": "corn-maize-healthy",
     "class_index": 10,
     "crop": "Corn (Maize)",
     "name": "Healthy",
@@ -476,7 +476,7 @@
     "i18n": {}
   },
   {
-    "slug": "grape-esca",
+    "slug": "grape-esca-black-measles",
     "class_index": 12,
     "crop": "Grape",
     "name": "Esca (Black Measles)",
@@ -523,7 +523,7 @@
     "i18n": {}
   },
   {
-    "slug": "grape-leaf-blight",
+    "slug": "grape-leaf-blight-isariopsis-leaf-spot",
     "class_index": 13,
     "crop": "Grape",
     "name": "Leaf Blight (Isariopsis Leaf Spot)",
@@ -595,7 +595,7 @@
     "i18n": {}
   },
   {
-    "slug": "orange-citrus-greening",
+    "slug": "orange-haunglongbing-citrus-greening",
     "class_index": 15,
     "crop": "Orange",
     "name": "Citrus Greening (Huanglongbing)",
@@ -714,7 +714,7 @@
     "i18n": {}
   },
   {
-    "slug": "pepper-bacterial-spot",
+    "slug": "pepper-bell-bacterial-spot",
     "class_index": 18,
     "crop": "Pepper",
     "name": "Bacterial Spot",
@@ -761,7 +761,7 @@
     "i18n": {}
   },
   {
-    "slug": "pepper-healthy",
+    "slug": "pepper-bell-healthy",
     "class_index": 19,
     "crop": "Pepper",
     "name": "Healthy",
@@ -1309,7 +1309,7 @@
     "i18n": {}
   },
   {
-    "slug": "tomato-spider-mites",
+    "slug": "tomato-spider-mites-two-spotted-spider-mite",
     "class_index": 33,
     "crop": "Tomato",
     "name": "Spider Mites (Two-spotted spider mite)",
@@ -1403,7 +1403,7 @@
     "i18n": {}
   },
   {
-    "slug": "tomato-yellow-leaf-curl",
+    "slug": "tomato-tomato-yellow-leaf-curl-virus",
     "class_index": 35,
     "crop": "Tomato",
     "name": "Yellow Leaf Curl Virus",
@@ -1450,7 +1450,7 @@
     "i18n": {}
   },
   {
-    "slug": "tomato-mosaic-virus",
+    "slug": "tomato-tomato-mosaic-virus",
     "class_index": 36,
     "crop": "Tomato",
     "name": "Tomato Mosaic Virus",

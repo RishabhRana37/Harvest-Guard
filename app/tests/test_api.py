@@ -13,8 +13,14 @@ def client():
 
 @pytest.fixture
 def valid_image():
-    """Generates a simple green image in memory."""
-    img = Image.new("RGB", (100, 100), (34, 139, 34))
+    """Generates a textured green image in memory to pass quality/blur checks."""
+    import numpy as np
+    np.random.seed(42)
+    arr = np.random.randint(50, 150, (224, 224, 3), dtype=np.uint8)
+    arr[:, :, 0] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    arr[:, :, 1] = np.random.randint(150, 250, (224, 224), dtype=np.uint8)
+    arr[:, :, 2] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    img = Image.fromarray(arr)
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     buf.seek(0)
@@ -22,8 +28,14 @@ def valid_image():
 
 @pytest.fixture
 def non_leaf_image():
-    """Generates a solid red (non-green) image in memory."""
-    img = Image.new("RGB", (100, 100), (255, 0, 0))
+    """Generates a textured red (non-green) image in memory to pass quality/blur checks."""
+    import numpy as np
+    np.random.seed(42)
+    arr = np.random.randint(50, 150, (224, 224, 3), dtype=np.uint8)
+    arr[:, :, 0] = np.random.randint(150, 250, (224, 224), dtype=np.uint8)
+    arr[:, :, 1] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    arr[:, :, 2] = np.random.randint(20, 50, (224, 224), dtype=np.uint8)
+    img = Image.fromarray(arr)
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     buf.seek(0)
@@ -360,6 +372,181 @@ def test_health_readiness(client):
 
     # Restore original state
     inference.warmup_succeeded = original_warmup
+
+def test_diagnose_poor_quality_rejection(client):
+    headers = {"X-Device-Id": "test-device-uuid"}
+    # Flat solid green color -> blur_var = 0 -> unacceptable
+    flat_img = Image.new("RGB", (100, 100), (34, 139, 34))
+    buf = io.BytesIO()
+    flat_img.save(buf, format="JPEG")
+    buf.seek(0)
+    files = {"image": ("flat_blurry.jpg", buf, "image/jpeg")}
+
+    response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+
+    assert response.status_code == 422
+    data = response.json()
+    assert data["error"]["code"] == "INVALID_IMAGE"
+    assert "quality is too poor" in data["error"]["message"]
+    assert "Tips:" in data["error"]["message"]
+
+def test_tta_calculation():
+    from app.services.tta import tta_probs
+    import numpy as np
+
+    class MockEngine:
+        def predict_probs(self, x):
+            if np.array_equal(x, base_input):
+                return np.array([[0.6, 0.4]])
+            elif np.array_equal(x, base_input[:, :, ::-1, :]):
+                return np.array([[0.5, 0.5]])
+            else:
+                return np.array([[0.4, 0.6]])
+
+    base_input = np.arange(224 * 224 * 3).reshape((1, 224, 224, 3)).astype(np.float32)
+    engine = MockEngine()
+    probs = tta_probs(engine, base_input)
+
+    # Average: (0.6 + 0.5 + 0.4)/3 = 0.5, (0.4 + 0.5 + 0.6)/3 = 0.5
+    assert probs.shape == (1, 2)
+    assert np.allclose(probs, np.array([[0.5, 0.5]]))
+
+def test_generate_explanation():
+    from app.services.explain import generate_explanation
+
+    # Case 1: is_leaf is False
+    res_non_leaf = {"is_leaf": False}
+    exp_non_leaf = generate_explanation(res_non_leaf)
+    assert "doesn't look like a crop leaf" in exp_non_leaf
+
+    # Case 2: Healthy, high confidence, heatmap present
+    res_healthy = {
+        "is_leaf": True,
+        "prediction": {"crop": "Apple", "name": "Apple Healthy"},
+        "confidence_band": "high",
+        "confidence": 0.95,
+        "severity": "healthy",
+        "urgency_days": None,
+        "heatmap": "data:image/png;base64,..."
+    }
+    exp_healthy = generate_explanation(res_healthy)
+    assert "Apple — Apple Healthy" in exp_healthy
+    assert "95% confidence" in exp_healthy
+    assert "appears healthy" in exp_healthy
+    assert "Highlighted areas" in exp_healthy
+
+    # Case 3: Diseased, low confidence, severe severity, no heatmap
+    res_severe = {
+        "is_leaf": True,
+        "prediction": {"crop": "Tomato", "name": "Late Blight"},
+        "confidence_band": "low",
+        "confidence": 0.45,
+        "severity": "severe",
+        "urgency_days": 1,
+        "heatmap": None
+    }
+    exp_severe = generate_explanation(res_severe)
+    assert exp_severe["explanation"] if isinstance(exp_severe, dict) else exp_severe
+    assert "Tomato — Late Blight" in exp_severe
+    assert "45% confidence" in exp_severe
+    assert "Advanced infection — treat within about 1 day(s)" in exp_severe
+    assert "retake in good light" in exp_severe
+
+def test_scan_report_pdf(client, valid_image):
+    device_id = "report-test-device"
+    headers = {"X-Device-Id": device_id}
+    files = {"image": ("leaf.jpg", valid_image, "image/jpeg")}
+
+    # 1. Post a diagnosis
+    diag_response = client.post(
+        "/api/v1/diagnose",
+        files=files,
+        headers=headers
+    )
+    assert diag_response.status_code == 200
+    diag_data = diag_response.json()
+    scan_id = diag_data["scan_id"]
+
+    # 2. Get scan report
+    report_response = client.get(
+        f"/api/v1/scans/{scan_id}/report",
+        headers={"X-Device-Id": device_id}
+    )
+    assert report_response.status_code == 200
+    assert report_response.headers["content-type"] == "application/pdf"
+    assert report_response.headers["content-disposition"].startswith("inline; filename=")
+
+    # 3. 403 Forbidden on different device ID
+    forbidden_response = client.get(
+        f"/api/v1/scans/{scan_id}/report",
+        headers={"X-Device-Id": "other-device-id"}
+    )
+    assert forbidden_response.status_code == 403
+
+    # 4. 404 Not Found on unknown scan ID
+    not_found_response = client.get(
+        "/api/v1/scans/unknown-scan-id/report",
+        headers={"X-Device-Id": device_id}
+    )
+    assert not_found_response.status_code == 404
+
+def test_model_info(client):
+    response = client.get("/api/v1/model/info")
+    assert response.status_code == 200
+    data = response.json()
+    assert "loaded" in data
+    assert data["backbone"] == "MobileNetV2"
+    assert "num_classes" in data
+    assert data["input_size"] == [224, 224]
+    assert "temperature" in data
+    assert "tau_low" in data
+    assert "metrics" in data
+    assert data["version"] == "1.0.0"
+
+def test_diagnose_low_quality_confident_leaf(client):
+    from app.services import inference
+    import numpy as np
+    # Mock inference to return highly confident probabilities (e.g. 0.95)
+    original_predict = inference.predict
+    original_predict_probs = inference.predict_probs
+    original_warmup = inference.warmup_succeeded
+    
+    # We set a highly confident prediction so it bypasses early 422 quality rejection
+    mock_fn = lambda x: np.array([[0.95] + [0.05 / 37] * 37])
+    inference.predict = mock_fn
+    inference.predict_probs = mock_fn
+    inference.warmup_succeeded = True
+    
+    headers = {"X-Device-Id": "confident-low-quality-device"}
+    # Flat solid green image has blur_var = 0 (unacceptable quality)
+    flat_img = Image.new("RGB", (100, 100), (34, 139, 34))
+    buf = io.BytesIO()
+    flat_img.save(buf, format="JPEG")
+    buf.seek(0)
+    files = {"image": ("flat_confident.jpg", buf, "image/jpeg")}
+
+    try:
+        response = client.post(
+            "/api/v1/diagnose",
+            files=files,
+            headers=headers
+        )
+        print("Response JSON:", response.json())
+        assert response.status_code == 200
+        data = response.json()
+        assert data["is_leaf"] is True
+        assert data["quality"] is not None
+        assert data["quality"]["is_acceptable"] is False
+        assert len(data["quality"]["tips"]) > 0
+    finally:
+        inference.predict = original_predict
+        inference.predict_probs = original_predict_probs
+        inference.warmup_succeeded = original_warmup
+
 
 
 
