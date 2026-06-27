@@ -171,3 +171,38 @@ def warmup():
             warmup_succeeded = False
     else:
         warmup_succeeded = False
+
+class InferenceEngine:
+    @property
+    def is_loaded(self) -> bool:
+        return model_loaded
+
+    @property
+    def class_index(self) -> dict:
+        return class_index
+
+    @property
+    def temperature(self) -> float:
+        return temperature
+
+    @property
+    def tau_low(self) -> float:
+        return tau_low
+
+    @property
+    def metrics(self) -> dict:
+        model_path = settings.MODEL_PATH
+        if not os.path.exists(model_path):
+            model_path = os.path.join("app", "ml", "model", settings.MODEL_PATH)
+        if os.path.exists(model_path):
+            model_dir = os.path.dirname(model_path)
+            metrics_path = os.path.join(model_dir, "metrics.json")
+            if os.path.exists(metrics_path):
+                try:
+                    with open(metrics_path, "r", encoding="utf-8") as f:
+                        return json.load(f)
+                except Exception:
+                    pass
+        return {}
+
+engine = InferenceEngine()

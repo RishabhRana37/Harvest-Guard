@@ -494,6 +494,19 @@ def test_scan_report_pdf(client, valid_image):
     )
     assert not_found_response.status_code == 404
 
+def test_model_info(client):
+    response = client.get("/api/v1/model/info")
+    assert response.status_code == 200
+    data = response.json()
+    assert "loaded" in data
+    assert data["backbone"] == "MobileNetV2"
+    assert "num_classes" in data
+    assert data["input_size"] == [224, 224]
+    assert "temperature" in data
+    assert "tau_low" in data
+    assert "metrics" in data
+    assert data["version"] == "1.0.0"
+
 
 
 
