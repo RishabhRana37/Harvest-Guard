@@ -547,6 +547,62 @@ def test_diagnose_low_quality_confident_leaf(client):
         inference.predict_probs = original_predict_probs
         inference.warmup_succeeded = original_warmup
 
+def test_diseases_caching_and_seeding_invalidation(client):
+    # 1. Fetch diseases list
+    res1 = client.get("/api/v1/diseases")
+    assert res1.status_code == 200
+    
+    # 2. Fetch again (hits cache)
+    res2 = client.get("/api/v1/diseases")
+    assert res2.status_code == 200
+    assert res1.json() == res2.json()
+
+    # 3. Fetch specific disease slug
+    slug = res1.json()["items"][0]["slug"]
+    slug_res1 = client.get(f"/api/v1/diseases/{slug}")
+    assert slug_res1.status_code == 200
+
+    # 4. Fetch specific slug again (hits cache)
+    slug_res2 = client.get(f"/api/v1/diseases/{slug}")
+    assert slug_res2.status_code == 200
+    assert slug_res1.json() == slug_res2.json()
+
+    # 5. POST to seed endpoint (invalidates cache)
+    seed_res = client.post("/api/v1/diseases/seed")
+    assert seed_res.status_code == 200
+
+    # 6. Fetch third time (cache was cleared, query db again)
+    res3 = client.get("/api/v1/diseases")
+    assert res3.status_code == 200
+
+def test_gzip_compression(client):
+    headers = {"Accept-Encoding": "gzip"}
+    response = client.get("/api/v1/diseases", headers=headers)
+    assert response.status_code == 200
+    if len(response.content) > 1000:
+        assert "gzip" in response.headers.get("content-encoding", "").lower()
+
+import concurrent.futures
+def test_concurrent_diagnose(client, valid_image):
+    headers = {"X-Device-Id": "concurrent-test-device"}
+    img_data = valid_image.getvalue()
+
+    def send_request():
+        buf = io.BytesIO(img_data)
+        files = {"image": ("leaf.jpg", buf, "image/jpeg")}
+        return client.post("/api/v1/diagnose", files=files, headers=headers)
+
+    # 10 concurrent requests to /diagnose
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(send_request) for _ in range(10)]
+        results = [f.result() for f in futures]
+
+    for idx, res in enumerate(results):
+        assert res.status_code == 200, f"Req {idx} failed with status {res.status_code}: {res.text}"
+        data = res.json()
+        assert "scan_id" in data
+        assert data["is_leaf"] is True
+
 
 
 

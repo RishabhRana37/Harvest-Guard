@@ -154,9 +154,12 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
             # Clean up context variable
             request_id_var.reset(token)
 
+from fastapi.middleware.gzip import GZipMiddleware
+
 app.add_middleware(JsonLoggingMiddleware)
 app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(RequestIdMiddleware)
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Register uniform error envelope handlers
 app.add_exception_handler(AppError, app_error_handler)

@@ -46,83 +46,26 @@ def make_thumbnail_b64(img: Image.Image) -> str:
     b64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
     return f"data:image/jpeg;base64,{b64_str}"
 
+from asyncio import Semaphore
 router = APIRouter(tags=["Diagnosis"])
 
-@router.post("/diagnose", response_model=DiagnosisResult)
-@limiter.limit("30/minute")
-async def diagnose_leaf(
+# In-process semaphore limiting concurrent inferences to 2
+inference_semaphore = Semaphore(2)
+
+async def _diagnose_leaf_internal(
     request: Request,
     background_tasks: BackgroundTasks,
-    image: UploadFile = File(...),
-    crop_hint: Optional[str] = Form(None),
-    x_device_id: str = Header(..., alias="X-Device-Id", description="Anonymous client device identity")
-):
-    """
-    Ingest a crop leaf image, run size and format validations, run real
-    deep-learning model inference using MobileNetV2 with temperature calibration,
-    enrich predictions with disease knowledge base, and return results.
-    """
-    t_start = time.perf_counter()
-    preprocess_start = time.perf_counter()
-
-    # 0. Check model availability
-    if not inference.model_loaded:
-        raise AppError(
-            status_code=503,
-            code="MODEL_UNAVAILABLE",
-            message="The diagnosis model is currently unavailable."
-        )
-
-    # 1. MIME-type validation
-    mime = (image.content_type or "").lower()
-    if mime not in ["image/jpeg", "image/png", "image/webp", "image/jpg"]:
-        raise AppError(
-            status_code=415,
-            code="UNSUPPORTED_MEDIA",
-            message="Unsupported media type. Only JPEG, PNG, and WebP formats are supported."
-        )
-
-    # 2. File size validation
-    file_bytes = await image.read()
-    if len(file_bytes) > settings.MAX_UPLOAD_BYTES:
-        raise AppError(
-            status_code=413,
-            code="IMAGE_TOO_LARGE",
-            message=f"Uploaded image exceeds the maximum allowed size of {settings.MAX_UPLOAD_BYTES // (1024 * 1024)}MB."
-        )
-
-    # 3. Image decodability check via Pillow
-    try:
-        img_temp = Image.open(io.BytesIO(file_bytes))
-        img_temp.verify()
-    except Exception:
-        raise AppError(
-            status_code=422,
-            code="INVALID_IMAGE",
-            message="The uploaded file could not be read or decoded as a valid image."
-        )
-
-    # 4. Preprocessing in thread pool (with image sanitization)
-    loop = asyncio.get_running_loop()
-    try:
-        sanitized_bytes, img = await loop.run_in_executor(None, preprocess.sanitize_image, file_bytes)
-        import numpy as np
-        original_np = np.array(img)
-        input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
-        thumb_uri = await loop.run_in_executor(None, make_thumbnail_b64, img)
-    except AppError:
-        raise
-    except Exception as e:
-        raise AppError(
-            status_code=422,
-            code="INVALID_IMAGE",
-            message=f"Failed to preprocess the leaf image: {e}"
-        )
-    preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
-    request.state.preprocess_ms = preprocess_ms
-
+    x_device_id: str,
+    loop,
+    t_start: float,
+    input_array,
+    original_np,
+    quality_res,
+    thumb_uri
+) -> DiagnosisResult:
     # 5. Model Inference with Test-Time Augmentation (TTA) in thread pool
     from app.services.tta import tta_probs
+    import numpy as np
     infer_start = time.perf_counter()
     try:
         calibrated_probs = await loop.run_in_executor(None, tta_probs, inference, input_array)
@@ -329,3 +272,93 @@ async def diagnose_leaf(
     )
 
     return result
+
+@router.post("/diagnose", response_model=DiagnosisResult)
+@limiter.limit("30/minute")
+async def diagnose_leaf(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    image: UploadFile = File(...),
+    crop_hint: Optional[str] = Form(None),
+    x_device_id: str = Header(..., alias="X-Device-Id", description="Anonymous client device identity")
+):
+    """
+    Ingest a crop leaf image, run size and format validations, run real
+    deep-learning model inference using MobileNetV2 with temperature calibration,
+    enrich predictions with disease knowledge base, and return results.
+    """
+    t_start = time.perf_counter()
+    preprocess_start = time.perf_counter()
+
+    # 0. Check model availability
+    if not inference.model_loaded:
+        raise AppError(
+            status_code=503,
+            code="MODEL_UNAVAILABLE",
+            message="The diagnosis model is currently unavailable."
+        )
+
+    # 1. MIME-type validation
+    mime = (image.content_type or "").lower()
+    if mime not in ["image/jpeg", "image/png", "image/webp", "image/jpg"]:
+        raise AppError(
+            status_code=415,
+            code="UNSUPPORTED_MEDIA",
+            message="Unsupported media type. Only JPEG, PNG, and WebP formats are supported."
+        )
+
+    # 2. File size validation
+    file_bytes = await image.read()
+    if len(file_bytes) > settings.MAX_UPLOAD_BYTES:
+        raise AppError(
+            status_code=413,
+            code="IMAGE_TOO_LARGE",
+            message=f"Uploaded image exceeds the maximum allowed size of {settings.MAX_UPLOAD_BYTES // (1024 * 1024)}MB."
+        )
+
+    # 3. Image decodability check via Pillow
+    try:
+        img_temp = Image.open(io.BytesIO(file_bytes))
+        img_temp.verify()
+    except Exception:
+        raise AppError(
+            status_code=422,
+            code="INVALID_IMAGE",
+            message="The uploaded file could not be read or decoded as a valid image."
+        )
+
+    # 4. Preprocessing in thread pool (with image sanitization)
+    loop = asyncio.get_running_loop()
+    try:
+        sanitized_bytes, img = await loop.run_in_executor(None, preprocess.sanitize_image, file_bytes)
+        import numpy as np
+        original_np = np.array(img)
+        input_array = await loop.run_in_executor(None, preprocess.to_model_input, img)
+        thumb_uri = await loop.run_in_executor(None, make_thumbnail_b64, img)
+    except AppError:
+        raise
+    except Exception as e:
+        raise AppError(
+            status_code=422,
+            code="INVALID_IMAGE",
+            message=f"Failed to preprocess the leaf image: {e}"
+        )
+    preprocess_ms = (time.perf_counter() - preprocess_start) * 1000
+    request.state.preprocess_ms = preprocess_ms
+
+    # Acquire semaphore to throttle parallel model inferences
+    await inference_semaphore.acquire()
+    try:
+        return await _diagnose_leaf_internal(
+            request=request,
+            background_tasks=background_tasks,
+            x_device_id=x_device_id,
+            loop=loop,
+            t_start=t_start,
+            input_array=input_array,
+            original_np=original_np,
+            quality_res=None, # will be computed inside thread pool
+            thumb_uri=thumb_uri
+        )
+    finally:
+        inference_semaphore.release()

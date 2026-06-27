@@ -1,5 +1,7 @@
 import logging
-from typing import Optional, Dict, Any
+import time
+from typing import Optional, Dict, Any, Tuple
+
 from fastapi import APIRouter, Query, status
 
 from app.db import get_db
@@ -8,6 +10,60 @@ from app.utils.errors import AppError
 
 logger = logging.getLogger("app.routers.diseases")
 router = APIRouter(prefix="/diseases", tags=["Knowledge Base"])
+
+# Cache structures with TTL of 60 seconds
+_list_cache: Dict[Tuple[Optional[str], Optional[str], int, int], Tuple[float, DiseaseListResponse]] = {}
+_detail_cache: Dict[str, Tuple[float, Disease]] = {}
+CACHE_TTL = 60.0
+
+def invalidate_cache():
+    _list_cache.clear()
+    _detail_cache.clear()
+    logger.info("Disease in-memory cache cleared/invalidated.")
+
+@router.post("/seed", status_code=status.HTTP_200_OK)
+async def seed_diseases():
+    """
+    Idempotently seed the diseases collection from diseases_seed.json and invalidate the cache.
+    """
+    import os
+    import json
+    
+    # Invalidate cache
+    invalidate_cache()
+    
+    # Seed DB
+    db = get_db()
+    seed_path = os.path.join(os.path.dirname(__file__), "..", "data", "diseases_seed.json")
+    if not os.path.exists(seed_path):
+        seed_path = os.path.join(os.path.dirname(__file__), "..", "app", "data", "diseases_seed.json")
+        
+    if os.path.exists(seed_path):
+        try:
+            with open(seed_path, "r", encoding="utf-8") as f:
+                diseases = json.load(f)
+            for doc in diseases:
+                slug = doc["slug"]
+                await db.diseases.update_one(
+                    {"slug": slug},
+                    {"$set": doc},
+                    upsert=True
+                )
+            logger.info(f"Successfully seeded {len(diseases)} diseases in database.")
+            
+            # Reload ML class index cache
+            from app.services.inference import initialize_disease_cache
+            await initialize_disease_cache()
+            
+            return {"status": "success", "seeded": len(diseases)}
+        except Exception as e:
+            logger.error(f"Seeding failed: {e}")
+            raise AppError(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                code="INTERNAL_ERROR",
+                message=f"Seeding failed: {e}"
+            )
+    return {"status": "error", "message": "Seed file not found."}
 
 @router.get("", response_model=DiseaseListResponse)
 async def list_diseases(
@@ -19,6 +75,14 @@ async def list_diseases(
     """
     List and search crop diseases in the knowledge base.
     """
+    cache_key = (crop, q, page, page_size)
+    now = time.time()
+    if cache_key in _list_cache:
+        ts, cached_res = _list_cache[cache_key]
+        if now - ts < CACHE_TTL:
+            logger.info(f"Disease list cache hit for key: {cache_key}")
+            return cached_res
+
     db = get_db()
     
     # Build filter query
@@ -57,8 +121,6 @@ async def list_diseases(
         # Format items to match schema (Pydantic will validate default/null values for other fields)
         lightweight_items = []
         for item in items:
-            # Pydantic validation handles missing properties with default/None values
-            # We enforce casting to dict and returning them
             lightweight_items.append(
                 Disease(
                     slug=item["slug"],
@@ -75,12 +137,15 @@ async def list_diseases(
                 )
             )
             
-        return DiseaseListResponse(
+        res_data = DiseaseListResponse(
             items=lightweight_items,
             page=page,
             page_size=page_size,
             total=total
         )
+        # Store in cache
+        _list_cache[cache_key] = (time.time(), res_data)
+        return res_data
     except Exception as e:
         logger.error(f"Error querying diseases knowledge base: {e}", exc_info=True)
         # Fallback to database down error
@@ -95,6 +160,13 @@ async def get_disease(slug: str):
     """
     Get detailed information about a specific crop disease by slug.
     """
+    now = time.time()
+    if slug in _detail_cache:
+        ts, cached_res = _detail_cache[slug]
+        if now - ts < CACHE_TTL:
+            logger.info(f"Disease detail cache hit for slug: {slug}")
+            return cached_res
+
     db = get_db()
     try:
         disease_dict = await db.diseases.find_one({"slug": slug})
@@ -105,7 +177,10 @@ async def get_disease(slug: str):
                 message="Unknown disease slug."
             )
         # Parse into Pydantic model
-        return Disease(**disease_dict)
+        res_data = Disease(**disease_dict)
+        # Store in cache
+        _detail_cache[slug] = (time.time(), res_data)
+        return res_data
     except AppError:
         raise
     except Exception as e:

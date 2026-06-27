@@ -31,7 +31,13 @@ def _last_conv_layer(model):
         return res
     raise ValueError("No convolutional layer found for Grad-CAM.")
 
+from app.services.inference import model_lock
+
 def gradcam_plus_plus(model, img_array, class_index, layer_name=None):
+    with model_lock:
+        return _gradcam_plus_plus_unlocked(model, img_array, class_index, layer_name)
+
+def _gradcam_plus_plus_unlocked(model, img_array, class_index, layer_name=None):
     """img_array: (1,224,224,3) preprocessed. Returns small HxW heatmap in 0..1."""
     layer_name = layer_name or _last_conv_layer(model)
     container, target_layer = _find_layer_and_container(model, layer_name)

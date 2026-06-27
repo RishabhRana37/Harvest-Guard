@@ -8,6 +8,8 @@ from app.config import settings
 from app.db import get_db
 from app.schemas import Prediction
 
+from threading import Lock
+
 logger = logging.getLogger("app.services.inference")
 
 # Module-level singletons
@@ -20,6 +22,7 @@ is_loaded = False
 warmup_succeeded = False
 disease_cache = {}  # maps slug -> {"crop": str, "name": str}
 metrics = {}
+model_lock = Lock()
 
 def load_model_artifacts():
     """
@@ -139,7 +142,9 @@ def predict(input_array: np.ndarray) -> np.ndarray:
     if not model_loaded or model is None:
         raise ValueError("Model is not loaded.")
         
-    probs = model.predict(input_array, verbose=0)
+    with model_lock:
+        probs = model.predict(input_array, verbose=0)
+        
     probs_clipped = np.clip(probs, 1e-15, 1.0)
     logits = np.log(probs_clipped)
     scaled_logits = logits / temperature
