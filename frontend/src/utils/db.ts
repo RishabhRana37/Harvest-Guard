@@ -46,6 +46,18 @@ export interface SavedScan {
   is_pending?: boolean;     // True if uploaded while offline and waiting to sync
   offline_image_blob?: Blob;// Image blob kept for upload retry
   crop_hint?: string;       // Kept to send on sync
+  scan_mode?: 'disease' | 'pest';
+  pest?: {
+    slug: string;
+    crop: string;
+    name: string;
+    severity: string;
+    description: string;
+    treatments: {
+      organic: string[];
+      chemical: string[];
+    };
+  } | null;
 }
 
 interface CropDocDB extends DBSchema {

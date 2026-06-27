@@ -21,8 +21,7 @@ export const ConfidenceGauge: React.FC<ConfidenceGaugeProps> = ({ confidence, ba
   }, [value]);
 
   const radius = 42;
-  const strokeWidth = 10;
-  // Circumference of a semi-circle (PI * r)
+  const strokeWidth = 8;
   const circumference = Math.PI * radius; 
   const strokeDashoffset = circumference - (animatedValue * circumference);
 
@@ -39,14 +38,40 @@ export const ConfidenceGauge: React.FC<ConfidenceGaugeProps> = ({ confidence, ba
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-surface rounded-16 border border-border w-full max-w-[200px] shadow-sm select-none shrink-0">
-      <span className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2">
-        {t('result.confidence')}
+    <div className="flex flex-col items-center justify-center p-5 bg-bg-surface rounded-16 border border-border w-full max-w-[210px] shadow-lg select-none shrink-0 relative overflow-hidden">
+      
+      <span className="text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-3.5">
+        Clinical AI Trust
       </span>
       
       {/* SVG Radial Arc Gauge */}
-      <div className="relative w-28 h-16 flex items-center justify-center overflow-hidden">
+      <div className="relative w-32 h-18 flex items-center justify-center overflow-hidden">
         <svg viewBox="0 0 100 55" className="w-full h-full">
+          {/* Neon Glow Filters definitions */}
+          <defs>
+            <filter id="ai-glow" x="-10%" y="-10%" width="120%" height="120%">
+              <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#4D9FFF" floodOpacity="0.8" />
+            </filter>
+          </defs>
+
+          {/* Concentric grid lines in the background */}
+          <path
+            d="M 12 50 A 38 38 0 0 1 88 50"
+            fill="none"
+            stroke="var(--border)"
+            strokeWidth="0.5"
+            strokeDasharray="2 3"
+            className="opacity-45"
+          />
+          <path
+            d="M 16 50 A 34 34 0 0 1 84 50"
+            fill="none"
+            stroke="var(--border)"
+            strokeWidth="0.5"
+            strokeDasharray="2 3"
+            className="opacity-30"
+          />
+
           {/* Background track arc */}
           <path
             d="M 8 50 A 42 42 0 0 1 92 50"
@@ -54,8 +79,10 @@ export const ConfidenceGauge: React.FC<ConfidenceGaugeProps> = ({ confidence, ba
             stroke="var(--border)"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
+            className="opacity-40"
           />
-          {/* Active value arc */}
+
+          {/* Active value arc with glowing filter */}
           <path
             d="M 8 50 A 42 42 0 0 1 92 50"
             fill="none"
@@ -64,19 +91,20 @@ export const ConfidenceGauge: React.FC<ConfidenceGaugeProps> = ({ confidence, ba
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
+            filter="url(#ai-glow)"
             className="gauge-circle transition-all duration-[800ms] ease-out"
           />
         </svg>
         
-        {/* Floating Percentage Figure */}
-        <div className="absolute bottom-0 text-center flex flex-col items-center">
-          <span className="text-2xl font-bold tracking-tight text-text-strong tabular-nums leading-none">
+        {/* Floating Percentage Figure with JetBrains Mono */}
+        <div className="absolute bottom-1 text-center flex flex-col items-center">
+          <span className="text-2xl font-mono font-bold tracking-tight text-white tabular-nums leading-none">
             {(value * 100).toFixed(0)}%
           </span>
         </div>
       </div>
 
-      <span className={`text-[11px] font-bold text-center mt-2 ${getBandColorClass()}`}>
+      <span className={`text-[10px] font-bold text-center mt-3.5 leading-tight ${getBandColorClass()}`}>
         {getBandLabel()}
       </span>
     </div>

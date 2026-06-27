@@ -26,19 +26,20 @@ export const TreatmentTabs: React.FC<TreatmentTabsProps> = ({ treatments, isConf
   const [activeTab, setActiveTab] = useState<'organic' | 'chemical' | 'prevention'>('organic');
   const [isExpanded, setIsExpanded] = useState(isConfident); // Collapsed by default if low confidence
 
-  if (!treatments) return null;
-
-  const hasOrganic = treatments.organic && treatments.organic.length > 0;
-  const hasChemical = treatments.chemical && treatments.chemical.length > 0;
-  const hasPrevention = treatments.prevention && treatments.prevention.length > 0;
+  const hasOrganic = !!(treatments?.organic && treatments.organic.length > 0);
+  const hasChemical = !!(treatments?.chemical && treatments.chemical.length > 0);
+  const hasPrevention = !!(treatments?.prevention && treatments.prevention.length > 0);
 
   // Auto-select tab if active tab doesn't have items
   React.useEffect(() => {
+    if (!treatments) return;
     if (activeTab === 'organic' && !hasOrganic) {
       if (hasChemical) setActiveTab('chemical');
       else if (hasPrevention) setActiveTab('prevention');
     }
-  }, [treatments]);
+  }, [treatments, activeTab, hasOrganic, hasChemical, hasPrevention]);
+
+  if (!treatments) return null;
 
   return (
     <div className="w-full bg-surface rounded-16 border border-border shadow-sm overflow-hidden select-none">

@@ -28,3 +28,4 @@ dummy_dataset/
 app/data/*_fallback.json
 
 
+.vercel
