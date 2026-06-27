@@ -61,7 +61,8 @@ async def _diagnose_leaf_internal(
     input_array,
     original_np,
     quality_res,
-    thumb_uri
+    thumb_uri,
+    lang: str = "en"
 ) -> DiagnosisResult:
     # 5. Model Inference with Test-Time Augmentation (TTA) in thread pool
     from app.services.tta import tta_probs
@@ -191,7 +192,33 @@ async def _diagnose_leaf_internal(
             code="NOT_FOUND",
             message=f"Disease metadata not found for slug: {prediction.slug}"
         )
-    disease = Disease(**disease_doc)
+    from app.utils.i18n import localize_disease
+    localized_disease_doc = localize_disease(disease_doc, lang)
+    disease = Disease(**localized_disease_doc)
+
+    # Localize prediction name
+    prediction = Prediction(
+        slug=prediction.slug,
+        crop=prediction.crop,
+        name=disease.name,
+        prob=prediction.prob
+    )
+
+    # Localize top_k list
+    localized_top_k = []
+    for tk in top_k:
+        tk_doc = await db.diseases.find_one({"slug": tk.slug})
+        if tk_doc:
+            loc_tk_doc = localize_disease(tk_doc, lang)
+            localized_top_k.append(Prediction(
+                slug=tk.slug,
+                crop=tk.crop,
+                name=loc_tk_doc.get("name", tk.name),
+                prob=tk.prob
+            ))
+        else:
+            localized_top_k.append(tk)
+    top_k = localized_top_k
 
     # 10. Severity grading logic
     is_healthy = disease_doc.get("is_healthy", False)
@@ -280,6 +307,7 @@ async def diagnose_leaf(
     background_tasks: BackgroundTasks,
     image: UploadFile = File(...),
     crop_hint: Optional[str] = Form(None),
+    lang: str = Form("en", description="Language code"),
     x_device_id: str = Header(..., alias="X-Device-Id", description="Anonymous client device identity")
 ):
     """
@@ -358,7 +386,8 @@ async def diagnose_leaf(
             input_array=input_array,
             original_np=original_np,
             quality_res=None, # will be computed inside thread pool
-            thumb_uri=thumb_uri
+            thumb_uri=thumb_uri,
+            lang=lang
         )
     finally:
         inference_semaphore.release()

@@ -12,8 +12,8 @@ logger = logging.getLogger("app.routers.diseases")
 router = APIRouter(prefix="/diseases", tags=["Knowledge Base"])
 
 # Cache structures with TTL of 60 seconds
-_list_cache: Dict[Tuple[Optional[str], Optional[str], int, int], Tuple[float, DiseaseListResponse]] = {}
-_detail_cache: Dict[str, Tuple[float, Disease]] = {}
+_list_cache: Dict[Tuple[Optional[str], Optional[str], int, int, str], Tuple[float, DiseaseListResponse]] = {}
+_detail_cache: Dict[Tuple[str, str], Tuple[float, Disease]] = {}
 CACHE_TTL = 60.0
 
 def invalidate_cache():
@@ -70,12 +70,13 @@ async def list_diseases(
     crop: Optional[str] = Query(None, description="Filter by crop name (e.g. Tomato)"),
     q: Optional[str] = Query(None, description="Search term in name or symptoms"),
     page: int = Query(1, ge=1, description="Page number"),
-    page_size: int = Query(20, ge=1, le=50, description="Page size")
+    page_size: int = Query(20, ge=1, le=50, description="Page size"),
+    lang: str = Query("en", description="Language code")
 ):
     """
     List and search crop diseases in the knowledge base.
     """
-    cache_key = (crop, q, page, page_size)
+    cache_key = (crop, q, page, page_size, lang.lower())
     now = time.time()
     if cache_key in _list_cache:
         ts, cached_res = _list_cache[cache_key]
@@ -112,7 +113,8 @@ async def list_diseases(
                 "crop": 1,
                 "name": 1,
                 "is_healthy": 1,
-                "image_url": 1
+                "image_url": 1,
+                "i18n": 1
             }
         ).skip(skip).limit(page_size)
         
@@ -121,19 +123,21 @@ async def list_diseases(
         # Format items to match schema (Pydantic will validate default/null values for other fields)
         lightweight_items = []
         for item in items:
+            from app.utils.i18n import localize_disease
+            loc_item = localize_disease(item, lang)
             lightweight_items.append(
                 Disease(
-                    slug=item["slug"],
-                    crop=item["crop"],
-                    name=item["name"],
-                    pathogen=item.get("pathogen", "None"),
-                    is_healthy=item["is_healthy"],
-                    symptoms=item.get("symptoms", []),
-                    cause=item.get("cause", ""),
-                    lifecycle=item.get("lifecycle", ""),
-                    treatments=item.get("treatments", {"organic": [], "chemical": [], "prevention": []}),
-                    confused_with=item.get("confused_with", []),
-                    image_url=item.get("image_url")
+                    slug=loc_item["slug"],
+                    crop=loc_item["crop"],
+                    name=loc_item["name"],
+                    pathogen=loc_item.get("pathogen", "None"),
+                    is_healthy=loc_item["is_healthy"],
+                    symptoms=loc_item.get("symptoms", []),
+                    cause=loc_item.get("cause", ""),
+                    lifecycle=loc_item.get("lifecycle", ""),
+                    treatments=loc_item.get("treatments", {"organic": [], "chemical": [], "prevention": []}),
+                    confused_with=loc_item.get("confused_with", []),
+                    image_url=loc_item.get("image_url")
                 )
             )
             
@@ -156,15 +160,16 @@ async def list_diseases(
         )
 
 @router.get("/{slug}", response_model=Disease)
-async def get_disease(slug: str):
+async def get_disease(slug: str, lang: str = Query("en", description="Language code")):
     """
     Get detailed information about a specific crop disease by slug.
     """
     now = time.time()
-    if slug in _detail_cache:
-        ts, cached_res = _detail_cache[slug]
+    cache_key = (slug, lang.lower())
+    if cache_key in _detail_cache:
+        ts, cached_res = _detail_cache[cache_key]
         if now - ts < CACHE_TTL:
-            logger.info(f"Disease detail cache hit for slug: {slug}")
+            logger.info(f"Disease detail cache hit for key: {cache_key}")
             return cached_res
 
     db = get_db()
@@ -177,9 +182,11 @@ async def get_disease(slug: str):
                 message="Unknown disease slug."
             )
         # Parse into Pydantic model
-        res_data = Disease(**disease_dict)
+        from app.utils.i18n import localize_disease
+        loc_disease_dict = localize_disease(disease_dict, lang)
+        res_data = Disease(**loc_disease_dict)
         # Store in cache
-        _detail_cache[slug] = (time.time(), res_data)
+        _detail_cache[cache_key] = (time.time(), res_data)
         return res_data
     except AppError:
         raise

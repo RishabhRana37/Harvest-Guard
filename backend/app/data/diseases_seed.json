@@ -44,7 +44,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u0947\u092c \u0915\u093e \u0938\u094d\u0915\u0948\u092c (Apple Scab)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Apple leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "apple-black-rot",
@@ -91,7 +129,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0915\u093e\u0932\u093e \u0938\u0921\u093c\u0928 (Black Rot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Apple leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "apple-cedar-apple-rust",
@@ -138,7 +214,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u0940\u0921\u0930 \u0938\u0947\u092c \u091c\u0902\u0917 (Cedar Apple Rust)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Apple leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "apple-healthy",
@@ -163,7 +277,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0938\u0947\u092c (Healthy Apple)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "blueberry-healthy",
@@ -188,7 +318,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u092c\u094d\u0932\u0942\u092c\u0947\u0930\u0940 (Healthy Blueberry)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "cherry-including-sour-powdery-mildew",
@@ -235,7 +381,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u093e\u0909\u0921\u0930\u0940 \u092e\u093f\u0932\u094d\u0921\u094d\u092f\u0942 (Powdery Mildew)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Cherry leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "cherry-including-sour-healthy",
@@ -260,7 +444,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u091a\u0947\u0930\u0940 (Healthy Cherry)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "corn-maize-cercospora-leaf-spot-gray-leaf-spot",
@@ -307,7 +507,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0927\u0942\u0938\u0930 \u092a\u0924\u094d\u0924\u0940 \u0927\u092c\u094d\u092c\u093e (Grey Leaf Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Corn (Maize) leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "corn-maize-common-rust",
@@ -354,7 +592,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u093e\u092e\u093e\u0928\u094d\u092f \u091c\u0902\u0917 (Common Rust)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Corn (Maize) leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "corn-maize-northern-leaf-blight",
@@ -401,7 +677,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0909\u0924\u094d\u0924\u0930\u0940 \u092a\u0924\u094d\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Northern Leaf Blight)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Corn (Maize) leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "corn-maize-healthy",
@@ -426,7 +740,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u092e\u0915\u094d\u0915\u093e (Healthy Corn)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "grape-black-rot",
@@ -473,7 +803,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0915\u093e\u0932\u093e \u0938\u0921\u093c\u0928 (Black Rot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Grape leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "grape-esca-black-measles",
@@ -520,7 +888,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u090f\u0938\u094d\u0915\u093e / \u092c\u094d\u0932\u0948\u0915 \u092e\u0940\u091c\u0932\u094d\u0938 (Esca)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Grape leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "grape-leaf-blight-isariopsis-leaf-spot",
@@ -567,7 +973,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u0924\u094d\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Leaf Blight)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Grape leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "grape-healthy",
@@ -592,7 +1036,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0905\u0902\u0917\u0942\u0930 (Healthy Grape)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "orange-haunglongbing-citrus-greening",
@@ -639,7 +1099,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u093f\u091f\u094d\u0930\u0938 \u0917\u094d\u0930\u0940\u0928\u093f\u0902\u0917 (Citrus Greening)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Orange leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "peach-bacterial-spot",
@@ -686,7 +1184,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u091c\u0940\u0935\u093e\u0923\u0941 \u0927\u092c\u094d\u092c\u093e (Bacterial Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Peach leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "peach-healthy",
@@ -711,7 +1247,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0906\u0921\u093c\u0942 (Healthy Peach)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "pepper-bell-bacterial-spot",
@@ -758,7 +1310,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u091c\u0940\u0935\u093e\u0923\u0941 \u0927\u092c\u094d\u092c\u093e (Bacterial Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Pepper leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "pepper-bell-healthy",
@@ -783,7 +1373,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0936\u093f\u092e\u0932\u093e \u092e\u093f\u0930\u094d\u091a (Healthy Bell Pepper)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "potato-early-blight",
@@ -830,7 +1436,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0905\u0917\u0947\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Early Blight)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Potato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "potato-late-blight",
@@ -877,7 +1521,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u091b\u0947\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Late Blight)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Potato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "potato-healthy",
@@ -902,7 +1584,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0906\u0932\u0942 (Healthy Potato)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "raspberry-healthy",
@@ -927,7 +1625,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0930\u093e\u0938\u094d\u092a\u092c\u0947\u0930\u0940 (Healthy Raspberry)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "soybean-healthy",
@@ -952,7 +1666,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0938\u094b\u092f\u093e\u092c\u0940\u0928 (Healthy Soybean)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "squash-powdery-mildew",
@@ -999,7 +1729,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u093e\u0909\u0921\u0930\u0940 \u092e\u093f\u0932\u094d\u0921\u094d\u092f\u0942 (Powdery Mildew)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Squash leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "strawberry-leaf-scorch",
@@ -1046,7 +1814,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u0924\u094d\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Leaf Scorch)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Strawberry leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "strawberry-healthy",
@@ -1071,7 +1877,23 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u0938\u094d\u091f\u094d\u0930\u0949\u092c\u0947\u0930\u0940 (Healthy Strawberry)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-bacterial-spot",
@@ -1118,7 +1940,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u091c\u0940\u0935\u093e\u0923\u0941 \u0927\u092c\u094d\u092c\u093e (Bacterial Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-early-blight",
@@ -1165,7 +2025,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u091f\u092e\u093e\u091f\u0930 \u0905\u0917\u0947\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Tomato Early Blight)",
+        "symptoms": [
+          "\u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902 \u092a\u0930 \u092d\u0942\u0930\u0947-\u0915\u093e\u0932\u0947 \u0938\u0902\u0915\u0947\u0902\u0926\u094d\u0930\u093f\u0924 \u091b\u0932\u094d\u0932\u0947\u0926\u093e\u0930 \u0927\u092c\u094d\u092c\u0947 \u092c\u0928\u0928\u093e\u0964",
+          "\u0927\u092c\u094d\u092c\u094b\u0902 \u0915\u0947 \u091a\u093e\u0930\u094b\u0902 \u0913\u0930 \u092a\u0940\u0932\u0947 \u0930\u0902\u0917 \u0915\u093e \u092a\u094d\u0930\u092d\u093e\u092e\u0902\u0921\u0932 \u0926\u093f\u0916\u0928\u093e\u0964",
+          "\u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902 \u0915\u093e \u0938\u092e\u092f \u0938\u0947 \u092a\u0939\u0932\u0947 \u092a\u0940\u0932\u093e \u0939\u094b\u0915\u0930 \u0917\u093f\u0930\u0928\u093e\u0964"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "\u0928\u0940\u092e \u0915\u0947 \u0924\u0947\u0932 \u0915\u093e \u091b\u093f\u0921\u093c\u0915\u093e\u0935",
+              "dosage": "5 \u092e\u093f\u0932\u0940\u0932\u0940\u091f\u0930 \u092a\u094d\u0930\u0924\u093f \u0932\u0940\u091f\u0930",
+              "frequency": "\u0939\u0930 7 \u0926\u093f\u0928 \u092e\u0947\u0902",
+              "safety": "\u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902 \u0915\u0947 \u091c\u0932\u0928\u0947 \u0938\u0947 \u092c\u091a\u093e\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0926\u0947\u0930 \u0936\u093e\u092e \u0915\u094b \u091b\u093f\u0921\u093c\u0915\u093e\u0935 \u0915\u0930\u0947\u0902\u0964"
+            },
+            {
+              "action": "\u0915\u0949\u092a\u0930 \u092b\u0902\u0917\u0938\u093e\u0907\u0921 \u0915\u093e \u092a\u094d\u0930\u092f\u094b\u0917",
+              "dosage": "2 \u0917\u094d\u0930\u093e\u092e \u092a\u094d\u0930\u0924\u093f \u0932\u0940\u091f\u0930",
+              "frequency": "\u0939\u0930 10 \u0926\u093f\u0928 \u092e\u0947\u0902",
+              "safety": "\u0932\u0915\u094d\u0937\u0923\u094b\u0902 \u0915\u0947 \u092a\u0939\u0932\u0940 \u092c\u093e\u0930 \u0926\u093f\u0916\u0928\u0947 \u092a\u0930 \u0939\u0940 \u091b\u093f\u0921\u093c\u0915\u093e\u0935 \u0915\u0930\u0947\u0902; \u0926\u0938\u094d\u0924\u093e\u0928\u0947 \u092a\u0939\u0928\u0947\u0902\u0964"
+            }
+          ],
+          "chemical": [
+            {
+              "action": "\u0915\u094d\u0932\u094b\u0930\u094b\u0925\u0948\u0932\u094b\u0928\u093f\u0932 \u0915\u0935\u0915\u0928\u093e\u0936\u0940 \u0915\u093e \u0905\u0928\u0941\u092a\u094d\u0930\u092f\u094b\u0917",
+              "dosage": "2 \u0917\u094d\u0930\u093e\u092e \u092a\u094d\u0930\u0924\u093f \u0932\u0940\u091f\u0930",
+              "frequency": "\u0939\u0930 10 \u0926\u093f\u0928 \u092e\u0947\u0902",
+              "safety": "\u0938\u0941\u0930\u0915\u094d\u0937\u093e\u0924\u094d\u092e\u0915 \u0926\u0938\u094d\u0924\u093e\u0928\u0947 \u0914\u0930 \u092e\u093e\u0938\u094d\u0915 \u092a\u0939\u0928\u0947\u0902\u0964 \u0915\u091f\u093e\u0908 \u0938\u0947 \u092a\u0939\u0932\u0947 \u0915\u0940 \u0906\u0935\u0936\u094d\u092f\u0915 \u0905\u0935\u0927\u093f \u0915\u093e \u0927\u094d\u092f\u093e\u0928 \u0930\u0916\u0947\u0902\u0964"
+            }
+          ],
+          "prevention": [
+            "\u0917\u0948\u0930-\u0938\u0902\u0935\u0947\u0926\u0928\u0936\u0940\u0932 \u092b\u0938\u0932\u094b\u0902 \u0915\u0947 \u0938\u093e\u0925 3 \u0938\u093e\u0932 \u0915\u093e \u092b\u0938\u0932 \u091a\u0915\u094d\u0930 \u0905\u092a\u0928\u093e\u090f\u0902\u0964",
+            "\u0938\u0902\u0915\u094d\u0930\u092e\u093f\u0924 \u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902 \u0914\u0930 \u092e\u0932\u092c\u0947 \u0915\u094b \u0928\u0937\u094d\u091f \u0915\u0930 \u0926\u0947\u0902\u0964",
+            "\u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902 \u0915\u094b \u0938\u0942\u0916\u093e \u0930\u0916\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0921\u094d\u0930\u093f\u092a \u0938\u093f\u0902\u091a\u093e\u0908 \u092a\u0926\u094d\u0927\u0924\u093f \u0905\u092a\u0928\u093e\u090f\u0902\u0964"
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-late-blight",
@@ -1212,7 +2110,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u091b\u0947\u0924\u0940 \u091d\u0941\u0932\u0938\u093e (Late Blight)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-leaf-mold",
@@ -1259,7 +2195,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u0924\u094d\u0924\u0940 \u092e\u094b\u0932\u094d\u0921 (Leaf Mold)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-septoria-leaf-spot",
@@ -1306,7 +2280,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u0947\u092a\u094d\u091f\u094b\u0930\u093f\u092f\u093e \u092a\u0924\u094d\u0924\u0940 \u0927\u092c\u094d\u092c\u093e (Septoria Leaf Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-spider-mites-two-spotted-spider-mite",
@@ -1353,7 +2365,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092e\u0915\u0921\u093c\u0940 \u0915\u093e \u091c\u093e\u0932\u093e (Spider Mites)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-target-spot",
@@ -1400,7 +2450,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0932\u0915\u094d\u0937\u093f\u0924 \u0927\u092c\u094d\u092c\u093e (Target Spot)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-tomato-yellow-leaf-curl-virus",
@@ -1447,7 +2535,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092a\u0940\u0932\u093e \u092a\u0924\u094d\u0924\u093e \u092e\u0930\u094b\u0921\u093c\u0915 \u0935\u093e\u092f\u0930\u0938 (Yellow Leaf Curl Virus)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-tomato-mosaic-virus",
@@ -1494,7 +2620,45 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u092e\u094b\u091c\u093c\u0947\u0915 \u0935\u093e\u092f\u0930\u0938 (Tomato Mosaic Virus)",
+        "symptoms": [
+          "Visible spots or lesion discoloration on the Tomato leaves. (Hindi translation unavailable)",
+          "Yellow halos surrounding necrotic areas. (Hindi translation unavailable)",
+          "Premature defoliation starting from the lower canopy branches. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [
+            {
+              "action": "Neem oil foliar spray",
+              "dosage": "5 ml/L",
+              "frequency": "every 7 days",
+              "safety": "Apply in late evening to avoid leaf scorch under direct sunlight."
+            },
+            {
+              "action": "Copper fungicide dust",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Apply at the first sign of symptoms; wear protective gloves."
+            }
+          ],
+          "chemical": [
+            {
+              "action": "Chlorothalonil application",
+              "dosage": "2 g/L",
+              "frequency": "every 10 days",
+              "safety": "Wear protective gloves and respiratory mask. Check local pesticide guidelines and pre-harvest interval (PHI)."
+            }
+          ],
+          "prevention": [
+            "Rotate crops with non-susceptible plant families every 3 years.",
+            "Remove and destroy all infected foliage and crop residues.",
+            "Use drip irrigation systems to keep leaves dry."
+          ]
+        }
+      }
+    }
   },
   {
     "slug": "tomato-healthy",
@@ -1519,6 +2683,22 @@
     },
     "confused_with": [],
     "image_url": null,
-    "i18n": {}
+    "i18n": {
+      "hi": {
+        "name": "\u0938\u094d\u0935\u0938\u094d\u0925 \u091f\u092e\u093e\u091f\u0930 (Healthy Tomato)",
+        "symptoms": [
+          "No disease detected. Leaf is green, turgid, and healthy. (Hindi translation unavailable)"
+        ],
+        "treatments": {
+          "organic": [],
+          "chemical": [],
+          "prevention": [
+            "Continue standard irrigation and weeding schedule.",
+            "Apply mulch around base to conserve soil moisture.",
+            "Inspect foliage weekly for early signs of pests."
+          ]
+        }
+      }
+    }
   }
 ]

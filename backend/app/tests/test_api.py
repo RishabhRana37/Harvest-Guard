@@ -603,6 +603,78 @@ def test_concurrent_diagnose(client, valid_image):
         assert "scan_id" in data
         assert data["is_leaf"] is True
 
+def test_i18n_localization(client, valid_image):
+    # 1. Seed database first to make sure Hindi translations are in MongoDB
+    res_seed = client.post("/api/v1/diseases/seed")
+    assert res_seed.status_code == 200
+
+    # 2. GET /diseases/tomato-early-blight?lang=hi returns the Hindi name
+    res_hi = client.get("/api/v1/diseases/tomato-early-blight?lang=hi")
+    assert res_hi.status_code == 200
+    assert "टमाटर अगेती झुलसा" in res_hi.json()["name"]
+
+    # 3. GET /diseases/tomato-early-blight?lang=en (or no lang) returns English
+    res_en = client.get("/api/v1/diseases/tomato-early-blight")
+    assert res_en.status_code == 200
+    assert res_en.json()["name"] == "Early Blight"
+
+    # 4. Unknown language falls back to English cleanly
+    res_fallback = client.get("/api/v1/diseases/tomato-early-blight?lang=unknown")
+    assert res_fallback.status_code == 200
+    assert res_fallback.json()["name"] == "Early Blight"
+
+    # 5. POST /diagnose with lang=hi returns localized disease.name in the result
+    headers = {"X-Device-Id": "i18n-test-device"}
+    
+    from app.services import inference
+    original_predict = inference.predict
+    original_predict_probs = inference.predict_probs
+    original_warmup = inference.warmup_succeeded
+    
+    target_idx = None
+    for idx_str, slug in inference.class_index.items():
+        if slug == "tomato-early-blight":
+            target_idx = int(idx_str)
+            break
+            
+    assert target_idx is not None, "Tomato early blight slug not found in class index."
+    
+    mock_prob = [0.0] * len(inference.class_index)
+    mock_prob[target_idx] = 0.99
+    import numpy as np
+    mock_probs_arr = np.array([mock_prob], dtype=np.float32)
+    
+    def mock_fn(*args, **kwargs):
+        return mock_probs_arr
+        
+    inference.predict = mock_fn
+    inference.predict_probs = mock_fn
+    inference.warmup_succeeded = True
+    
+    try:
+        # Create fresh BytesIO
+        buf = io.BytesIO(valid_image.getvalue())
+        files = {"image": ("leaf.jpg", buf, "image/jpeg")}
+        data_payload = {"lang": "hi"}
+        diag_res = client.post(
+            "/api/v1/diagnose",
+            files=files,
+            data=data_payload,
+            headers=headers
+        )
+        assert diag_res.status_code == 200
+        diag_data = diag_res.json()
+        assert diag_data["is_leaf"] is True
+        assert diag_data["disease"] is not None
+        assert "टमाटर अगेती झुलसा" in diag_data["disease"]["name"]
+        assert "टमाटर अगेती झुलसा" in diag_data["prediction"]["name"]
+        assert "धब्बे" in diag_data["disease"]["symptoms"][0]
+    finally:
+        inference.predict = original_predict
+        inference.predict_probs = original_predict_probs
+        inference.warmup_succeeded = original_warmup
+
+
 
 
 
