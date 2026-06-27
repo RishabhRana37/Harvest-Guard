@@ -152,7 +152,18 @@ app.add_middleware(RequestIdMiddleware)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # CORS configuration (registered last, executes first)
-origins = [origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",") if origin.strip()]
+# CORS configuration (registered last, executes first)
+raw_origins = settings.ALLOWED_ORIGINS
+if not raw_origins or raw_origins.strip() == "*":
+    origins = [
+        "https://frontend-two-pi-24.vercel.app",
+        "https://harvest-guard-zeta.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:3000"
+    ]
+else:
+    origins = [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
