@@ -29,7 +29,7 @@ export const ScanPage: React.FC = () => {
 
   useEffect(() => {
     const loadProfile = () => {
-      const data = localStorage.getItem('cropdoc_user');
+      const data = localStorage.getItem('harvest_guard_user');
       if (data) {
         setUser(JSON.parse(data));
       }

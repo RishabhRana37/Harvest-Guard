@@ -29,12 +29,12 @@ export const ScanButton: React.FC<ScanButtonProps> = ({ onImageSelected }) => {
 
   // ── Tip dismiss (persisted) ───────────────────────────────────────
   const [showTip, setShowTip] = useState(
-    () => localStorage.getItem('cropdoc_dismiss_tip') !== 'true'
+    () => localStorage.getItem('harvest_guard_dismiss_tip') !== 'true'
   );
 
   const dismissTip = () => {
     setShowTip(false);
-    localStorage.setItem('cropdoc_dismiss_tip', 'true');
+    localStorage.setItem('harvest_guard_dismiss_tip', 'true');
   };
 
   // ── File selection handler (shared by both paths) ─────────────────

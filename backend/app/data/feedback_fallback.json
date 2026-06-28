@@ -383,5 +383,27 @@
     "note": "looks more like potato early blight to me",
     "flagged_incomplete": false,
     "created_at": "2026-06-27T07:12:49.044651+00:00"
+  },
+  {
+    "_id": "feedback_0c8d497a30244ee6",
+    "feedback_id": "feedback_0c8d497a30244ee6",
+    "scan_id": "scan_7e42270fb6854a09",
+    "device_id": "test-history-device-uuid",
+    "agreed": false,
+    "corrected_slug": "potato-early-blight",
+    "note": "looks more like potato early blight to me",
+    "flagged_incomplete": false,
+    "created_at": "2026-06-28T04:29:38.982131+00:00"
+  },
+  {
+    "_id": "feedback_54cb4cce49ba4970",
+    "feedback_id": "feedback_54cb4cce49ba4970",
+    "scan_id": "scan_ee6da61959da4854",
+    "device_id": "smoke-test-device-uuid",
+    "agreed": false,
+    "corrected_slug": "potato-early-blight",
+    "note": "looks more like potato early blight to me",
+    "flagged_incomplete": false,
+    "created_at": "2026-06-28T04:29:56.624070+00:00"
   }
 ]

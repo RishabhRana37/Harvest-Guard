@@ -45,7 +45,7 @@ export const LandingPage: React.FC = () => {
   ];
 
   const testimonials = [
-    { name: 'Jai Kumar', country: 'India 🇮🇳', crop: 'Tomato & Rice', text: 'CropDoc saved my entire autumn harvest. The diagnosis was instant and the copper spray recipe was perfectly legal and accessible here.' },
+    { name: 'Jai Kumar', country: 'India 🇮🇳', crop: 'Tomato & Rice', text: 'Harvest Guard saved my entire autumn harvest. The diagnosis was instant and the copper spray recipe was perfectly legal and accessible here.' },
     { name: 'Samuel Kiprop', country: 'Kenya 🇰🇪', crop: 'Maize & Coffee', text: 'I had doubts, but the offline queuing works. I diagnosed maize blight in the deep valley fields with zero cellular connectivity.' },
     { name: 'Ethan Jenkins', country: 'Iowa, USA 🇺🇸', crop: 'Soybean & Corn', text: 'The pest detection toggle spotted our early aphid infestation before the leaves even turned yellow. Best clinical farming UI ever.' }
   ];
@@ -58,7 +58,7 @@ export const LandingPage: React.FC = () => {
   }, []);
 
   const handleStart = () => {
-    const user = localStorage.getItem('cropdoc_user');
+    const user = localStorage.getItem('harvest_guard_user');
     if (user) {
       navigate('/scan');
     } else {
@@ -75,7 +75,7 @@ export const LandingPage: React.FC = () => {
           <div className="w-9 h-9 rounded-8 bg-green-deep border border-green-bright/40 flex items-center justify-center">
             <span className="text-xl">🌿</span>
           </div>
-          <span className="font-display font-bold text-xl tracking-tight text-white">CropDoc <span className="text-green-neon">AI</span></span>
+          <span className="font-display font-bold text-xl tracking-tight text-white">Harvest <span className="text-green-neon">Guard</span></span>
         </div>
         
         <div className="flex items-center gap-4">
@@ -353,7 +353,7 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-border/50 pb-8">
           <div className="flex items-center gap-2">
             <span className="text-lg">🌿</span>
-            <span className="font-display font-bold text-lg text-white">CropDoc AI</span>
+            <span className="font-display font-bold text-lg text-white">Harvest Guard</span>
           </div>
 
           <div className="flex gap-6 text-sm text-text-secondary">
@@ -364,7 +364,7 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <div className="max-w-7xl mx-auto mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
-          <span>&copy; 2026 CropDoc AI Corporation. All rights reserved.</span>
+          <span>&copy; 2026 Harvest Guard Corporation. All rights reserved.</span>
           <div className="flex gap-4">
             <span>Powered by Dark Intelligence</span>
           </div>

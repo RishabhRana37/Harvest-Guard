@@ -1,5 +1,5 @@
 /**
- * Image processing pipeline for CropDoc AI
+ * Image processing pipeline for Harvest Guard
  * Resizes, compresses, and checks image for blur client-side.
  *
  * Compression guarantees:
@@ -170,7 +170,7 @@ const fmtBytes = (b: number) =>
  * Runs the full client image pipeline.
  * Always logs a DevTools console summary so the Network tab payload can be verified:
  *
- *   [CropDoc] 📸 Image compression
+ *   [Harvest Guard] 📸 Image compression
  *     Original : 5.23 MB
  *     Compressed: 312 KB  (-94%)
  *     Dimensions: 1280 × 960
@@ -188,7 +188,7 @@ export const runImagePipeline = async (file: File): Promise<ProcessedImageResult
   // ── DevTools summary ─────────────────────────────────────────────
   const reduction = (((file.size - compressedBlob.size) / file.size) * 100).toFixed(0);
   const underLimit = compressedBlob.size <= TARGET_MAX_BYTES;
-  console.group('%c[CropDoc] 📸 Image compression', 'color:#4ade80;font-weight:bold');
+  console.group('%c[Harvest Guard] 📸 Image compression', 'color:#4ade80;font-weight:bold');
   console.log(`  Original  : ${fmtBytes(file.size)}`);
   console.log(`  Compressed: ${fmtBytes(compressedBlob.size)}  (-${reduction}%)`);
   console.log(`  Dimensions: ${img.width} × ${img.height} → max 1280px long-edge`);
@@ -216,7 +216,7 @@ export const compressImageForUpload = async (input: Blob | File): Promise<Blob> 
   const compressed = await resizeAndCompress(img);
   const reduction = (((input.size - compressed.size) / input.size) * 100).toFixed(0);
   console.log(
-    `%c[CropDoc] 🚀 Upload compressed: ${fmtBytes(input.size)} → ${fmtBytes(compressed.size)} (-${reduction}%)`,
+    `%c[Harvest Guard] 🚀 Upload compressed: ${fmtBytes(input.size)} → ${fmtBytes(compressed.size)} (-${reduction}%)`,
     'color:#4ade80;font-weight:bold'
   );
   return compressed;

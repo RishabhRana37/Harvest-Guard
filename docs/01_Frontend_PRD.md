@@ -1,4 +1,4 @@
-# Frontend PRD — CropDoc AI (ZenVerse)
+# Frontend PRD — Harvest Guard (ZenVerse)
 ### Crop Disease Diagnosis from Photo using AI · Web + Mobile (PWA)
 
 **Owner:** Frontend Lead (Rishabh Rana)

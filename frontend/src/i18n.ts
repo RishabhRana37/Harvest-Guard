@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
-      appName: 'CropDoc AI',
+      appName: 'Harvest Guard',
       nav: {
         scan: 'Scan',
         history: 'History',
@@ -105,7 +105,7 @@ const resources = {
       settings: {
         title: 'Settings',
         language: 'App Language',
-        about: 'About CropDoc AI',
+        about: 'About Harvest Guard',
         aboutDesc: 'A premium, field-ready crop health-tech tool designed to provide clinical-level diagnosis for smallholder farmers.',
         team: 'Development Team',
         teamMembers: 'Jai Karthick & Rishabh Rana',
@@ -114,13 +114,13 @@ const resources = {
         clearWarning: 'This action is permanent. All saved scan data will be deleted.',
         clearConfirm: 'Yes, Delete Everything',
         cancel: 'Cancel',
-        pwaInstall: 'Install CropDoc App'
+        pwaInstall: 'Install Harvest Guard App'
       }
     }
   },
   hi: {
     translation: {
-      appName: 'क्रॉपडॉक AI',
+      appName: 'हार्वेस्ट गार्ड',
       nav: {
         scan: 'स्कैन',
         history: 'इतिहास',
@@ -221,7 +221,7 @@ const resources = {
       settings: {
         title: 'सेटिंग्स',
         language: 'ऐप की भाषा',
-        about: 'क्रॉपडॉक AI के बारे में',
+        about: 'हार्वेस्ट गार्ड के बारे में',
         aboutDesc: 'छोटे किसानों के लिए तैयार किया गया एक प्रीमियम, क्षेत्र-उपयोगी फसल स्वास्थ्य-तकनीक उपकरण जो क्लिनिकल-स्तरीय निदान प्रदान करता है।',
         team: 'विकासक टीम',
         teamMembers: 'जय कार्तिकेय और ऋषभ राणा',
@@ -230,7 +230,7 @@ const resources = {
         clearWarning: 'यह कार्रवाई स्थायी है। सहेजे गए सभी स्कैन हटा दिए जाएंगे।',
         clearConfirm: 'हाँ, सब मिटाएं',
         cancel: 'रद्द करें',
-        pwaInstall: 'क्रॉपडॉक ऐप इंस्टॉल करें'
+        pwaInstall: 'हार्वेस्ट गार्ड ऐप इंस्टॉल करें'
       }
     }
   }
@@ -240,7 +240,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: localStorage.getItem('cropdoc_language') || 'en',
+    lng: localStorage.getItem('harvest_guard_language') || 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react already safes from xss

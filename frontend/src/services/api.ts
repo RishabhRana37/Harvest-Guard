@@ -20,28 +20,28 @@ export const API_BASE_URL = normalizedBase ? `${normalizedBase}/api/v1` : '/api/
 
 // Device ID management (UUID)
 export const getDeviceId = (): string => {
-  let id = localStorage.getItem('cropdoc_device_id');
+  let id = localStorage.getItem('harvest_guard_device_id');
   if (!id) {
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
       id = crypto.randomUUID();
     } else {
       id = 'dev-' + Math.random().toString(36).substring(2, 15) + '-' + Math.random().toString(36).substring(2, 15);
     }
-    localStorage.setItem('cropdoc_device_id', id);
+    localStorage.setItem('harvest_guard_device_id', id);
   }
   return id;
 };
 
 // Global Toast dispatch helper
 export const triggerGlobalToast = (message: string, type: string = 'info') => {
-  window.dispatchEvent(new CustomEvent('cropdoc-toast', { detail: { message, type } }));
+  window.dispatchEvent(new CustomEvent('harvest-guard-toast', { detail: { message, type } }));
 };
 
 // Mock Mode management
 export type MockMode = 'confident' | 'lowconf' | 'notleaf' | 'healthy' | 'pest' | 'severe' | 'disabled';
 
 export const getMockMode = (): MockMode => {
-  const saved = localStorage.getItem('cropdoc_mock_mode');
+  const saved = localStorage.getItem('harvest_guard_mock_mode');
   if (saved) return saved as MockMode;
   
   // Default to disabled (live cloud mode) if VITE_API_BASE_URL is provided,
@@ -53,7 +53,7 @@ export const getMockMode = (): MockMode => {
 };
 
 export const setMockMode = (mode: MockMode) => {
-  localStorage.setItem('cropdoc_mock_mode', mode);
+  localStorage.setItem('harvest_guard_mock_mode', mode);
 };
 
 // Centralized request wrapper with headers, 503 retries, and clean error envelope translations

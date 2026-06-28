@@ -35,7 +35,7 @@ export const ResultPage: React.FC = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
-    const data = localStorage.getItem('cropdoc_user');
+    const data = localStorage.getItem('harvest_guard_user');
     if (data) {
       setUser(JSON.parse(data));
     }
@@ -69,13 +69,13 @@ export const ResultPage: React.FC = () => {
   }, [id, navigate]);
 
   useEffect(() => {
-    if (scan && scan.is_leaf && !scan.is_pending && localStorage.getItem('cropdoc_prompted_install') !== 'true') {
+    if (scan && scan.is_leaf && !scan.is_pending && localStorage.getItem('harvest_guard_prompted_install') !== 'true') {
       const promptEvent = (window as any).deferredInstallPrompt;
       if (promptEvent) {
         setTimeout(() => {
           promptEvent.prompt();
           promptEvent.userChoice.then((choiceResult: any) => {
-            localStorage.setItem('cropdoc_prompted_install', 'true');
+            localStorage.setItem('harvest_guard_prompted_install', 'true');
             if (choiceResult.outcome === 'accepted') {
               (window as any).deferredInstallPrompt = null;
             }
@@ -108,13 +108,13 @@ export const ResultPage: React.FC = () => {
     const confidenceVal = scan.confidence ?? 0.87;
     const confidencePercentage = `${Math.round(confidenceVal * 100)}%`;
     
-    const summaryText = `CropDoc AI: ${cropName} — ${diseaseName}, ${confidencePercentage} confidence`;
+    const summaryText = `Harvest Guard: ${cropName} — ${diseaseName}, ${confidencePercentage} confidence`;
     const shareUrl = window.location.href;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `CropDoc AI - ${cropName}`,
+          title: `Harvest Guard - ${cropName}`,
           text: summaryText,
           url: shareUrl
         });
@@ -134,7 +134,7 @@ export const ResultPage: React.FC = () => {
     try {
       const response = await fetch(`${API_BASE_URL}/scans/${scan.scan_id}/report`, {
         headers: {
-          'X-Device-Id': localStorage.getItem('cropdoc_device_id') || '',
+          'X-Device-Id': localStorage.getItem('harvest_guard_device_id') || '',
         }
       });
       if (!response.ok) {

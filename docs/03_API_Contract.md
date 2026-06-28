@@ -1,4 +1,4 @@
-# API Contract — CropDoc AI (ZenVerse)
+# API Contract — Harvest Guard (ZenVerse)
 ### Single source of truth for the Frontend ⇄ Backend interface
 
 **Status:** v1.0 · Hackathon build

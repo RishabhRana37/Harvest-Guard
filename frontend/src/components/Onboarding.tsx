@@ -20,7 +20,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
   };
 
   const handleFinish = () => {
-    localStorage.setItem('cropdoc_onboarding_seen', 'true');
+    localStorage.setItem('harvest_guard_onboarding_seen', 'true');
     onComplete();
   };
 

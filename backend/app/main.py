@@ -46,7 +46,7 @@ logger = logging.getLogger("app.main")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup actions
-    logger.info("Starting CropDoc AI Backend Service...")
+    logger.info("Starting Harvest Guard Backend Service...")
     # Initialize Motor client and run ping verification
     try:
         connected = await db_client.ping()
@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
     yield
 
     # Shutdown actions
-    logger.info("Shutting down CropDoc AI Backend Service...")
+    logger.info("Shutting down Harvest Guard Backend Service...")
     # Global client cleanup
     client = get_client()
     if client:
@@ -84,7 +84,7 @@ async def lifespan(app: FastAPI):
 # Shared rate limiter imported from app.utils.limiter
 
 app = FastAPI(
-    title="CropDoc AI API",
+    title="Harvest Guard API",
     version=settings.VERSION,
     description="Crop disease detection backend API co-locating REST routing and model inference",
     lifespan=lifespan
@@ -215,7 +215,7 @@ app.include_router(api_v1_router)
 @app.get("/")
 def read_root():
     return {
-        "service": "CropDoc AI API",
+        "service": "Harvest Guard API",
         "version": settings.VERSION,
         "docs": "/docs",
         "api_v1_prefix": settings.API_V1_STR

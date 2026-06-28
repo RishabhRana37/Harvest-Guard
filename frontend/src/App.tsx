@@ -15,7 +15,7 @@ import { AnimatedBackground } from './components/AnimatedBackground';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = localStorage.getItem('cropdoc_user');
+  const user = localStorage.getItem('harvest_guard_user');
   if (!user) {
     return <Navigate to="/login" replace />;
   }
@@ -26,7 +26,7 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState<boolean>(true);
 
   useEffect(() => {
-    const onboardingSeen = localStorage.getItem('cropdoc_onboarding_seen');
+    const onboardingSeen = localStorage.getItem('harvest_guard_onboarding_seen');
     if (onboardingSeen === 'true') {
       setShowOnboarding(false);
     }

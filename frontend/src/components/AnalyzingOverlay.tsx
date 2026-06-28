@@ -69,7 +69,7 @@ export const AnalyzingOverlay: React.FC<AnalyzingOverlayProps> = ({
       <div className="relative z-10 w-full text-center mt-6">
         <h2 className="text-xl font-display font-bold text-white tracking-widest flex items-center justify-center gap-2">
           <BrainCircuit className="w-5 h-5 text-green-neon animate-pulse" />
-          CropDoc <span className="text-green-neon">AI</span>
+          Harvest <span className="text-green-neon">Guard</span>
         </h2>
         <p className="text-text-secondary text-[10px] uppercase font-mono tracking-widest mt-1">Clinical AI Laboratory Outpost</p>
       </div>

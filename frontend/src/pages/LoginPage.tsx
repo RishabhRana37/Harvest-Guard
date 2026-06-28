@@ -105,7 +105,7 @@ export const LoginPage: React.FC = () => {
       currency: selectedCountry?.currency || 'INR',
       crops: selectedCrops
     };
-    localStorage.setItem('cropdoc_user', JSON.stringify(mockUser));
+    localStorage.setItem('harvest_guard_user', JSON.stringify(mockUser));
     // Dispatch session state update
     window.dispatchEvent(new Event('storage'));
     navigate('/scan');
@@ -121,7 +121,7 @@ export const LoginPage: React.FC = () => {
       currency: selectedCountry?.currency || 'INR',
       crops: selectedCrops
     };
-    localStorage.setItem('cropdoc_user', JSON.stringify(mockUser));
+    localStorage.setItem('harvest_guard_user', JSON.stringify(mockUser));
     window.dispatchEvent(new Event('storage'));
     navigate('/scan');
   };
@@ -137,7 +137,7 @@ export const LoginPage: React.FC = () => {
       currency: selectedCountry?.currency || 'INR',
       crops: ['Wheat', 'Tomato']
     };
-    localStorage.setItem('cropdoc_user', JSON.stringify(mockUser));
+    localStorage.setItem('harvest_guard_user', JSON.stringify(mockUser));
     window.dispatchEvent(new Event('storage'));
     navigate('/scan');
   };
@@ -159,7 +159,7 @@ export const LoginPage: React.FC = () => {
           <div className="w-10 h-10 rounded-8 bg-green-deep border border-green-bright/40 flex items-center justify-center text-lg">
             🌿
           </div>
-          <span className="font-display font-bold text-2xl tracking-tight text-white">CropDoc <span className="text-green-neon">AI</span></span>
+          <span className="font-display font-bold text-2xl tracking-tight text-white">Harvest <span className="text-green-neon">Guard</span></span>
         </div>
 
         <div className="flex flex-col gap-6 max-w-lg relative z-10">
@@ -220,13 +220,13 @@ export const LoginPage: React.FC = () => {
             <div className="w-9 h-9 rounded-8 bg-green-deep border border-green-bright/40 flex items-center justify-center">
               🌿
             </div>
-            <span className="font-display font-bold text-xl tracking-tight text-white">CropDoc <span className="text-green-neon">AI</span></span>
+            <span className="font-display font-bold text-xl tracking-tight text-white">Harvest <span className="text-green-neon">Guard</span></span>
           </div>
 
           {/* Form Header Tabs */}
           <div className="flex flex-col gap-2">
             <h3 className="font-display font-bold text-2xl text-white text-center lg:text-left">
-              {activeTab === 'signin' ? 'Sign In to CropDoc' : 'Create Farm Account'}
+              {activeTab === 'signin' ? 'Sign In to Harvest Guard' : 'Create Farm Account'}
             </h3>
             
             <div className="grid grid-cols-2 bg-bg-surface border border-border rounded-8 p-1 mt-2">
@@ -490,7 +490,7 @@ export const LoginPage: React.FC = () => {
           </div>
 
           <div className="text-center text-xs text-text-muted mt-2">
-            By accessing CropDoc AI, you agree to comply with our global farmer fair-usage standards and clinical data terms.
+            By accessing Harvest Guard, you agree to comply with our global farmer fair-usage standards and clinical data terms.
           </div>
 
         </div>
