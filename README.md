@@ -4,18 +4,18 @@
 ---
 
 > [!IMPORTANT]
-> **Backend API** is deployed and live on Render at the URL configured in `render.yaml`.
->
+> **Production Live Link:** The integrated application is deployed and live at **[https://harvest-guard-zeta.vercel.app](https://harvest-guard-zeta.vercel.app)**.
+> 
 > **Cold Start Mitigation:** The FastAPI backend loads the MobileNetV2 model, runs a warmup inference, and seeds the disease knowledge base at startup — so the first `/api/v1/diagnose` call is never the slow one.
 
 *A full-stack precision agriculture platform. Harvest Guard fuses a MobileNetV2 deep-learning classifier (38 crop-disease classes), temperature-calibrated Test-Time Augmentation (TTA), Grad-CAM++ saliency maps, and a natural-language explanation engine into a mobile-first Progressive Web App — helping farmers catch disease before it spreads.*
 
 ---
 
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-27ae60?style=for-the-badge)](https://github.com/RishabhRana37/Harvest-Guard)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-27ae60?style=for-the-badge)](https://harvest-guard-zeta.vercel.app)
+[![Deployment](https://img.shields.io/badge/Deployed-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://harvest-guard-zeta.vercel.app)
 [![ML Model](https://img.shields.io/badge/ML%20Model-MobileNetV2%20%7C%2038%20classes-9b59b6?style=for-the-badge&logo=tensorflow&logoColor=white)](#-ml-pipeline)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?logo=tensorflow&logoColor=white)](https://tensorflow.org/)
@@ -27,7 +27,7 @@
 
 ---
 
-## The Problem
+##  The Problem
 
 Smallholder farmers lose up to **30% of yields** annually to crop diseases — yet most lack access to agronomists. Existing solutions either require expensive connectivity, sacrifice accuracy, or provide no explanation for their predictions.
 
@@ -39,28 +39,28 @@ Smallholder farmers lose up to **30% of yields** annually to crop diseases — y
 
 ---
 
-## Core Features
+##  Core Features
 
-| Feature | Description | Implementation |
+| Feature | Description | Implementation Details |
 | :--- | :--- | :--- |
-| **38-Class Leaf Diagnosis** | Identifies diseases across 14 crop species from a single photo | MobileNetV2 fine-tuned on PlantVillage, served via FastAPI |
-| **Image Quality Gate** | Rejects blurry, dark, or non-leaf images before inference | Laplacian blur variance + HSV green-fill heuristics |
-| **TTA Ensemble** | Averages predictions across 3 augmented views for robustness | Horizontal flip + vertical flip + original |
-| **Grad-CAM++ Heatmaps** | Colour-coded saliency overlay showing disease focus area | Second-order gradient accumulation over last conv layer |
-| **Severity Grading** | Classifies disease severity as mild/severe from heatmap coverage | Active pixel fraction threshold at 30% |
-| **Natural Language Explanations** | Human-readable diagnosis with urgency timeline | Template engine in `services/explain.py` |
-| **PDF Diagnostic Reports** | Downloadable A4 PDF with heatmap, disease detail, and treatments | ReportLab with embedded base64 imagery |
-| **Offline-First PWA** | Scan history and disease library cached for offline access | IndexedDB via idb + Service Worker |
-| **MongoDB + Local Fallback** | Cloud persistence with automatic JSON file fallback for dev | Motor async client + `FallbackDatabase` in `db.py` |
+| **38-Class Leaf Diagnosis** | Identifies diseases across 14 crop species from a single photo. | MobileNetV2 fine-tuned on PlantVillage, served via FastAPI. |
+| **Image Quality Gate** | Rejects blurry, dark, or non-leaf images before inference. | Laplacian blur variance + HSV green-fill heuristics. |
+| **TTA Ensemble** | Averages predictions across 3 augmented views for robustness. | Horizontal flip + vertical flip + original views. |
+| **Grad-CAM++ Heatmaps** | Colour-coded saliency overlay showing disease focus area. | Second-order gradient accumulation over last conv layer. |
+| **Severity Grading** | Classifies disease severity as mild/severe from heatmap coverage. | Active pixel fraction threshold at 30%. |
+| **Natural Language Explanations** | Human-readable diagnosis with urgency timeline. | Template engine in `services/explain.py`. |
+| **PDF Diagnostic Reports** | Downloadable A4 PDF with heatmap, disease detail, and treatments. | ReportLab with embedded base64 imagery. |
+| **Offline-First PWA** | Scan history and disease library cached for offline access. | IndexedDB via idb + Service Worker. |
+| **MongoDB + Local Fallback** | Cloud persistence with automatic JSON file fallback for dev. | Motor async client + `FallbackDatabase` in `db.py`. |
 
 ---
 
-## Architecture and Data Flow
+##  Architecture and Data Flow
 
 ```mermaid
 graph TD
     User([Farmer]) -->|Takes photo| PWA[React + Vite PWA]
-    PWA -->|POST /api/v1/diagnose| API[FastAPI Backend]
+    PWA -->|POST /api/v1/diagnose| API[FastAPI Backend / Vercel Serverless]
 
     subgraph Diagnosis Pipeline
         API -->|Sanitise + resize| Preprocess[preprocess.py]
@@ -77,20 +77,21 @@ graph TD
         DB --> Response[DiagnosisResult JSON]
     end
 
-    Response -->|Rendered| PWA
-    PWA -->|GET /api/v1/scans/{id}/report| PDF[PDF Report]
+    Response -->|Rendered UI| PWA
+    PWA -->|GET /api/v1/scans/:id/report| PDF[PDF Report]
 ```
 
 ---
 
-## ML Pipeline
+##  ML Pipeline
 
 ### 1. MobileNetV2 Backbone (38 classes)
 Fine-tuned on the PlantVillage dataset across 14 crop species:
 Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Bell Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, Tomato.
 
 ### 2. Temperature Calibration
-Post-hoc calibration divides logits by a learned scalar `T` before softmax, fixing overconfident predictions without retraining.
+Post-hoc calibration divides logits by a learned scalar `T` before softmax, fixing overconfident predictions without retraining:
+$$\text{Softmax}(z_i / T)$$
 
 ### 3. Test-Time Augmentation (TTA)
 Three views (original, H-flip, V-flip) are averaged to reduce single-image variance, especially useful for edge-case orientations.
@@ -107,10 +108,14 @@ Second-order gradients are accumulated over the last convolutional feature map t
 
 ---
 
-## Repository Layout
+##  Repository Layout
 
 ```
 Harvest-Guard/
+├── api/                   # Vercel Serverless Function entry point
+│   ├── index.py           # Gateway importing backend app
+│   └── requirements.txt   # Vercel pip configuration
+│
 ├── backend/               # FastAPI Backend & ML Pipeline
 │   ├── app/
 │   │   ├── routers/       # Route handlers (diagnose, diseases, scans, report…)
@@ -142,15 +147,16 @@ Harvest-Guard/
 ├── scripts/               # Utility scripts
 │   └── seed_db.py         # Seed diseases into MongoDB from JSON
 │
+├── package.json           # Root package.json for monorepo scripts
 ├── .env.example           # Environment variable template
 ├── render.yaml            # Render Web Service deployment blueprint
 ├── vercel.json            # Vercel routing (frontend + backend)
-└── README.md              # This file
+└── README.md              # Documentation
 ```
 
 ---
 
-## API Endpoints
+##  API Endpoints
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -167,56 +173,42 @@ Harvest-Guard/
 
 ---
 
-## Quick Start
+##  Quick Start
 
 ### Prerequisites
 * **Node.js** v18+
 * **Python** 3.11+
 * **MongoDB Atlas** URI (optional — local JSON fallback used automatically)
 
-### 1. Clone the repository
+### 1. Monorepo Dependency Setup
+Install dependencies across both frontend and backend directories:
 ```bash
-git clone https://github.com/RishabhRana37/Harvest-Guard.git
-cd Harvest-Guard
+npm run install-all
 ```
 
-### 2. Run the Backend
+### 2. Run the Development Servers
+Launch both the frontend client and backend server concurrently:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Optional — copy and edit environment variables
-cp ../.env.example .env
-
-uvicorn app.main:app --reload --port 8000
-```
-Swagger UI: **http://localhost:8000/docs**
-
-### 3. Run the Frontend
-```bash
-cd frontend
-npm install
 npm run dev
 ```
-App: **http://localhost:5173**
+* Frontend client: `http://localhost:5173`
+* Swagger backend docs: `http://localhost:8000/docs`
 
-### 4. Run Tests
+### 3. Run Backend Integration Tests
+Confirm the pipeline is functional by running the pytest suite:
 ```bash
-cd backend
-PYTHONPATH=. pytest
+npm run test:backend
 ```
 
-### 5. Seed the Database (optional)
+### 4. Seed the Database (Optional)
+If running a remote MongoDB Atlas database, seed the disease database:
 ```bash
-cd backend
-python ../scripts/seed_db.py
+python scripts/seed_db.py
 ```
 
 ---
 
-## Roadmap
+##  Roadmap
 
 - [x] **Phase 1 — Core Diagnosis Engine**
   - MobileNetV2 fine-tuning on PlantVillage (38 classes).
@@ -237,8 +229,5 @@ python ../scripts/seed_db.py
 
 ---
 
-## License
+##  License
 This project is licensed under the MIT License.
-
----
-**Harvest Guard — Bringing precision agriculture intelligence to every farmer's pocket.**

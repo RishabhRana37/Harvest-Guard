@@ -1,0 +1,13 @@
+{
+  "name": "harvest-guard-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install --prefix frontend && pip install -r backend/requirements.txt",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"cd backend && uvicorn app.main:app --reload --port 8000\"",
+    "test:backend": "cd backend && PYTHONPATH=. pytest"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
