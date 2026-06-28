@@ -50,7 +50,7 @@ export const SettingsPage: React.FC = () => {
   const handleLanguageChange = (lang: string) => {
     i18n.changeLanguage(lang);
     setCurrentLang(lang);
-    localStorage.setItem('cropdoc_language', lang);
+    localStorage.setItem('harvest_guard_language', lang);
     triggerToast(`Language switched to ${lang === 'hi' ? 'Hindi / हिंदी' : 'English'}!`);
   };
 
