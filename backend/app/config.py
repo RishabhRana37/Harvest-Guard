@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     
     # Database Settings
     MONGODB_URI: str = "mongodb://localhost:27017"
-    DB_NAME: str = "cropdoc_db"
+    DB_NAME: str = "harvest_guard_db"
     
     # ML Model Settings
     MODEL_PATH: str = "model.keras"

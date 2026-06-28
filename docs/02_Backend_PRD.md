@@ -1,4 +1,4 @@
-# Backend PRD — CropDoc AI (ZenVerse)
+# Backend PRD — Harvest Guard (ZenVerse)
 ### Crop Disease Diagnosis from Photo using AI · API + ML Inference Service
 
 **Owner:** Backend / ML Lead

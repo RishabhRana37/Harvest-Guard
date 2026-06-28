@@ -37,7 +37,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   // Sync user profile
   useEffect(() => {
     const fetchUser = () => {
-      const data = localStorage.getItem('cropdoc_user');
+      const data = localStorage.getItem('harvest_guard_user');
       if (data) {
         setUser(JSON.parse(data));
       }
@@ -69,10 +69,10 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
       }
     };
 
-    window.addEventListener('cropdoc-toast', handleToastEvent);
+    window.addEventListener('harvest-guard-toast', handleToastEvent);
     return () => {
       clearInterval(interval);
-      window.removeEventListener('cropdoc-toast', handleToastEvent);
+      window.removeEventListener('harvest-guard-toast', handleToastEvent);
     };
   }, [mockMode]);
 
@@ -84,7 +84,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('cropdoc_user');
+    localStorage.removeItem('harvest_guard_user');
     window.dispatchEvent(new Event('storage'));
     navigate('/');
   };
@@ -116,7 +116,7 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
               <div className="flex items-center gap-2.5">
                 <span className="text-xl">🌿</span>
                 <span className="font-display font-bold text-lg tracking-tight text-white">
-                  CropDoc <span className="text-green-neon">AI</span>
+                  Harvest Guard <span className="text-green-neon">AI</span>
                 </span>
               </div>
             ) : (

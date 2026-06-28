@@ -1,5 +1,6 @@
 {
-  "name": "harvest-guard-frontend",
+  "name": "harvest-guard",
+  "description": "Harvest Guard — AI-powered crop health platform",
   "private": true,
   "version": "0.0.0",
   "type": "module",

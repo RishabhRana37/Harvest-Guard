@@ -1,6 +1,6 @@
 # Harvest Guard — Backend API
 
-FastAPI backend for the CropDoc AI disease-diagnosis service.
+FastAPI backend for the Harvest Guard disease-diagnosis service.
 
 ---
 

@@ -1,4 +1,4 @@
-# Harvest Guard — CropDoc AI
+# Harvest Guard — Harvest Guard
 ### AI-Powered Crop Disease Diagnosis · On-Device Privacy · Field-Grade Accuracy
 
 ---

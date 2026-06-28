@@ -47,7 +47,7 @@ async def scan_report(scan_id: str, x_device_id: str = Header(..., alias="X-Devi
 
     buf = io.BytesIO(); c = canvas.Canvas(buf, pagesize=A4); W, H = A4; y = H - 25 * mm
     c.setFillColor(colors.HexColor("#2C5F2D")); c.setFont("Helvetica-Bold", 20)
-    c.drawString(20 * mm, y, "CropDoc AI — Diagnostic Report"); y -= 9 * mm
+    c.drawString(20 * mm, y, "Harvest Guard — Diagnostic Report"); y -= 9 * mm
     c.setFillColor(colors.grey); c.setFont("Helvetica", 9)
     c.drawString(20 * mm, y, f"Generated {datetime.utcnow():%Y-%m-%d %H:%M UTC}  ·  Scan {scan_id}"); y -= 12 * mm
 
@@ -91,4 +91,4 @@ async def scan_report(scan_id: str, x_device_id: str = Header(..., alias="X-Devi
     c.drawString(20 * mm, 14 * mm, "AI-assisted guidance. Follow local pesticide labels/PHI. Consult an agronomist for severe cases.")
     c.showPage(); c.save(); buf.seek(0)
     return StreamingResponse(buf, media_type="application/pdf",
-        headers={"Content-Disposition": f'inline; filename="cropdoc_{scan_id}.pdf"'})
+        headers={"Content-Disposition": f'inline; filename="harvestguard_{scan_id}.pdf"'})

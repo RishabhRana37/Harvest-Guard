@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: cropdoc-ai-backend
+    name: harvest-guard-backend
     env: docker
     dockerfilePath: backend/Dockerfile
     dockerContext: backend
@@ -12,7 +12,7 @@ services:
         sync: false
         description: "MongoDB connection URI (e.g. MongoDB Atlas connection string)"
       - key: DB_NAME
-        value: cropdoc_db
+        value: harvest_guard_db
       - key: ALLOWED_ORIGINS
         value: "*"
       - key: MODEL_PATH

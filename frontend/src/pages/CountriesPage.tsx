@@ -17,7 +17,7 @@ export const CountriesPage: React.FC = () => {
 
   // Sync with current user country on mount
   useEffect(() => {
-    const data = localStorage.getItem('cropdoc_user');
+    const data = localStorage.getItem('harvest_guard_user');
     if (data) {
       const parsed = JSON.parse(data);
       const matched = getCountryByCode(parsed.country || 'IN');
@@ -28,7 +28,7 @@ export const CountriesPage: React.FC = () => {
   }, []);
 
   const handleSetCountry = (country: CountryProfile) => {
-    const data = localStorage.getItem('cropdoc_user');
+    const data = localStorage.getItem('harvest_guard_user');
     if (data) {
       const parsed = JSON.parse(data);
       const updated = {
@@ -39,7 +39,7 @@ export const CountriesPage: React.FC = () => {
         currency: country.currency,
         crops: country.crops
       };
-      localStorage.setItem('cropdoc_user', JSON.stringify(updated));
+      localStorage.setItem('harvest_guard_user', JSON.stringify(updated));
       setSelectedCountry(country);
       window.dispatchEvent(new Event('storage'));
       

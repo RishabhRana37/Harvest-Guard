@@ -50,7 +50,7 @@ export const ProfilePage: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    const data = localStorage.getItem('cropdoc_user');
+    const data = localStorage.getItem('harvest_guard_user');
     if (data) {
       const parsed = JSON.parse(data);
       setUser(parsed);
@@ -66,7 +66,7 @@ export const ProfilePage: React.FC = () => {
 
   const handleLanguageChange = (lang: string) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem('cropdoc_language', lang);
+    localStorage.setItem('harvest_guard_language', lang);
     triggerToast(`App language switched to ${lang === 'hi' ? 'हिन्दी (Hindi)' : 'English'}!`);
   };
 
@@ -83,7 +83,7 @@ export const ProfilePage: React.FC = () => {
         flag: country.flag,
         currency: country.currency
       };
-      localStorage.setItem('cropdoc_user', JSON.stringify(updated));
+      localStorage.setItem('harvest_guard_user', JSON.stringify(updated));
       setUser(updated);
       window.dispatchEvent(new Event('storage'));
       triggerToast(`🌍 Country updated to ${country.name}`);
@@ -98,7 +98,7 @@ export const ProfilePage: React.FC = () => {
     
     if (user) {
       const updatedUser = { ...user, crops: updated };
-      localStorage.setItem('cropdoc_user', JSON.stringify(updatedUser));
+      localStorage.setItem('harvest_guard_user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       window.dispatchEvent(new Event('storage'));
       triggerToast(`🌿 Added ${crop} to your farms`);
@@ -111,7 +111,7 @@ export const ProfilePage: React.FC = () => {
     
     if (user) {
       const updatedUser = { ...user, crops: updated };
-      localStorage.setItem('cropdoc_user', JSON.stringify(updatedUser));
+      localStorage.setItem('harvest_guard_user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       window.dispatchEvent(new Event('storage'));
       triggerToast(`Removed ${crop}`);
@@ -133,8 +133,8 @@ export const ProfilePage: React.FC = () => {
   const handleDeleteAccount = async () => {
     try {
       await clearAllScans();
-      localStorage.removeItem('cropdoc_user');
-      localStorage.removeItem('cropdoc_onboarding_seen');
+      localStorage.removeItem('harvest_guard_user');
+      localStorage.removeItem('harvest_guard_onboarding_seen');
       window.dispatchEvent(new Event('storage'));
       navigate('/');
     } catch (e) {
@@ -144,7 +144,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('cropdoc_user');
+    localStorage.removeItem('harvest_guard_user');
     window.dispatchEvent(new Event('storage'));
     navigate('/');
   };

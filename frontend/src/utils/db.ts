@@ -60,7 +60,7 @@ export interface SavedScan {
   } | null;
 }
 
-interface CropDocDB extends DBSchema {
+interface Harvest GuardDB extends DBSchema {
   scans: {
     key: string;
     value: SavedScan;
@@ -76,11 +76,11 @@ interface CropDocDB extends DBSchema {
   };
 }
 
-const DB_NAME = 'cropdoc-db';
+const DB_NAME = 'harvest-guard-db';
 const DB_VERSION = 1;
 
 export const initDB = async () => {
-  return openDB<CropDocDB>(DB_NAME, DB_VERSION, {
+  return openDB<Harvest GuardDB>(DB_NAME, DB_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains('scans')) {
         db.createObjectStore('scans', { keyPath: 'scan_id' });

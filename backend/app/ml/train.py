@@ -53,7 +53,7 @@ def get_class_weights(train_labels, num_classes=38):
     return {int(i): float(w) for i, w in enumerate(weights)}
 
 def main():
-    parser = argparse.ArgumentParser(description="CropDoc AI Transfer Learning Model Trainer")
+    parser = argparse.ArgumentParser(description="Harvest Guard Transfer Learning Model Trainer")
     parser.add_argument("--data_dir", type=str, default=None, help="Path to PlantVillage local directory")
     parser.add_argument("--smoke", action="store_true", help="Run in validation smoke mode (minimal images/epochs)")
     args = parser.parse_args()

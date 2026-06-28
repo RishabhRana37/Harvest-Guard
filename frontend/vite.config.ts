@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
       manifest: {
-        name: 'CropDoc AI',
-        short_name: 'CropDoc',
+        name: 'Harvest Guard',
+        short_name: 'Harvest Guard',
         description: 'AI-powered crop disease detection and treatment recommendations PWA',
         theme_color: '#2C5F2D',
         background_color: '#F6F8F4',

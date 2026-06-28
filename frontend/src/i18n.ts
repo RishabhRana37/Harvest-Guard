@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
-      appName: 'CropDoc AI',
+      appName: 'Harvest Guard',
       nav: {
         scan: 'Scan',
         history: 'History',
@@ -105,7 +105,7 @@ const resources = {
       settings: {
         title: 'Settings',
         language: 'App Language',
-        about: 'About CropDoc AI',
+        about: 'About Harvest Guard',
         aboutDesc: 'A premium, field-ready crop health-tech tool designed to provide clinical-level diagnosis for smallholder farmers.',
         team: 'Development Team',
         teamMembers: 'Jai Karthick & Rishabh Rana',
@@ -114,7 +114,7 @@ const resources = {
         clearWarning: 'This action is permanent. All saved scan data will be deleted.',
         clearConfirm: 'Yes, Delete Everything',
         cancel: 'Cancel',
-        pwaInstall: 'Install CropDoc App'
+        pwaInstall: 'Install Harvest Guard App'
       }
     }
   },
@@ -240,7 +240,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: localStorage.getItem('cropdoc_language') || 'en',
+    lng: localStorage.getItem('harvest_guard_language') || 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react already safes from xss
