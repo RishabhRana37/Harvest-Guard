@@ -78,7 +78,7 @@ graph TD
     end
 
     Response -->|Rendered| PWA
-    PWA -->|GET /api/v1/scans/{id}/report| PDF[PDF Report]
+    PWA -->|"GET /api/v1/scans/{id}/report"| PDF[PDF Report]
 ```
 
 ---
